@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: media
+  name: nas-media
 spec:
   capacity:
     storage: 1Mi # size does not matter
@@ -23,7 +23,8 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: media
+  name: nas-media
+  namespace: downloads
 spec:
   storageClassName: ""
   accessModes:
@@ -36,9 +37,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: sabnzbd-download
-  labels:
-    app.kubernetes.io/name: sabnzbd
+  name: nas-download
 spec:
   capacity:
     storage: 1Mi # size does not matter
@@ -59,13 +58,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sabnzbd-download
-  labels:
-    app.kubernetes.io/name: sabnzbd
+  name: nas-download
+  namespace: downloads
 spec:
+  storageClassName: ""
   accessModes:
     - ReadWriteMany
-  volumeName: sabnzbd-download
+  volumeName: nas-download
   resources:
     requests:
       storage: 1Mi # size does not matter
