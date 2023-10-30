@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media
+spec:
+  capacity:
+    storage: 1Mi # size does not matter
+  persistentVolumeReclaimPolicy: Retain
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/data/media
+    server: san.explorer
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  volumeName: media
+  resources:
+    requests:
+      storage: 1Mi # size does not matter
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sabnzbd-download
+  labels:
+    app.kubernetes.io/name: sabnzbd
+spec:
+  capacity:
+    storage: 1Mi # size does not matter
+  persistentVolumeReclaimPolicy: Retain
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/data/download
+    server: san.explorer
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd-download
+  labels:
+    app.kubernetes.io/name: sabnzbd
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeName: sabnzbd-download
+  resources:
+    requests:
+      storage: 1Mi # size does not matter
