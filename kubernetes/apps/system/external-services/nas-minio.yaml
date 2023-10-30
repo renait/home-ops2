@@ -43,7 +43,7 @@ metadata:
     app.kubernetes.io/name: nas-minio-console
     app.kubernetes.io/instance: nas-minio-console
 spec:
-  ingressClassName: nginx
+  ingressClassName: internal
   rules:
     - host: &host "s3.${SECRET_DOMAIN}"
       http:
