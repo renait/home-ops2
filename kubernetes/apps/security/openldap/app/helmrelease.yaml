@@ -129,8 +129,9 @@ spec:
 
       ingress:
         enabled: true
+        ingressClassName: internal
         annotations:
-          kubernetes.io/ingress.class: nginx
+          # kubernetes.io/ingress.class: internal
           kubernetes.io/tls-acme: "true"
         path: /
         pathType: Prefix
