@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   values:
     global:
-      ldapDomain: "renait.nl"
+      ldapDomain: "${SECRET_DOMAIN}"
       existingSecret: renait-ldap-secret
 
     nameOverride: *app
@@ -135,7 +135,7 @@ spec:
         path: /
         pathType: Prefix
         hosts:
-          - &host "ldapadmin2.renait.nl"
+          - &host "ldapadmin2.${SECRET_DOMAIN}"
         tls:
           - hosts:
               - *host
