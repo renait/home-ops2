@@ -23,4 +23,4 @@ spec:
   values:
     image:
       repository: flag5/clustersecret
-      tag: 0.0.10
+      tag: 0.0.9
