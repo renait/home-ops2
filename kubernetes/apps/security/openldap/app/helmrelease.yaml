@@ -114,10 +114,9 @@ spec:
     resources:
       requests:
         cpu: 10m
-        memory: 20Mi
-      limits:
-        cpu: 50m
         memory: 40Mi
+      limits:
+        memory: 80Mi
 
     ltb-passwd:
       enabled: false
@@ -131,7 +130,6 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          # kubernetes.io/ingress.class: internal
           kubernetes.io/tls-acme: "true"
         path: /
         pathType: Prefix
