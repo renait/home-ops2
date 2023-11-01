@@ -6,19 +6,19 @@ metadata:
   namespace: security
 spec:
   postgresVersion: 15
-  dataSource:
-    pgbackrest:
-      stanza: db
-      repo:
-        name: repo1
-        volume:
-          volumeClaimSpec:
-            storageClassName: freenas-nfs-hdd
-            accessModes:
-              - "ReadWriteOnce"
-            resources:
-              requests:
-                storage: 20Gi
+#  dataSource:
+#    pgbackrest:
+#      stanza: db
+#      repo:
+#        name: repo1
+#        volume:
+#          volumeClaimSpec:
+#            storageClassName: freenas-nfs-hdd
+#            accessModes:
+#              - "ReadWriteOnce"
+#            resources:
+#              requests:
+#                storage: 20Gi
   patroni:
     dynamicConfiguration:
       synchronous_mode: true
