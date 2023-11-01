@@ -116,8 +116,12 @@ spec:
           # detachedVolumesFromVolumes: "false"
 
         mountOptions:
+          - nfsvers=4.2
+          - nconnect=8
+          - hard
           - noatime
-          - nfsvers=3
+          - rsize=131072
+          - wsize=131072
         secrets:
           provisioner-secret:
           controller-publish-secret:
