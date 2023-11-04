@@ -30,7 +30,7 @@ spec:
   values:
     fullnameOverride: nginx-external
     controller:
-      replicaCount: 1
+      replicaCount: 2
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
@@ -46,6 +46,7 @@ spec:
             - key: ingress-class
               operator: In
               values: ["external"]
+      allowSnippetAnnotations: true
       config:
         client-body-buffer-size: 100M
         client-body-timeout: 120
