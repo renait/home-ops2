@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: system
 resources:
   - ./secret.sops.yaml
-  - ./ks-app.yaml
+  - ./ks.yaml

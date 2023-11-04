@@ -2,10 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-snapshot-controller
+  name: cluster-apps-democratic-csi
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/snapshot-controller/app
+  path: ./kubernetes/apps/system/democratic-csi/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -14,75 +14,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-iscsi-hdd
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/system/democratic-csi/iscsi-hdd/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
-  dependsOn:
-    - name: cluster-apps-snapshot-controller
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-iscsi-ssd
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/system/democratic-csi/iscsi-ssd/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
-  dependsOn:
-    - name: cluster-apps-snapshot-controller
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-nfs-hdd
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/system/democratic-csi/nfs-hdd/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
-  dependsOn:
-    - name: cluster-apps-snapshot-controller
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-nfs-ssd
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/system/democratic-csi/nfs-ssd/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
-  dependsOn:
-    - name: cluster-apps-snapshot-controller
