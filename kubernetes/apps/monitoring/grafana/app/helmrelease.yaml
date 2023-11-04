@@ -40,6 +40,12 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
+      auth.anonymous:
+        enabled: true
+        # Organization name that should be used for unauthenticated users
+        org_name: "Main Org."
+        # Role for unauthenticated users, other valid values are `Editor` and `Admin`
+        org_role: Viewer
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -155,6 +161,12 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
+      resources:
+        requests:
+          cpu: 10m
+          memory: 130M
+        limits:
+          memory: 130M
     serviceMonitor:
       enabled: true
     ingress:
