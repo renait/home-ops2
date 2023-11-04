@@ -1,0 +1,204 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: csi-nfs-ssd
+  namespace: kube-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: democratic-csi
+      version: 0.14.2
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://kubernetes-csi.github.io/docs/csi-driver-object.html
+    csiDriver:
+      # should be globally unique for a given cluster
+      name: org.democratic-csi.nfs-ssd
+
+    csiProxy:
+      image: docker.io/democraticcsi/csi-grpc-proxy:v0.5.3
+      resources:
+        requests:
+          cpu: 15m
+          memory: 25M
+        limits:
+          memory: 25M
+
+    controller:
+      # democratic-csi controller
+      driver:
+        image: docker.io/democraticcsi/democratic-csi:v1.8.3
+        logLevel: debug
+        resources:
+          requests:
+            cpu: 20m
+            memory: 250M
+          limits:
+            memory: 250M
+
+      externalProvisioner:
+        resources:
+          requests:
+            cpu: 15m
+            memory: 40M
+          limits:
+            memory: 40M
+
+      externalResizer:
+        resources:
+          requests:
+            cpu: 15m
+            memory: 50M
+          limits:
+            memory: 50M
+
+      externalSnapshotter:
+        resources:
+          requests:
+            cpu: 15m
+            memory: 40M
+          limits:
+            memory: 40M
+
+    node:
+      # democratic-csi node
+      driver:
+        image: docker.io/democraticcsi/democratic-csi:v1.8.3
+        logLevel: debug
+        resources:
+          requests:
+            cpu: 20m
+            memory: 250M
+          limits:
+            memory: 250M
+      driverRegistrar:
+        resources:
+          requests:
+            cpu: 15m
+            memory: 30M
+          limits:
+            memory: 30M
+
+    # add note here about volume expansion requirements
+    storageClasses:
+      - name: freenas-nfs-ssd
+        defaultClass: false
+        reclaimPolicy: Delete
+        volumeBindingMode: Immediate
+        allowVolumeExpansion: true
+        parameters:
+          # for block-based storage can be ext3, ext4, xfs
+          # for nfs should be nfs
+          fsType: nfs
+
+          # if true, volumes created from other snapshots will be
+          # zfs send/received instead of zfs cloned
+          # detachedVolumesFromSnapshots: "false"
+
+          # if true, volumes created from other volumes will be
+          # zfs send/received instead of zfs cloned
+          # detachedVolumesFromVolumes: "false"
+
+        mountOptions:
+          - nfsvers=4.2
+          - nconnect=8
+          - hard
+          - noatime
+          - rsize=131072
+          - wsize=131072
+        secrets:
+          provisioner-secret:
+          controller-publish-secret:
+          node-stage-secret:
+          node-publish-secret:
+          controller-expand-secret:
+
+    volumeSnapshotClasses:
+      # - name: freenas-nfs-csi
+      #   parameters:
+      #   # if true, snapshots will be created with zfs send/receive
+      #   # detachedSnapshots: "false"
+      #   secrets:
+      #     snapshotter-secret:
+      - name: freenas-nfs-ssd-snap
+        deletionPolicy: Delete
+        parameters:
+          # if true, snapshots will be created with zfs send/receive
+          detachedSnapshots: "false"
+
+    driver:
+      config:
+        driver: freenas-nfs
+        instance_id:
+        httpConnection:
+          protocol: https
+          host: 172.16.0.12
+          port: 443
+          # use either password or api key
+          # apiKey:
+          # password:
+          allowInsecure: true
+          apiVersion: 2
+        sshConnection:
+          host: 172.16.0.12
+          port: 22
+          username: csi
+          # use either password or key
+          # password:
+          # privateKey: |
+          #   -----BEGIN OPENSSH PRIVATE KEY-----
+          #   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2g...
+          #   -----END OPENSSH PRIVATE KEY-----
+        zfs:
+          cli:
+            sudoEnabled: true
+          datasetParentName: fastdata/p/n/vol
+          detachedSnapshotsDatasetParentName: fastdata/p/n/snp
+          datasetProperties:
+            org.freenas:description: >-
+              {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}
+          datasetEnableQuotas: true
+          datasetEnableReservation: false
+          datasetPermissionsMode: "0777"
+          datasetPermissionsUser: 0
+          datasetPermissionsGroup: 0
+        nfs:
+          shareHost: 172.16.0.12
+          shareAlldirs: false
+          shareAllowedHosts: []
+          shareAllowedNetworks: []
+          shareMaprootUser: root
+          shareMaprootGroup: wheel
+          shareMapallUser: ""
+          shareMapallGroup: ""
+      resources:
+        requests:
+          cpu: 35m
+          memory: 250M
+        limits:
+          memory: 250M
+  valuesFrom:
+    - kind: Secret
+      name: truenas-secret
+      valuesKey: apiKey
+      targetPath: driver.config.httpConnection.apiKey
+    - kind: Secret
+      name: truenas-secret
+      valuesKey: privateKey
+      targetPath: driver.config.sshConnection.privateKey
