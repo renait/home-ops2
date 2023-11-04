@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: system
 resources:
+  - secret.sops.yaml
   - snapshot-controller
   - iscsi-hdd.yaml
   - iscsi-ssd.yaml
