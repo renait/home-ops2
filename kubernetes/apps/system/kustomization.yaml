@@ -6,5 +6,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   # - ./intel-device-plugins/ks.yaml
+  - ./democratic-csi/ks.yaml
+  # - ./volsync/ks.yaml
   # Standard resources
   - ./external-services

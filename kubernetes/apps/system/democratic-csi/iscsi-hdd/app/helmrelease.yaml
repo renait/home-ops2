@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: nfs-ssd
-  namespace: democratic-csi
+  name: iscsi-hdd
+  namespace: system
 spec:
   interval: 15m
   chart:
@@ -29,7 +29,7 @@ spec:
     # https://kubernetes-csi.github.io/docs/csi-driver-object.html
     csiDriver:
       # should be globally unique for a given cluster
-      name: org.democratic-csi.nfs-ssd
+      name: org.democratic-csi.iscsi-hdd
 
     csiProxy:
       image: docker.io/democraticcsi/csi-grpc-proxy:v0.5.3
@@ -97,7 +97,7 @@ spec:
 
     # add note here about volume expansion requirements
     storageClasses:
-      - name: freenas-nfs-ssd
+      - name: freenas-iscsi-hdd
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
@@ -105,7 +105,7 @@ spec:
         parameters:
           # for block-based storage can be ext3, ext4, xfs
           # for nfs should be nfs
-          fsType: nfs
+          fsType: ext4
 
           # if true, volumes created from other snapshots will be
           # zfs send/received instead of zfs cloned
@@ -114,14 +114,7 @@ spec:
           # if true, volumes created from other volumes will be
           # zfs send/received instead of zfs cloned
           # detachedVolumesFromVolumes: "false"
-
-        mountOptions:
-          - nfsvers=4.2
-          - nconnect=8
-          - hard
-          - noatime
-          - rsize=131072
-          - wsize=131072
+        mountOptions: []
         secrets:
           provisioner-secret:
           controller-publish-secret:
@@ -136,7 +129,7 @@ spec:
       #   # detachedSnapshots: "false"
       #   secrets:
       #     snapshotter-secret:
-      - name: freenas-nfs-ssd-snap
+      - name: freenas-iscsi-hdd-snap
         deletionPolicy: Delete
         parameters:
           # if true, snapshots will be created with zfs send/receive
@@ -144,14 +137,14 @@ spec:
 
     driver:
       config:
-        driver: freenas-nfs
+        driver: freenas-iscsi
         instance_id:
         httpConnection:
           protocol: https
           host: 172.16.0.12
           port: 443
           # use either password or api key
-          # apiKey:
+          # apiKey
           # password:
           allowInsecure: true
           apiVersion: 2
@@ -162,34 +155,60 @@ spec:
           # use either password or key
           # password:
           # privateKey: |
-          #   -----BEGIN OPENSSH PRIVATE KEY-----
-          #   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2g...
-          #   -----END OPENSSH PRIVATE KEY-----
+          #  -----BEGIN OPENSSH PRIVATE KEY-----
+          #  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2...
+          #  -----END OPENSSH PRIVATE KEY-----
         zfs:
           cli:
             sudoEnabled: true
-          datasetParentName: fastdata/p/n/vol
-          detachedSnapshotsDatasetParentName: fastdata/p/n/snp
-          datasetProperties:
-            org.freenas:description: >-
-              {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}
-          datasetEnableQuotas: true
-          datasetEnableReservation: false
-          datasetPermissionsMode: "0777"
-          datasetPermissionsUser: 0
-          datasetPermissionsGroup: 0
-        nfs:
-          shareHost: 172.16.0.12
-          shareAlldirs: false
-          shareAllowedHosts: []
-          shareAllowedNetworks: []
-          shareMaprootUser: root
-          shareMaprootGroup: wheel
-          shareMapallUser: ""
-          shareMapallGroup: ""
+          # total volume name (zvol/<datasetParentName>/<pvc name>) length cannot exceed 63 chars
+          # https://www.ixsystems.com/documentation/freenas/11.2-U5/storage.html#zfs-zvol-config-opts-tab
+          # standard volume naming overhead is 46 chars
+          # datasetParentName should therefore be 17 chars or less
+          datasetParentName: data/p/b/vol
+          detachedSnapshotsDatasetParentName: data/p/b/snp
+          # "" (inherit), lz4, gzip-9, etc
+          zvolCompression:
+          # "" (inherit), on, off, verify
+          zvolDedup:
+          zvolEnableReservation: false
+          # 512, 1K, 2K, 4K, 8K, 16K, 64K, 128K default is 16K
+          zvolBlocksize:
+        iscsi:
+          targetPortal: "172.16.0.12:3260"
+          targetPortals: []
+          # leave empty to omit usage of -I with iscsiadm
+          interface:
+          # MUST ensure uniqueness
+          # full iqn limit is 223 bytes, plan accordingly
+          # default is "{{ name }}"
+          nameTemplate: >-
+            {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}
+          namePrefix: csi-
+          nameSuffix:
+          # add as many as needed
+          targetGroups:
+            # get the correct ID from the "portal" section in the UI
+            - targetGroupPortalGroup: 1
+              # get the correct ID from the "initiators" section in the UI
+              targetGroupInitiatorGroup: 1
+              # None, CHAP, or CHAP Mutual
+              targetGroupAuthType: None
+              # get the correct ID from the "Authorized Access" section of the UI
+              # only required if using Chap
+              targetGroupAuthGroup:
+          extentInsecureTpc: true
+          extentXenCompat: false
+          extentDisablePhysicalBlocksize: true
+          # 512, 1024, 2048, or 4096,
+          extentBlocksize: 512
+          # "" (let FreeNAS decide, currently defaults to SSD), Unknown, SSD, 5400, 7200, 10000, 15000
+          extentRpm: "7200"
+          # 0-100 (0 == ignore)
+          extentAvailThreshold: 0
       resources:
         requests:
-          cpu: 35m
+          cpu: 25m
           memory: 250M
         limits:
           memory: 250M
