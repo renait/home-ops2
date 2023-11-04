@@ -9,4 +9,4 @@ resources:
   - ./openldap/ks.yaml
   - ./authentik/ks.yaml
   # - ./keycloak/ks.yaml
-  - ./oauth2-proxy/ks.yaml
+  # - ./oauth2-proxy/ks.yaml
