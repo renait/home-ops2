@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: csi-iscsi-hdd
-  namespace: system
+  name: iscsi-ssd
+  namespace: democratic-csi
 spec:
   interval: 15m
   chart:
@@ -29,7 +29,7 @@ spec:
     # https://kubernetes-csi.github.io/docs/csi-driver-object.html
     csiDriver:
       # should be globally unique for a given cluster
-      name: org.democratic-csi.iscsi-hdd
+      name: org.democratic-csi.iscsi-ssd
 
     csiProxy:
       image: docker.io/democraticcsi/csi-grpc-proxy:v0.5.3
@@ -97,7 +97,7 @@ spec:
 
     # add note here about volume expansion requirements
     storageClasses:
-      - name: freenas-iscsi-hdd
+      - name: freenas-iscsi-ssd
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
@@ -129,7 +129,7 @@ spec:
       #   # detachedSnapshots: "false"
       #   secrets:
       #     snapshotter-secret:
-      - name: freenas-iscsi-hdd-snap
+      - name: freenas-iscsi-ssd-snap
         deletionPolicy: Delete
         parameters:
           # if true, snapshots will be created with zfs send/receive
@@ -144,7 +144,7 @@ spec:
           host: 172.16.0.12
           port: 443
           # use either password or api key
-          # apiKey
+          # apiKey:
           # password:
           allowInsecure: true
           apiVersion: 2
@@ -155,9 +155,9 @@ spec:
           # use either password or key
           # password:
           # privateKey: |
-          #  -----BEGIN OPENSSH PRIVATE KEY-----
-          #  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2...
-          #  -----END OPENSSH PRIVATE KEY-----
+          #   -----BEGIN OPENSSH PRIVATE KEY-----
+          #   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc....
+          #   -----END OPENSSH PRIVATE KEY-----
         zfs:
           cli:
             sudoEnabled: true
@@ -165,8 +165,8 @@ spec:
           # https://www.ixsystems.com/documentation/freenas/11.2-U5/storage.html#zfs-zvol-config-opts-tab
           # standard volume naming overhead is 46 chars
           # datasetParentName should therefore be 17 chars or less
-          datasetParentName: data/p/b/vol
-          detachedSnapshotsDatasetParentName: data/p/b/snp
+          datasetParentName: fastdata/p/b/vol
+          detachedSnapshotsDatasetParentName: fastdata/p/b/snp
           # "" (inherit), lz4, gzip-9, etc
           zvolCompression:
           # "" (inherit), on, off, verify
@@ -197,13 +197,14 @@ spec:
               # get the correct ID from the "Authorized Access" section of the UI
               # only required if using Chap
               targetGroupAuthGroup:
+
           extentInsecureTpc: true
           extentXenCompat: false
           extentDisablePhysicalBlocksize: true
           # 512, 1024, 2048, or 4096,
           extentBlocksize: 512
           # "" (let FreeNAS decide, currently defaults to SSD), Unknown, SSD, 5400, 7200, 10000, 15000
-          extentRpm: "7200"
+          extentRpm: "SSD"
           # 0-100 (0 == ignore)
           extentAvailThreshold: 0
       resources:

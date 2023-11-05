@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: csi-iscsi-hdd
-  namespace: system
+  name: iscsi-hdd
+  namespace: democratic-csi
 spec:
   interval: 15m
   chart:

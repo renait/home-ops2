@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: csi-nfs-hdd
-  namespace: system
+  name: nfs-ssd
+  namespace: democratic-csi
 spec:
   interval: 15m
   chart:
@@ -29,7 +29,7 @@ spec:
     # https://kubernetes-csi.github.io/docs/csi-driver-object.html
     csiDriver:
       # should be globally unique for a given cluster
-      name: org.democratic-csi.nfs-hdd
+      name: org.democratic-csi.nfs-ssd
 
     csiProxy:
       image: docker.io/democraticcsi/csi-grpc-proxy:v0.5.3
@@ -97,7 +97,7 @@ spec:
 
     # add note here about volume expansion requirements
     storageClasses:
-      - name: freenas-nfs-hdd
+      - name: freenas-nfs-ssd
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
@@ -136,7 +136,7 @@ spec:
       #   # detachedSnapshots: "false"
       #   secrets:
       #     snapshotter-secret:
-      - name: freenas-nfs-hdd-snap
+      - name: freenas-nfs-ssd-snap
         deletionPolicy: Delete
         parameters:
           # if true, snapshots will be created with zfs send/receive
@@ -168,11 +168,11 @@ spec:
         zfs:
           cli:
             sudoEnabled: true
+          datasetParentName: fastdata/p/n/vol
+          detachedSnapshotsDatasetParentName: fastdata/p/n/snp
           datasetProperties:
             org.freenas:description: >-
               {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}
-          datasetParentName: data/p/n/vol
-          detachedSnapshotsDatasetParentName: data/p/n/snp
           datasetEnableQuotas: true
           datasetEnableReservation: false
           datasetPermissionsMode: "0777"
