@@ -40,7 +40,7 @@ spec:
               service:
                 name: nas-minio-http
                 port:
-                  number: *httpPort
+                  number: 9001
             path: /
             pathType: Prefix
     - host: &s3Host "s3.${SECRET_DOMAIN}"
@@ -50,7 +50,7 @@ spec:
               service:
                 name: nas-minio-s3
                 port:
-                  number: *s3Port
+                  number: 9000
             path: /
             pathType: Prefix
   tls:
