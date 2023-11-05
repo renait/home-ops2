@@ -8,5 +8,6 @@ resources:
   # - ./intel-device-plugins/ks.yaml
   - ./local-path-provisioner/ks.yaml
   - ./reloader/ks.yaml
+  - ./volsync/ks.yaml
   # Standard resources
   - ./external-services
