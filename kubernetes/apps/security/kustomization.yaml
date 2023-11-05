@@ -6,7 +6,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./clustersecret/ks.yaml
-  # - ./openldap/ks.yaml
+  - ./openldap/ks.yaml
   - ./authentik/ks.yaml
   # - ./keycloak/ks.yaml
   # - ./oauth2-proxy/ks.yaml
