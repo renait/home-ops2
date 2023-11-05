@@ -22,14 +22,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nas-minio-console
+  name: nas-minio
   annotations:
     hajimari.io/enable: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/whitelist-source-range: "172.16.0.0/12,192.168.0.0/16"
   labels:
-    app.kubernetes.io/name: nas-minio-console
-    app.kubernetes.io/instance: nas-minio-console
+    app.kubernetes.io/name: nas-minio
+    app.kubernetes.io/instance: nas-minio
 spec:
   ingressClassName: internal
   rules:
@@ -38,7 +38,7 @@ spec:
         paths:
           - backend:
               service:
-                name: nas-minio-http
+                name: nas-minio
                 port:
                   number: 9001
             path: /
@@ -48,7 +48,7 @@ spec:
         paths:
           - backend:
               service:
-                name: nas-minio-s3
+                name: nas-minio
                 port:
                   number: 9000
             path: /
