@@ -11,25 +11,13 @@ spec:
   externalName: nas.explorer
   ports:
     - name: http
-      port: &port 9000
+      port: &httpPort 9001
       protocol: TCP
-      targetPort: *port
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nas-minio-console
-  labels:
-    app.kubernetes.io/name: nas-minio-console
-    app.kubernetes.io/instance: nas-minio-console
-spec:
-  type: ExternalName
-  externalName: nas.explorer
-  ports:
-    - name: http
-      port: &port 9001
+      targetPort: *httpPort
+    - name: s3
+      port: &s3Port 9000
       protocol: TCP
-      targetPort: *port
+      targetPort: *s3Port
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -45,16 +33,27 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: &host "s3.${SECRET_DOMAIN}"
+    - host: &minioHost "minio.${SECRET_DOMAIN}"
       http:
         paths:
           - backend:
               service:
-                name: nas-minio-console
+                name: nas-minio-http
                 port:
-                  number: 9001
+                  number: *httpPort
+            path: /
+            pathType: Prefix
+    - host: &s3Host "s3.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - backend:
+              service:
+                name: nas-minio-s3
+                port:
+                  number: *s3Port
             path: /
             pathType: Prefix
   tls:
     - hosts:
-        - *host
+        - *s3Host
+        - *minioHost
