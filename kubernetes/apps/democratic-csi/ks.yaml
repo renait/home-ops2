@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-snapshot-controller
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/snapshot-controller/app
+  path: ./kubernetes/apps/democratic-csi/snapshot-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,7 +21,7 @@ metadata:
   name: cluster-apps-iscsi-hdd
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/iscsi-hdd/app
+  path: ./kubernetes/apps/democratic-csi/iscsi-hdd/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -39,7 +39,7 @@ metadata:
   name: cluster-apps-iscsi-ssd
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/iscsi-ssd/app
+  path: ./kubernetes/apps/democratic-csi/iscsi-ssd/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -57,7 +57,7 @@ metadata:
   name: cluster-apps-nfs-hdd
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/nfs-hdd/app
+  path: ./kubernetes/apps/democratic-csi/nfs-hdd/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -75,7 +75,7 @@ metadata:
   name: cluster-apps-nfs-ssd
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/nfs-ssd/app
+  path: ./kubernetes/apps/democratic-csi/nfs-ssd/app
   prune: true
   sourceRef:
     kind: GitRepository
