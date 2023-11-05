@@ -10,4 +10,4 @@ resources:
   - ./reloader/ks.yaml
   - ./volsync/ks.yaml
   # Standard resources
-  - ./external-services
+  # - ./external-services
