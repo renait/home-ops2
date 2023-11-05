@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: csi-iscsi-ssd
-      namespace: system
+      namespace: democratic-csi
   valuesFrom:
     - name: kube-prometheus-stack-values
       kind: ConfigMap

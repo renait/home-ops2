@@ -6,8 +6,6 @@ metadata:
   name: cluster-apps-renait-ldap
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: csi-iscsi-ssd
   path: ./kubernetes/apps/security/openldap/app
   prune: true
   sourceRef:
