@@ -68,6 +68,9 @@ spec:
                 requests:
                   storage: 20Gi
         - name: repo2
+          schedules:
+            full: "0 1 * * 0"
+            differential: "0 1 * * 1-6"
           s3:
             bucket: "crunchy-postgres"
             endpoint: "s3.${SECRET_DOMAIN}"
