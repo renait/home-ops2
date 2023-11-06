@@ -6,21 +6,21 @@ metadata:
   namespace: security
 spec:
   postgresVersion: 15
-#  dataSource:
-#    pgbackrest:
-#      stanza: db
-#      configuration:
-#        - secret:
-#            name: pgo-s3-creds
-#      global:
-#        repo1-path: /pgbackrest/security/authentik/repo1
-#        repo1-s3-uri-style: path
-#      repo:
-#        name: repo1
-#        s3:
-#          bucket: "crunchy-postgres"
-#          endpoint: "s3.${SECRET_DOMAIN}"
-#          region: "us-east-1"
+  dataSource:
+    pgbackrest:
+      stanza: db
+      configuration:
+        - secret:
+            name: pgo-s3-creds
+      global:
+        repo1-path: /pgbackrest/security/authentik/repo1
+        repo1-s3-uri-style: path
+      repo:
+        name: repo1
+        s3:
+          bucket: "crunchy-postgres"
+          endpoint: "s3.${SECRET_DOMAIN}"
+          region: "us-east-1"
   patroni:
     dynamicConfiguration:
       synchronous_mode: true
@@ -67,15 +67,3 @@ spec:
             bucket: "crunchy-postgres"
             endpoint: "s3.${SECRET_DOMAIN}"
             region: "us-east-1"
-        - name: repo2
-          schedules:
-            full: "0 1 * * 0"
-            differential: "0 1 * * 1-6"
-          volume:
-            volumeClaimSpec:
-              storageClassName: freenas-nfs-hdd
-              accessModes:
-                - "ReadWriteOnce"
-              resources:
-                requests:
-                  storage: 20Gi
