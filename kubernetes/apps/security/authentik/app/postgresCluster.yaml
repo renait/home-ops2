@@ -52,8 +52,6 @@ spec:
         repo1-retention-full-type: time
         repo1-path: /pgbackrest/security/authentik/repo1
         repo1-s3-uri-style: path
-        repo2-retention-full: "14"
-        repo2-retention-full-type: time
       manual:
         repoName: repo1
         options:
