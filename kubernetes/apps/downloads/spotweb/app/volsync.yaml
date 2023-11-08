@@ -1,0 +1,45 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: spotweb-restic
+  namespace: downloads
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: doppler-home-ops
+  target:
+    name: spotweb-restic-secret
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/spotweb"
+        RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
+        AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
+  dataFrom:
+    - extract:
+        key: VOLSYNC_RESTIC_TEMPLATE
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: spotweb
+  namespace: downloads
+spec:
+  sourcePVC: spotweb-config
+  trigger:
+    schedule: "0 7 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: spotweb-restic-secret
+    cacheCapacity: 1Gi
+    cacheStorageClassName: local-path
+    volumeSnapshotClassName: freenas-nfs-ssd-snap
+    storageClassName: freenas-nfs-ssd
+    retain:
+      daily: 7
+      within: 3d
