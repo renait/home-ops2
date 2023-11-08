@@ -13,6 +13,7 @@ resources:
   - crunchydata.yaml
   - democratic-csi.yaml
   - external-dns.yaml
+  - external-secrets.yaml
   - grafana.yaml
   - hajimari.yaml
   - helm-openldap.yaml
