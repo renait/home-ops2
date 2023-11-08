@@ -5,6 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - namespace.yaml
   # Flux-Kustomizations
+  - external-secrets/ks.yaml
   # - clustersecret/ks.yaml
   - openldap/ks.yaml
   - authentik/ks.yaml
