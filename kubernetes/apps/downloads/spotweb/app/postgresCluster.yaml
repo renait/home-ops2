@@ -6,22 +6,22 @@ metadata:
   namespace: downloads
 spec:
   postgresVersion: 15
-  # TODO: Enable this after first backup
-  # dataSource:
-  #   pgbackrest:
-  #     stanza: db
-  #     configuration:
-  #       - secret:
-  #           name: pgo-s3-creds
-  #     global:
-  #       repo1-path: /pgbackrest/downloads/spotweb/repo1
-  #       repo1-s3-uri-style: path
-  #     repo:
-  #       name: repo1
-  #       s3:
-  #         bucket: "crunchy-postgres"
-  #         endpoint: "s3.${SECRET_DOMAIN}"
-  #         region: "us-east-1"
+  # N.B. do not enable "dataSource" section before first backup!
+  dataSource:
+    pgbackrest:
+      stanza: db
+      configuration:
+        - secret:
+            name: pgo-s3-creds
+      global:
+        repo1-path: /pgbackrest/downloads/spotweb/repo1
+        repo1-s3-uri-style: path
+      repo:
+        name: repo1
+        s3:
+          bucket: "crunchy-postgres"
+          endpoint: "s3.${SECRET_DOMAIN}"
+          region: "us-east-1"
   patroni:
     dynamicConfiguration:
       synchronous_mode: true
