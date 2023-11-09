@@ -31,26 +31,26 @@ spec:
               ## Cron schedule for article cache sanity check. E.g. 10 */1 * * * for 10 minutes after every hour.
               SPOTWEB_CRON_CACHE_CHECK: "10 */1 * * *"
               SPOTWEB_DB_TYPE: pdo_pgsql
-              SPOTWEB_DB_HOST:
-                secretKeyRef:
-                  name: spotweb-pguser-spotweb
-                  key: host
-              SPOTWEB_DB_NAME:
-                secretKeyRef:
-                  name: spotweb-pguser-spotweb
-                  key: dbname
-              SPOTWEB_DB_USER:
-                secretKeyRef:
-                  name: spotweb-pguser-spotweb
-                  key: user
-              SPOTWEB_DB_PASS:
-                secretKeyRef:
-                  name: spotweb-pguser-spotweb
-                  key: password
-              SPOTWEB_DB_PORT:
-                secretKeyRef:
-                  name: spotweb-pguser-spotweb
-                  key: port
+#              SPOTWEB_DB_HOST:
+#                secretKeyRef:
+#                  name: spotweb-pguser-spotweb
+#                  key: host
+#              SPOTWEB_DB_NAME:
+#                secretKeyRef:
+#                  name: spotweb-pguser-spotweb
+#                  key: dbname
+#              SPOTWEB_DB_USER:
+#                secretKeyRef:
+#                  name: spotweb-pguser-spotweb
+#                  key: user
+#              SPOTWEB_DB_PASS:
+#                secretKeyRef:
+#                  name: spotweb-pguser-spotweb
+#                  key: password
+#              SPOTWEB_DB_PORT:
+#                secretKeyRef:
+#                  name: spotweb-pguser-spotweb
+#                  key: port
             resources:
               requests:
                 cpu: 15m
