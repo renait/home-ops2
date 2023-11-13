@@ -4,16 +4,16 @@ kubernetes:
     master:
       hosts:
         k3s-master-0:
-          ansible_user: debian
+          ansible_user: ansible
           ansible_host: 192.168.14.10
     worker:
       hosts:
         k3s-worker-0:
-          ansible_user: debian
+          ansible_user: ansible
           ansible_host: 192.168.14.11
         k3s-worker-1:
-          ansible_user: debian
+          ansible_user: ansible
           ansible_host: 192.168.14.12
         k3s-worker-2:
-          ansible_user: debian
+          ansible_user: ansible
           ansible_host: 192.168.14.13
