@@ -24,9 +24,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: csi-nfs-ssd
-      namespace: democratic-csi
   values:
     deploymentStrategy:
       type: Recreate

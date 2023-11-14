@@ -26,9 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: csi-iscsi-ssd
-      namespace: democratic-csi
   values:
     global:
       ldapDomain: "${SECRET_DOMAIN}"

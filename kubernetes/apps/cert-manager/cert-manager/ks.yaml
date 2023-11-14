@@ -21,8 +21,6 @@ metadata:
   name: cluster-apps-cert-manager-issuers
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-cert-manager
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
   prune: true
   sourceRef:
@@ -32,3 +30,5 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: cluster-apps-cert-manager

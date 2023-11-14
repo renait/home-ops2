@@ -25,9 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: csi-iscsi-ssd
-      namespace: democratic-csi
   valuesFrom:
     - name: kube-prometheus-stack-values
       kind: ConfigMap
