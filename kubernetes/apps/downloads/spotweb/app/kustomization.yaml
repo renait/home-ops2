@@ -6,4 +6,4 @@ namespace: downloads
 resources:
   - postgresCluster.yaml
   - helmrelease.yaml
-  - volsync.yaml
+  # - volsync.yaml

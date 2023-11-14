@@ -87,10 +87,4 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: "freenas-nfs-ssd"
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        advancedMounts:
-          main:
-            main:
-              - path: /config
+        type: emptyDir
