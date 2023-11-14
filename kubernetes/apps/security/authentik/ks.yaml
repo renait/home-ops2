@@ -13,7 +13,8 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: true
-  dependsOn: []
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -30,4 +31,6 @@ spec:
     name: home-kubernetes
   wait: true
   dependsOn:
+    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-authentik-redis
+    - name: cluster-apps-renait-ldap
