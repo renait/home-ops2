@@ -37,7 +37,7 @@ spec:
     pruneIntervalDays: 7
     repository: spotweb-restic-secret
     cacheCapacity: 1Gi
-    cacheStorageClassName: local-path
+    cacheStorageClassName: local-path-provisioner
     volumeSnapshotClassName: freenas-nfs-ssd-snap
     storageClassName: freenas-nfs-ssd
     retain:
