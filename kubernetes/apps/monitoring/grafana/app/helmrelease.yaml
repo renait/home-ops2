@@ -25,6 +25,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    annotations:
+      configmap.reloader.stakater.com/reload: grafana
+      secret.reloader.stakater.com/reload: grafana-secret
+
     deploymentStrategy:
       type: Recreate
     admin:
@@ -83,7 +87,12 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - { name: Prometheus, orgId: 1 }
+          - name: Alertmanager
+            orgId: 1
+          - name: Loki
+            orgId: 1
+          - name: Prometheus
+            orgId: 1
         datasources:
           - name: Prometheus
             type: prometheus
@@ -93,23 +102,36 @@ spec:
             jsonData:
               prometheusType: Prometheus
             isDefault: true
+          - access: proxy
+            name: Loki
+            type: loki
+            url: http://loki-gateway.monitoring.svc.cluster.local:80
+          - name: Alertmanager
+            type: alertmanager
+            access: proxy
+            url: http://alertmanager.monitoring.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
     dashboards:
       default:
         cloudflared:
-          gnetId: 17457 # https://grafana.com/grafana/dashboards/17457?tab=revisions
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         external-dns:
-          gnetId: 15038 # https://grafana.com/grafana/dashboards/15038?tab=revisions
+          # renovate: depName="External-dns"
+          gnetId: 15038
           revision: 1
+          datasource: Prometheus
+        node-exporter-full:
+          # renovate: depName="Node Exporter Full"
+          gnetId: 1860
+          revision: 33
           datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
-          datasource: Prometheus
-        node-exporter-full:
-          gnetId: 1860 # https://grafana.com/grafana/dashboards/1860?tab=revisions
-          revision: 31
           datasource: Prometheus
       flux:
         flux-cluster:
