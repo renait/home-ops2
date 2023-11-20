@@ -20,7 +20,7 @@ spec:
     objstoreConfig:
       type: s3
       config:
-        insecure: true
+        insecure: false
 
     query:
       enabled: true
@@ -40,9 +40,12 @@ spec:
       enabled: true
       ingress:
         enabled: true
-        hostname: "thanos.${SECRET_DOMAIN}"
+        hostname: &host "thanos.${SECRET_DOMAIN}"
         ingressClassName: "internal"
         tls: true
+        extraTls:
+          - hosts:
+              - *host
 
     bucketweb:
       enabled: true
@@ -89,7 +92,7 @@ spec:
       enabled: true
       alertmanagers:
         - http://alertmanager.monitoring.svc.cluster.local:9093
-      clusterName: cluster-0 # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
+      clusterName: main # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
       config: |-
         groups:
           - name: "PrometheusWatcher"
