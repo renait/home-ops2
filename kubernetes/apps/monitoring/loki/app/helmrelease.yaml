@@ -139,7 +139,7 @@ spec:
               - *host
 
     write:
-      replicas: 3
+      replicas: 2
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
