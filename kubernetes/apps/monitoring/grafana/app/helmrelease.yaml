@@ -180,5 +180,15 @@ spec:
       enabled: true
       storageClassName: "freenas-nfs-ssd"
       accessModes: ["ReadWriteMany"]
+
+    plugins:
+      - natel-discrete-panel
+      - pr0ps-trackmap-panel
+      - grafana-piechart-panel
+      - vonage-status-panel
+      - grafana-worldmap-panel
+      - grafana-clock-panel
+      - grafana-simple-json-datasource
+
     testFramework:
       enabled: false
