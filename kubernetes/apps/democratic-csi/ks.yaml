@@ -9,7 +9,7 @@ spec:
   path: "./kubernetes/apps/democratic-csi/local-path"
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: home-kubernetes
   interval: 10m
   prune: true
   wait: true
