@@ -47,6 +47,29 @@ spec:
         org_name: "Main Org."
         # Role for unauthenticated users, other valid values are `Editor` and `Admin`
         org_role: Viewer
+      date_formats:
+        use_browser_locale: true
+      explore:
+        enabled: true
+      grafana_net:
+        url: https://grafana.net
+      log:
+        mode: console
+      news:
+        news_feed_enabled: false
+      panels:
+        disable_sanitize_html: true
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      security:
+        allow_embedding: true
+        cookie_samesite: grafana
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -59,14 +82,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
-          - name: flux
-            orgId: 1
-            folder: Flux
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/flux
           - name: kubernetes
             orgId: 1
             folder: Kubernetes
@@ -83,6 +98,7 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/nginx
+
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -112,6 +128,7 @@ spec:
             url: http://alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+
     dashboards:
       default:
         cloudflared:
@@ -132,13 +149,6 @@ spec:
           datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
-          datasource: Prometheus
-      flux:
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
           datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
@@ -166,6 +176,8 @@ spec:
         nginx-request-handling-performance:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
+
+
     sidecar:
       dashboards:
         enabled: true
@@ -185,7 +197,7 @@ spec:
           cpu: 10m
           memory: 130M
         limits:
-          memory: 130M
+          memory: 220M
     serviceMonitor:
       enabled: true
     ingress:
