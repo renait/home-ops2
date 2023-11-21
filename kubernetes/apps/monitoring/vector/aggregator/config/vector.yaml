@@ -16,7 +16,7 @@ sources:
     type: vector
     version: "2"
 
-  pfsense_syslog:
+  vyos_syslog:
     type: syslog
     mode: tcp
     address: 0.0.0.0:6001

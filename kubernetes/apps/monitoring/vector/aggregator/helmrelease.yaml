@@ -83,7 +83,7 @@ spec:
           kubernetes-logs:
             enabled: true
             port: 6000
-          pfsense-syslog:
+          vyos-syslog:
             enabled: true
             port: 6001
           journald-logs:
