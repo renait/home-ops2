@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: /mnt/data/media
-    server: san.explorer
+    server: 192.168.12.41
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
@@ -46,7 +46,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: /mnt/data/download
-    server: san.explorer
+    server: 192.168.12.41
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
