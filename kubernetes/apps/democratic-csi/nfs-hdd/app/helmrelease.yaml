@@ -148,7 +148,7 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          host: 172.16.0.12
+          host: 192.168.12.41
           port: 443
           # use either password or api key
           # apiKey:
@@ -156,7 +156,7 @@ spec:
           allowInsecure: true
           apiVersion: 2
         sshConnection:
-          host: 172.16.0.12
+          host: 192.168.12.41
           port: 22
           username: csi
           # use either password or key
@@ -179,7 +179,7 @@ spec:
           datasetPermissionsUser: 0
           datasetPermissionsGroup: 0
         nfs:
-          shareHost: 172.16.0.12
+          shareHost: 192.168.12.41
           shareAlldirs: false
           shareAllowedHosts: []
           shareAllowedNetworks: []

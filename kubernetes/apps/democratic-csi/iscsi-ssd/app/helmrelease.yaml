@@ -141,7 +141,7 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          host: 172.16.0.12
+          host: 192.168.12.41
           port: 443
           # use either password or api key
           # apiKey:
@@ -149,7 +149,7 @@ spec:
           allowInsecure: true
           apiVersion: 2
         sshConnection:
-          host: 172.16.0.12
+          host: 192.168.12.41
           port: 22
           username: csi
           # use either password or key
@@ -175,7 +175,7 @@ spec:
           # 512, 1K, 2K, 4K, 8K, 16K, 64K, 128K default is 16K
           zvolBlocksize:
         iscsi:
-          targetPortal: "172.16.0.12:3260"
+          targetPortal: "192.168.12.41:3260"
           targetPortals: []
           # leave empty to omit usage of -I with iscsiadm
           interface:
