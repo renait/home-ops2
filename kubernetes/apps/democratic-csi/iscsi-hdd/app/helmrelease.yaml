@@ -141,12 +141,12 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          host: 192.168.12.41
+          host: truenas.renait.nl
           port: 443
           # use either password or api key
           # apiKey
           # password:
-          allowInsecure: true
+          allowInsecure: false
           apiVersion: 2
         sshConnection:
           host: 192.168.12.41

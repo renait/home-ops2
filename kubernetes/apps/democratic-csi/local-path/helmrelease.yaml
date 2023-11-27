@@ -84,6 +84,6 @@ spec:
         local-hostpath:
           shareBasePath: "/var/lib/rancher/k3s/demo-csi-local-path"
           controllerBasePath: "/var/lib/rancher/k3s/demo-csi-local-path"
-          dirPermissionsMode: "0777"
+          dirPermissionsMode: "0770"
           dirPermissionsUser: 0
           dirPermissionsGroup: 0
