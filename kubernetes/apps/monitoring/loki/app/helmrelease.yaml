@@ -58,7 +58,7 @@ spec:
 
         common:
           path_prefix: /var/loki
-          replication_factor: 2
+          replication_factor: 3
           storage:
             s3:
               s3: null
@@ -108,7 +108,7 @@ spec:
         secret.reloader.stakater.com/reload: loki-secret
 
     gateway:
-      replicas: 2
+      replicas: 3
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -130,7 +130,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
         hosts:
-          - host: &host "loki.renait.nl"
+          - host: &host "loki.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -139,7 +139,7 @@ spec:
               - *host
 
     write:
-      replicas: 2
+      replicas: 3
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -154,7 +154,7 @@ spec:
         storageClass: local-hostpath
 
     read:
-      replicas: 2
+      replicas: 3
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -166,7 +166,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
 
     backend:
-      replicas: 2
+      replicas: 3
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -177,7 +177,7 @@ spec:
                     {{- include "loki.backendSelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
       persistence:
-        size: 5Gi
+        size: 10Gi
         storageClass: local-hostpath
 
     monitoring:
