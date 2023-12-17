@@ -110,6 +110,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/kubernetes
+          - name: loki
+            orgId: 1
+            folder: "Loki"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/loki
           - name: nginx
             orgId: 1
             folder: Nginx
@@ -127,21 +135,22 @@ spec:
             orgId: 1
           - name: Loki
             orgId: 1
-          - name: Prometheus
-            orgId: 1
         datasources:
           - name: Prometheus
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+            url: http://thanos-query.monitoring.svc.cluster.local:9090
             jsonData:
               prometheusType: Prometheus
             isDefault: true
-          - access: proxy
-            name: Loki
+          - name: Loki
             type: loki
+            access: proxy
             url: http://loki-gateway.monitoring.svc.cluster.local:80
+            version: 1
+            jsonData:
+              maxLines: 100
           - name: Alertmanager
             type: alertmanager
             access: proxy
