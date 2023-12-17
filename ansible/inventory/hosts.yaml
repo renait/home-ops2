@@ -14,6 +14,3 @@ kubernetes:
         k3s-worker-1:
           ansible_user: ansible
           ansible_host: 192.168.14.12
-        k3s-worker-2:
-          ansible_user: ansible
-          ansible_host: 192.168.14.13
