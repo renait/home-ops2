@@ -93,7 +93,7 @@ spec:
               - path: /config
       data:
         enabled: true
-        existingClaim: media
+        existingClaim: nas-media
         advancedMounts:
           main: # the controller with the "main" identifier
             main: # the container with the "main" identifier
