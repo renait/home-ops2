@@ -13,4 +13,4 @@ spec:
   resources:
     requests:
       storage: "${VOLSYNC_CAPACITY:-1Gi}"
-  storageClassName: "${VOLSYNC_STORAGECLASS:-freenas-nfs-hdd}"
+  storageClassName: "${VOLSYNC_STORAGECLASS:-freenas-iscsi-ssd}"
