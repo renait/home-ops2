@@ -18,9 +18,9 @@ spec:
     name: home-kubernetes
   wait: false
   dependsOn:
-    - name: rook-ceph-cluster
-    - name: volsync
-    - name: external-secrets-stores
+    - name: cluster-apps-iscsi-ssd
+    - name: cluster-apps-volsync
+    - name: cluster-apps-external-secrets-stores
   postBuild:
     substitute:
       APP: *appname
