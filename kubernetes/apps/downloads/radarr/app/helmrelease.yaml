@@ -79,7 +79,7 @@ spec:
       config:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
-    data:
-      enabled: true
-      existingClaim: nas-media
-      mountPath: /data
+      data:
+        enabled: true
+        existingClaim: nas-media
+        mountPath: /data
