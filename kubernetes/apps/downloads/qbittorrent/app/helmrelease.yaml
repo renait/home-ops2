@@ -1,0 +1,145 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      main:
+        annotations:
+          secret.reloader.stakater.com/reload: qbittorrent-secret
+
+        pod:
+          securityContext:
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: []
+
+        containers:
+          main:
+            nameOverride: qbittorrent
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.2@sha256:fedb62126c82ae0c7192e9052633411294a27e9c233613c03b0a8d168d160040
+            env:
+              QBITTORRENT__PORT: &port 8080
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: &subnetWhitelist "10.42.0.0/18"
+              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_BitTorrent__Session__Interface: tun0
+            resources:
+              requests:
+                cpu: 50m
+                memory: 250Mi
+              limits:
+                memory: 800Mi
+            securityContext:
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
+
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: latest@sha256:729e54e9ac781f634157d43b564e02b0f3d8cb60aa70234f20db70f3c8abd566
+            env:
+              - name: VPN_SERVICE_PROVIDER
+                value: airvpn
+              - name: VPN_TYPE
+                value: wireguard
+              - name: SERVER_COUNTRIES
+                value: "Netherlands"
+              - name: FIREWALL_INPUT_PORTS
+                value: *port
+              - name: FIREWALL_OUTBOUND_SUBNETS
+                # Allow access to k8s subnets
+                value: *subnetWhitelist
+              - name: SHADOWSOCKS
+                value: "on"
+              - name: DOT
+                value: "off"
+              - name: TZ
+                value: "Europe/Amsterdam"
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            resources:
+              requests:
+                cpu: 50m
+                memory: 250Mi
+              limits:
+                memory: 500Mi
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+
+    service:
+      main:
+        ports:
+          http:
+            port: 10095
+            targetPort: *port
+
+    ingress:
+      main:
+        enabled: true
+        className: "internal"
+        hosts:
+          - host: "${HOSTNAME}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - "${HOSTNAME}"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+#      scripts:
+#        type: configMap
+#        name: qbittorrent-scripts
+#        defaultMode: 0775
+#        advancedMounts:
+#          main:
+#            main:
+#              - path: /scripts
+#                readOnly: true
+      data:
+        enabled: true
+        existingClaim: nas-media
+        advancedMounts:
+          main:
+            main:
+              - path: /data/torrents
+                subPath: torrents
+      gluetun-data:
+        type: emptyDir
+        advancedMounts:
+          main:
+            gluetun:
+              - path: /tmp/gluetun
+            port-forward:
+              - path: /tmp/gluetun
+                readOnly: true

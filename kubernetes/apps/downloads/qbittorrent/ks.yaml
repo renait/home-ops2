@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname cluster-apps-qbittorrent
+  namespace: flux-system
+spec:
+  targetNamespace: downloads
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/apps/downloads/qbittorrent/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: true
+  dependsOn:
+    - name: cluster-apps-nfs-ssd
+    - name: cluster-apps-volsync
+    - name: cluster-apps-external-secrets-stores
+  postBuild:
+    substitute:
+      APP: *appname
+      HOSTNAME: qbittorrent-stg.${SECRET_DOMAIN}
+      APP_UID: "1200"
+      APP_GID: "1200"
+      VOLSYNC_CLAIM: qbittorrent-config
+      VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_ACCESSMODES: ReadWriteMany
+      VOLSYNC_STORAGECLASS: freenas-nfs-ssd # config is shared with qb-tools
+      VOLSYNC_SNAPSHOTCLASS: freenas-nfs-ssd-snap
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: &appname cluster-apps-qbtools
+#  namespace: flux-system
+#spec:
+#  targetNamespace: downloads
+#  commonMetadata:
+#    labels:
+#      app.kubernetes.io/name: *appname
+#  interval: 10m
+#  path: "./kubernetes/apps/downloads/qbittorrent/tools"
+#  prune: true
+#  sourceRef:
+#    kind: GitRepository
+#    name: home-kubernetes
+#  wait: false
+#  dependsOn:
+#    - name: cluster-apps-qbittorrent
+#  postBuild:
+#    substitute:
+#      APP: *appname
+#      APP_UID: "1200"
+#      APP_GID: "1200"
