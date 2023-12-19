@@ -24,7 +24,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      HOSTNAME: sabnzbd-stg.${SECRET_DOMAIN}
+      HOSTNAME: sabnzbd.${SECRET_DOMAIN}
       APP_UID: "1200"
       APP_GID: "1200"
       VOLSYNC_CLAIM: sabnzbd-config
