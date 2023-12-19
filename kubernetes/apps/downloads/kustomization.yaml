@@ -14,6 +14,6 @@ resources:
   - sabnzbd/ks.yaml
   - radarr/ks.yaml
   - sonarr/ks.yaml
-  # - overseerr/ks.yaml
+  - overseerr/ks.yaml
   - bazarr/ks.yaml
   # - ./recyclarr/ks.yaml
