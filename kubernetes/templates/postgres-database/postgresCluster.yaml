@@ -30,7 +30,7 @@ spec:
           - hostssl all all all md5
   instances:
     - name: postgres
-      replicas: 2
+      replicas: "${DB_REPLICAS:-2}"
       dataVolumeClaimSpec:
         storageClassName: local-hostpath
         accessModes:
