@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: spotweb
+  name: &appname spotweb
   namespace: flux-system
 spec:
   interval: 10m
@@ -17,3 +17,12 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-iscsi-ssd
     - name: cluster-apps-crunchy-postgres-operator
+  postBuild:
+    substitute:
+      APP: *appname
+      HOSTNAME: spotweb.${SECRET_DOMAIN}
+      APP_UID: "1200"
+      APP_GID: "1200"
+      DB_NAME: spotweb
+      DB_USER: spotweb
+      DB_CAPACITY: "10Gi"

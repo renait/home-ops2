@@ -1,10 +1,9 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: spotweb
-  namespace: downloads
 spec:
   interval: 30m
   chart:
@@ -19,6 +18,9 @@ spec:
   values:
     controllers:
       main:
+        annotations:
+          secret.reloader.stakater.com/reload: spotweb-secret,${APP}-pguser-${DB_USER}
+          configmap.reloader.stakater.com/reload: spotweb-configmap
         containers:
           main:
             image:
@@ -33,23 +35,23 @@ spec:
               SPOTWEB_DB_TYPE: pdo_pgsql
               SPOTWEB_DB_HOST:
                 secretKeyRef:
-                  name: spotweb-pguser-spotweb
+                  name: "${APP}-pguser-${DB_USER}"
                   key: host
               SPOTWEB_DB_NAME:
                 secretKeyRef:
-                  name: spotweb-pguser-spotweb
+                  name: "${APP}-pguser-${DB_USER}"
                   key: dbname
               SPOTWEB_DB_USER:
                 secretKeyRef:
-                  name: spotweb-pguser-spotweb
+                  name: "${APP}-pguser-${DB_USER}"
                   key: user
               SPOTWEB_DB_PASS:
                 secretKeyRef:
-                  name: spotweb-pguser-spotweb
+                  name: "${APP}-pguser-${DB_USER}"
                   key: password
               SPOTWEB_DB_PORT:
                 secretKeyRef:
-                  name: spotweb-pguser-spotweb
+                  name: "${APP}-pguser-${DB_USER}"
                   key: port
             resources:
               requests:
@@ -63,26 +65,24 @@ spec:
         ports:
           http:
             port: 80
-            targetPort: 80
 
     ingress:
       main:
         enabled: true
-        className: internal
+        className: "internal"
         annotations:
           nginx.ingress.kubernetes.io/server-snippet: |-
             more_set_headers "X-SSL: on";
         hosts:
-          - host: &host spotweb.${SECRET_DOMAIN}
+          - host: "${HOSTNAME}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
                   port: http
         tls:
           - hosts:
-              - *host
+              - "${HOSTNAME}"
 
     persistence:
       config:
