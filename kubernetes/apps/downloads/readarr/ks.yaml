@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname readarr
+  namespace: flux-system
+spec:
+  targetNamespace: downloads
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/apps/downloads/readarr/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  dependsOn:
+    - name: cluster-apps-iscsi-ssd
+    - name: cluster-apps-volsync
+    - name: cluster-apps-external-secrets-stores
+  postBuild:
+    substitute:
+      APP: *appname
+      HOSTNAME: readarr.${SECRET_DOMAIN}
+      APP_UID: "1200"
+      APP_GID: "1200"
+      VOLSYNC_CLAIM: readarr-config

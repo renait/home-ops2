@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: readarr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: []
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/readarr-develop
+              tag: 0.3.11.2319@sha256:a14419cd9a77438f48df48537d8fc1a02cc9c89321d60ceaec3870850f87b31b
+            env:
+              TZ: "Europe/Amsterdam"
+              READARR__INSTANCE_NAME: readarr
+              READARR__PORT: &port 8787
+              READARR__ANALYTICS_ENABLED: "False"
+              READARR__AUTHENTICATION_METHOD: None
+              READARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              READARR__APPLICATION_URL: "https://${HOSTNAME}"
+              READARR__LOG_LEVEL: info
+              READARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: readarr-secret
+                    key: api_key
+            resources:
+              requests:
+                cpu: 10m
+                memory: 120Mi
+              limits:
+                memory: 200Mi
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      main:
+        enabled: true
+        className: "internal"
+        hosts:
+          - host: "${HOSTNAME}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - "${HOSTNAME}"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
+      data:
+        enabled: true
+        existingClaim: nas-media
