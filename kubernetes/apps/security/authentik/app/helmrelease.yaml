@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -18,24 +18,19 @@ spec:
         namespace: flux-system
   values:
     annotations:
-      secret.reloader.stakater.com/reload: authentik-secret,authentik-pguser-authentik,authentik-redis-secret
+      secret.reloader.stakater.com/reload: authentik-secret,${APP}-pguser-${DB_USER},authentik-redis-secret
 
     authentik:
       log_level: info
-      # email:
-      #   port: 587
-      #   use_tls: true
+      email:
+        port: 587
+        use_tls: true
       error_reporting:
         enabled: false
         send_pii: false
       redis:
         host: "authentik-redis.security.svc.cluster.local"
         password: ""
-
-    env:
-      AUTHENTIK_EMAIL__PORT: "587"
-      AUTHENTIK_EMAIL__USE_TLS: "TRUE"
-      AUTHENTIK_EMAIL__USE_SSL: "FALSE"
 
     envValueFrom:
       AUTHENTIK_SECRET_KEY:
@@ -60,19 +55,19 @@ spec:
           key: authentik_email_from
       AUTHENTIK_POSTGRESQL__HOST:
         secretKeyRef:
-          name: authentik-pguser-authentik
+          name: "${APP}-pguser-${DB_USER}"
           key: host
       AUTHENTIK_POSTGRESQL__NAME:
         secretKeyRef:
-          name: authentik-pguser-authentik
+          name: "${APP}-pguser-${DB_USER}"
           key: dbname
       AUTHENTIK_POSTGRESQL__USER:
         secretKeyRef:
-          name: authentik-pguser-authentik
+          name: "${APP}-pguser-${DB_USER}"
           key: user
       AUTHENTIK_POSTGRESQL__PASSWORD:
         secretKeyRef:
-          name: authentik-pguser-authentik
+          name: "${APP}-pguser-${DB_USER}"
           key: password
       AUTHENTIK_REDIS__PASSWORD:
         secretKeyRef:
@@ -83,16 +78,16 @@ spec:
       enabled: true
       ingressClassName: external
       annotations:
-        external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        # external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
       hosts:
-        - host: &host "authentik.${SECRET_DOMAIN}"
+        - host: "${HOSTNAME}"
           paths:
             - path: /
       tls:
         - hosts:
-            - *host
+            - "${HOSTNAME}"
 
     postgresql:
       enabled: false
