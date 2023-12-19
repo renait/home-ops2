@@ -83,4 +83,3 @@ spec:
       data:
         enabled: true
         existingClaim: nas-media
-        mountPath: /data
