@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: plex
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          nodeSelector:
+            feature.node.kubernetes.io/pci-0300_8086.present: "true"
+          securityContext:
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+            # video,render groups
+            supplementalGroups:
+              - 44
+              - 107
+
+        containers:
+          main:
+            image:
+              repository: plexinc/pms-docker
+              tag: plexpass
+            env:
+              TZ: "Europe/Amsterdam"
+              PLEX_CLAIM:
+                valueFrom:
+                  secretKeyRef:
+                    name: plex-secret
+                    key: PLEX_CLAIM
+              CHANGE_CONFIG_DIR_OWNERSHIP: false
+              ALLOWED_NETWORKS: "10.42.0.0/16"
+              PLEX_GID: ${APP_UID}
+              PLEX_UID: ${APP_GID}
+            resources:
+              requests:
+                gpu.intel.com/i915: 1
+                cpu: 100m
+                memory: 1200Mi
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 2Gi
+
+    service:
+      main:
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.14.204"
+        ports:
+          http:
+            port: 32400
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+        className: "external"
+        hosts:
+          - host: "${HOSTNAME}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - "${HOSTNAME}"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+      content:
+        type: nfs
+        server: 192.168.12.41
+        path: /mnt/data/media
+        advancedMounts:
+          main:
+            main:
+              - path: /data/content
+                subPath: content
+                readOnly: true
+      pictures:
+        type: nfs
+        server: 192.168.12.41
+        path: /mnt/data/media/pictures
+        advancedMounts:
+          main:
+            main:
+              - path: /data/pictures
+                readOnly: true
+      transcode:
+        enabled: true
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /transcode
