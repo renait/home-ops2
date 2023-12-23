@@ -148,7 +148,7 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          host: truenas.renait.nl
+          host: truenas.${SECRET_DOMAIN}
           port: 443
           # use either password or api key
           # apiKey:
