@@ -114,6 +114,12 @@ spec:
       type: postgresql
 
       ## Use a existing secret
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-mariadb-secret
+        usernameKey: mariadb-username
+        passwordKey: mariadb-password
+
 #      existingSecret:
 #        enabled: true
 #        secretName: ${APP}-pguser-${APP}
