@@ -23,8 +23,8 @@ spec:
 
         pod:
           enableServiceLinks: false
-          # nodeSelector:
-          #   feature.node.kubernetes.io/pci-0300_8086.present: "true"
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
