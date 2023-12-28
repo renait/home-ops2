@@ -6,6 +6,10 @@ metadata:
   name: &appname spotweb
   namespace: flux-system
 spec:
+  targetNamespace: downloads
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/apps/downloads/spotweb/app"
   prune: true
