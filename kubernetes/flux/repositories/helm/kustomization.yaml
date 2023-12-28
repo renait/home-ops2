@@ -25,6 +25,7 @@ resources:
   - kubernetes-pfsense-controller.yaml
   - kubernetes-sigs-nfd.yaml
   - metrics-server.yaml
+  - nextcloud.yaml
   - oauth2-proxy-charts.yaml
   - prometheus-community.yaml
   - stakater.yaml
