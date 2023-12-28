@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname nextcloud-redis
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/apps/default/nextcloud/redis"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: true
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname nextcloud
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/apps/default/nextcloud/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: true
+  dependsOn:
+    - name: cluster-apps-nfs-ssd
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-renait-ldap
+    - name: nextcloud-redis
+  postBuild:
+    substitute:
+      APP: *appname
+      HOSTNAME: nextcloud-stg.${SECRET_DOMAIN}
+      VOLSYNC_CLAIM: nextcloud-app
+      VOLSYNC_CAPACITY: "10Gi"
+      VOLSYNC_STORAGECLASS: freenas-nfs-ssd
+      VOLSYNC_SNAPSHOTCLASS: freenas-nfs-ssd-snap
+      DB_NAME: nextcloud
+      DB_USER: nextcloud
+      DB_CAPACITY: "50Gi"

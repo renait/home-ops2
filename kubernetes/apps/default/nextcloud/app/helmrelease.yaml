@@ -1,0 +1,256 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: nextcloud
+      version: 4.5.5
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    # Number of replicas to be deployed
+    replicaCount: 1
+
+    startupProbe:
+      enabled: false
+
+    ## Allowing use of ingress controllers
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+    ##
+    ingress:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 4G
+        kubernetes.io/ingress.class: nginx
+        kubernetes.io/tls-acme: "true"
+        nginx.ingress.kubernetes.io/server-snippet: |-
+          server_tokens off;
+          proxy_hide_header X-Powered-By;
+          rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
+          rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
+          rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+          rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
+          location = /.well-known/carddav {
+            return 301 $scheme://$host/remote.php/dav;
+          }
+          location = /.well-known/caldav {
+            return 301 $scheme://$host/remote.php/dav;
+          }
+          location = /robots.txt {
+            allow all;
+            log_not_found off;
+            access_log off;
+          }
+          location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+            deny all;
+          }
+          location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
+            deny all;
+          }
+      tls:
+        - hosts:
+            - ${HOSTNAME}
+
+    nextcloud:
+      host: ${HOSTNAME}
+      update: 0
+      datadir: /var/www/html/data
+      mail:
+        enabled: true
+        domain: gmail.com
+        smtp:
+          secure: ssl
+          port: 487
+          authtype: LOGIN
+
+      ## Strategy used to replace old pods
+      ## IMPORTANT: use with care, it is suggested to leave as that for upgrade purposes
+      ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+      strategy:
+        type: Recreate
+
+      ##
+      ## Extra environment variables
+      extraEnv:
+        - name: TZ
+          value: "Europe/Amsterdam"
+        - name: OVERWRITEPROTOCOL
+          value: https
+        - name: REDIS_HOST
+          value: nextcloud-redis
+        - name: REDIS_HOST_PORT
+          value: "6379"
+        - name: REDIS_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud
+              key: nextcloud_redis_password
+
+    internalDatabase:
+      enabled: false
+
+    ##
+    ## External database configuration
+    ##
+    externalDatabase:
+      enabled: false
+
+      ## Supported database engines: mysql or postgresql
+      type: postgresql
+
+      ## Use a existing secret
+#      existingSecret:
+#        enabled: true
+#        secretName: ${APP}-pguser-${APP}
+#        usernameKey: user
+#        passwordKey: password
+#        hostKey: host
+#        databaseKey: dbname
+
+    ##
+    ## MariaDB chart configuration
+    ##
+    mariadb:
+      ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
+      enabled: true
+
+      auth:
+        database: nextcloud
+        username: nextcloud
+        # Use existing secret (auth.rootPassword, auth.password, and auth.replicationPassword will be ignored).
+        # secret must contain the keys mariadb-root-password, mariadb-replication-password and mariadb-password
+        existingSecret: "nextcloud-mariadb-secret"
+
+      ## Enable persistence using Persistent Volume Claims
+      ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+      ##
+      primary:
+        resources:
+          requests:
+            cpu: 15m
+            memory: 250M
+          limits:
+            memory: 500M
+
+        persistence:
+          enabled: true
+          existingClaim: nextcloud-mariadb
+
+        ## Configure MySQL with a custom my.cnf file
+        ## ref: https://mysql.com/kb/en/mysql/configuring-mysql-with-mycnf/#example-of-configuration-file
+        ## ref: https://docs.nextcloud.com/server/19/admin_manual/configuration_database/linux_database_configuration.html
+        ##
+        configuration: |-
+          [server]
+          skip-name-resolve
+          innodb_buffer_pool_size = 128M
+          innodb_buffer_pool_instances = 1
+          innodb_flush_log_at_trx_commit = 2
+          innodb_log_buffer_size = 32M
+          innodb_max_dirty_pages_pct = 90
+          query_cache_type = 1
+          query_cache_limit = 2M
+          query_cache_min_res_unit = 2k
+          query_cache_size = 64M
+          tmp_table_size= 64M
+          max_heap_table_size= 64M
+          slow-query-log = 1
+          slow-query-log-file = /opt/bitnami/mariadb/logs/slow.log
+          long_query_time = 1
+
+          [client]
+          default-character-set = utf8mb4
+
+          [mysqld]
+          character-set-server = utf8mb4
+          collation-server = utf8mb4_general_ci
+          transaction_isolation = READ-COMMITTED
+          log_bin = 0
+          expire_logs_days = 7
+          binlog_format = ROW
+          innodb_file_per_table=1
+          basedir=/opt/bitnami/mariadb
+          port=3306
+          socket=/opt/bitnami/mariadb/tmp/mysql.sock
+          tmpdir=/opt/bitnami/mariadb/tmp
+          max_allowed_packet=16M
+          bind-address=0.0.0.0
+          pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+          log-error=/opt/bitnami/mariadb/logs/mysqld.log
+
+    redis:
+      enabled: false
+
+    ## Cronjob to execute Nextcloud background tasks
+    ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#cron
+    ##
+    cronjob:
+      enabled: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 53M
+        limits:
+          memory: 180M
+
+    ## Enable persistence using Persistent Volume Claims
+    ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    persistence:
+      # Nextcloud Data (/var/www/html)
+      enabled: true
+      existingClaim: "${VOLSYNC_CLAIM}"
+
+      ## Use an additional pvc for the data directory rather than a subpath of the default PVC
+      ## Useful to store data on a different storageClass (e.g. on slower disks)
+      nextcloudData:
+        enabled: true
+        existingClaim: nextcloud-data
+
+    resources:
+      requests:
+        cpu: 20m
+        memory: 200M
+      limits:
+        memory: 800M
+
+  valuesFrom:
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_admin_user
+      targetPath: nextcloud.username
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_admin_password
+      targetPath: nextcloud.password
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_email_from
+      targetPath: nextcloud.fromAddress
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_email_host
+      targetPath: nextcloud.smtp.host
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_email_username
+      targetPath: nextcloud.smtp.user
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_email_password
+      targetPath: nextcloud.smtp.password
