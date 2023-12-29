@@ -51,6 +51,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
+  timeout: 15m
   path: "./kubernetes/apps/default/nextcloud/app"
   prune: true
   sourceRef:
