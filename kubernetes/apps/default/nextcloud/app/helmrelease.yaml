@@ -26,9 +26,6 @@ spec:
     # Number of replicas to be deployed
     replicaCount: 1
 
-    startupProbe:
-      enabled: true
-
     ## Allowing use of ingress controllers
     ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
     ##
@@ -173,6 +170,9 @@ spec:
         memory: 200M
       limits:
         memory: 800M
+
+    startupProbe:
+      enabled: true
 
   valuesFrom:
     - kind: Secret
