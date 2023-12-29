@@ -67,10 +67,10 @@ spec:
     substitute:
       APP: *appname
       HOSTNAME: nextcloud-stg.${SECRET_DOMAIN}
-      VOLSYNC_CLAIM: nextcloud-main
-      VOLSYNC_CAPACITY: "10Gi"
-      VOLSYNC_STORAGECLASS: freenas-nfs-ssd
-      VOLSYNC_SNAPSHOTCLASS: freenas-nfs-ssd-snap
       DB_NAME: nextcloud
       DB_USER: nextcloud
       DB_CAPACITY: "50Gi"
+      # VOLSYNC_CLAIM: nextcloud-main
+      # VOLSYNC_CAPACITY: "10Gi"
+      # VOLSYNC_STORAGECLASS: freenas-nfs-ssd
+      # VOLSYNC_SNAPSHOTCLASS: freenas-nfs-ssd-snap
