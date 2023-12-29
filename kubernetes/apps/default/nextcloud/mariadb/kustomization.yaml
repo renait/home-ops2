@@ -5,5 +5,5 @@ resources:
   - pvc.yaml
   - helmrelease.yaml
 commonLabels:
-  app.kubernetes.io/name: nextcloud
+  app.kubernetes.io/name: nextcloud-mariadb
   app.kubernetes.io/instance: nextcloud
