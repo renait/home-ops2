@@ -68,7 +68,7 @@ spec:
       update: 0
       datadir: /var/www/html/data
       mail:
-        enabled: true
+        enabled: false
         domain: gmail.com
         smtp:
           secure: ssl
@@ -108,25 +108,25 @@ spec:
       enabled: true
 
       ## Supported database engines: mysql or postgresql
-      # type: postgresql
-      type: mysql
+      type: postgresql
+      # type: mysql
 
       ## Use a existing secret
-      existingSecret:
-        enabled: true
-        secretName: nextcloud-mariadb-secret
-        usernameKey: mariadb-username
-        passwordKey: mariadb-password
-        hostKey: mariadb-host
-        databaseKey: mariadb-dbname
-
 #      existingSecret:
 #        enabled: true
-#        secretName: ${APP}-pguser-${APP}
-#        usernameKey: user
-#        passwordKey: password
-#        hostKey: host
-#        databaseKey: dbname
+#        secretName: nextcloud-mariadb-secret
+#        usernameKey: mariadb-username
+#        passwordKey: mariadb-password
+#        hostKey: mariadb-host
+#        databaseKey: mariadb-dbname
+
+      existingSecret:
+        enabled: true
+        secretName: ${APP}-pguser-${APP}
+        usernameKey: user
+        passwordKey: password
+        hostKey: host
+        databaseKey: dbname
 
     ##
     ## MariaDB chart configuration
