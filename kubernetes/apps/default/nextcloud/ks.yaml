@@ -24,6 +24,25 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &appname nextcloud-mariadb
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/apps/default/nextcloud/mariadb"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: true
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &appname nextcloud
   namespace: flux-system
 spec:
@@ -43,6 +62,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-renait-ldap
     - name: nextcloud-redis
+    - name: nextcloud-mariadb
   postBuild:
     substitute:
       APP: *appname
