@@ -108,10 +108,11 @@ spec:
     ## External database configuration
     ##
     externalDatabase:
-      enabled: false
+      enabled: true
 
       ## Supported database engines: mysql or postgresql
-      type: postgresql
+      # type: postgresql
+      type: mysql
 
       ## Use a existing secret
       existingSecret:
@@ -119,6 +120,8 @@ spec:
         secretName: nextcloud-mariadb-secret
         usernameKey: mariadb-username
         passwordKey: mariadb-password
+        hostKey: mariadb-host
+        databaseKey: mariadb-dbname
 
 #      existingSecret:
 #        enabled: true
@@ -133,71 +136,7 @@ spec:
     ##
     mariadb:
       ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
-      enabled: true
-
-      auth:
-        database: nextcloud
-        username: nextcloud
-        # Use existing secret (auth.rootPassword, auth.password, and auth.replicationPassword will be ignored).
-        # secret must contain the keys mariadb-root-password, mariadb-replication-password and mariadb-password
-        existingSecret: "nextcloud-mariadb-secret"
-
-      ## Enable persistence using Persistent Volume Claims
-      ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-      ##
-      primary:
-        resources:
-          requests:
-            cpu: 15m
-            memory: 250M
-          limits:
-            memory: 500M
-
-        persistence:
-          enabled: true
-          existingClaim: nextcloud-mariadb
-
-        ## Configure MySQL with a custom my.cnf file
-        ## ref: https://mysql.com/kb/en/mysql/configuring-mysql-with-mycnf/#example-of-configuration-file
-        ## ref: https://docs.nextcloud.com/server/19/admin_manual/configuration_database/linux_database_configuration.html
-        ##
-        configuration: |-
-          [server]
-          skip-name-resolve
-          innodb_buffer_pool_size = 128M
-          innodb_buffer_pool_instances = 1
-          innodb_flush_log_at_trx_commit = 2
-          innodb_log_buffer_size = 32M
-          innodb_max_dirty_pages_pct = 90
-          query_cache_type = 1
-          query_cache_limit = 2M
-          query_cache_min_res_unit = 2k
-          query_cache_size = 64M
-          tmp_table_size= 64M
-          max_heap_table_size= 64M
-          slow-query-log = 1
-          slow-query-log-file = /opt/bitnami/mariadb/logs/slow.log
-          long_query_time = 1
-
-          [client]
-          default-character-set = utf8mb4
-
-          [mysqld]
-          character-set-server = utf8mb4
-          collation-server = utf8mb4_general_ci
-          transaction_isolation = READ-COMMITTED
-          log_bin = 0
-          expire_logs_days = 7
-          binlog_format = ROW
-          innodb_file_per_table=1
-          basedir=/opt/bitnami/mariadb
-          port=3306
-          socket=/opt/bitnami/mariadb/tmp/mysql.sock
-          tmpdir=/opt/bitnami/mariadb/tmp
-          max_allowed_packet=16M
-          bind-address=0.0.0.0
-          pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
-          log-error=/opt/bitnami/mariadb/logs/mysqld.log
+      enabled: false
 
     redis:
       enabled: false
