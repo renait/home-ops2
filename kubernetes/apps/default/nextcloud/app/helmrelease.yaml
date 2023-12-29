@@ -27,7 +27,7 @@ spec:
     replicaCount: 1
 
     startupProbe:
-      enabled: false
+      enabled: true
 
     ## Allowing use of ingress controllers
     ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
