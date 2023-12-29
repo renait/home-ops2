@@ -17,9 +17,11 @@ spec:
       interval: 15m
   install:
     createNamespace: true
+    timeout: 15m
     remediation:
       retries: 5
   upgrade:
+    timeout: 15m
     remediation:
       retries: 5
   values:
