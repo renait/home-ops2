@@ -173,6 +173,8 @@ spec:
 
     startupProbe:
       enabled: true
+      periodSeconds: 20
+      failureThreshold: 30
 
   valuesFrom:
     - kind: Secret
