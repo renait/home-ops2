@@ -196,7 +196,7 @@ spec:
     persistence:
       # Nextcloud Data (/var/www/html)
       enabled: true
-      existingClaim: "${VOLSYNC_CLAIM}"
+      existingClaim: nextcloud-main
       # storageClass: "freenas-nfs-ssd"
       # accessMode: ReadWriteOnce
       # size: 2Gi

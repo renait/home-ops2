@@ -6,7 +6,6 @@ resources:
   - pvc.yaml
   - helmrelease.yaml
   - ../../../../templates/postgres-database
-  - ../../../../templates/volsync
 labels:
   - includeSelectors: true
     pairs:
