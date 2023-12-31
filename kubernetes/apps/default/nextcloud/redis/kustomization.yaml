@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-commonLabels:
-  app.kubernetes.io/name: nextcloud-redis
-  app.kubernetes.io/instance: nextcloud
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/name: nextcloud-redis
+      app.kubernetes.io/instance: nextcloud

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: nextcloud
-      version: 4.5.5
+      version: 4.5.10
       sourceRef:
         kind: HelmRepository
         name: nextcloud
@@ -28,14 +28,19 @@ spec:
     # Number of replicas to be deployed
     replicaCount: 1
 
+    image:
+      repository: nextcloud
+      tag: 28.0.1-fpm-alpine
+      flavor: fpm-alpine
+
     ## Allowing use of ingress controllers
     ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
     ##
     ingress:
       enabled: true
+      className: internal
       annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 512M
-        kubernetes.io/ingress.class: nginx
         kubernetes.io/tls-acme: "true"
         nginx.ingress.kubernetes.io/server-snippet: |-
           server_tokens off;
@@ -90,15 +95,58 @@ spec:
           value: "Europe/Amsterdam"
         - name: OVERWRITEPROTOCOL
           value: https
+        - name: TRUSTED_PROXIES
+          value: "10.42.0.0/16"
         - name: REDIS_HOST
-          value: nextcloud-redis
+          value: &redisHost nextcloud-redis
         - name: REDIS_HOST_PORT
-          value: "6379"
+          value: &redisPort "6379"
         - name: REDIS_HOST_PASSWORD
           valueFrom:
             secretKeyRef:
               name: nextcloud-secret
               key: nextcloud_redis_password
+
+      extraInitContainers:
+        - name: wait-database
+          image: alpine:3.19.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+          args:
+            - -c
+            - >-
+              until nc -w 1 -v $MYSQL_HOST:3306 || nc -w 1 -v $POSTGRES_HOST:5432;
+              do echo "Waiting for database";
+              done
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ${APP}-pguser-${APP}
+                  key: host
+        - name: wait-redis
+          image: alpine:3.19.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+          args:
+            - -c
+            - >-
+              until nc -w 1 -v $REDIS_HOST:$REDIS_HOST_PORT;
+              do echo "Waiting for Redis";
+              done
+          env:
+            - name: REDIS_HOST
+              value: *redisHost
+            - name: REDIS_HOST_PORT
+              value: *redisPort
+
+    nginx:
+      enabled: true
+      image:
+        repository: nginx
+        tag: 1.25-alpine
 
     internalDatabase:
       enabled: false
@@ -111,16 +159,6 @@ spec:
 
       ## Supported database engines: mysql or postgresql
       type: postgresql
-      # type: mysql
-
-      ## Use a existing secret
-#      existingSecret:
-#        enabled: true
-#        secretName: nextcloud-mariadb-secret
-#        usernameKey: mariadb-username
-#        passwordKey: mariadb-password
-#        hostKey: mariadb-host
-#        databaseKey: mariadb-dbname
 
       existingSecret:
         enabled: true
@@ -158,15 +196,19 @@ spec:
     persistence:
       # Nextcloud Data (/var/www/html)
       enabled: true
-      storageClass: "freenas-nfs-ssd"
-      accessMode: ReadWriteOnce
-      size: 2Gi
+      existingClaim: "${VOLSYNC_CLAIM}"
+      # storageClass: "freenas-nfs-ssd"
+      # accessMode: ReadWriteOnce
+      # size: 2Gi
 
       ## Use an additional pvc for the data directory rather than a subpath of the default PVC
       ## Useful to store data on a different storageClass (e.g. on slower disks)
       nextcloudData:
         enabled: true
         existingClaim: nextcloud-data
+        # storageClass: "freenas-nfs-hdd"
+        # accessMode: ReadWriteOnce
+        # size: 100Gi
 
     resources:
       requests:

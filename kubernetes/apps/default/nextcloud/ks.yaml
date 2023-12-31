@@ -20,25 +20,6 @@ spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
 ---
-## yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-#apiVersion: kustomize.toolkit.fluxcd.io/v1
-#kind: Kustomization
-#metadata:
-#  name: &appname nextcloud-mariadb
-#  namespace: flux-system
-#spec:
-#  targetNamespace: default
-#  commonMetadata:
-#    labels:
-#      app.kubernetes.io/name: *appname
-#  interval: 10m
-#  path: "./kubernetes/apps/default/nextcloud/mariadb"
-#  prune: true
-#  sourceRef:
-#    kind: GitRepository
-#    name: home-kubernetes
-#  wait: true
-#---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -66,11 +47,11 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      HOSTNAME: nextcloud-stg.${SECRET_DOMAIN}
+      HOSTNAME: nextcloud-stg.renait.nl
       DB_NAME: nextcloud
       DB_USER: nextcloud
       DB_CAPACITY: "50Gi"
-      # VOLSYNC_CLAIM: nextcloud-main
-      # VOLSYNC_CAPACITY: "10Gi"
-      # VOLSYNC_STORAGECLASS: freenas-nfs-ssd
-      # VOLSYNC_SNAPSHOTCLASS: freenas-nfs-ssd-snap
+      VOLSYNC_CLAIM: nextcloud-main
+      VOLSYNC_CAPACITY: "2Gi"
+      VOLSYNC_STORAGECLASS: freenas-nfs-ssd
+      VOLSYNC_SNAPSHOTCLASS: freenas-nfs-ssd-snap
