@@ -5,6 +5,8 @@ resources:
   - externalsecret.yaml
   - helmrelease.yaml
   - ../../../../templates/postgres-database
-commonLabels:
-  app.kubernetes.io/name: authentik
-  app.kubernetes.io/instance: authentik
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/name: authentik
+      app.kubernetes.io/instance: authentik
