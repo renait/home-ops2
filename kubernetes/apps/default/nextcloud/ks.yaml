@@ -43,11 +43,10 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-renait-ldap
     - name: nextcloud-redis
-    # - name: nextcloud-mariadb
   postBuild:
     substitute:
       APP: *appname
-      HOSTNAME: nextcloud-stg.renait.nl
+      HOSTNAME: nextcloud.renait.nl
       DB_NAME: nextcloud
       DB_USER: nextcloud
       DB_CAPACITY: "50Gi"
