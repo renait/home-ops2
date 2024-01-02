@@ -46,7 +46,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      HOSTNAME: nextcloud.renait.nl
+      HOSTNAME: nextcloud.${SECRET_DOMAIN}
       DB_NAME: nextcloud
       DB_USER: nextcloud
       DB_CAPACITY: "50Gi"
