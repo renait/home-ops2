@@ -41,7 +41,7 @@ spec:
   dependsOn:
     - name: cluster-apps-nfs-ssd
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-renait-ldap
+    - name: authentik
     - name: nextcloud-redis
   postBuild:
     substitute:
