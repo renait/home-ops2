@@ -70,7 +70,7 @@ spec:
     env: {}
 
     ## Existing configmap with custom ldif
-    # Can't be use with customLdifFiles
+    # Can't be used with customLdifFiles
     # Same format as customLdifFiles
     customLdifCm: renait-ldap-customldif
 
@@ -134,7 +134,7 @@ spec:
         path: /
         pathType: Prefix
         hosts:
-          - &host "ldapadmin2.${SECRET_DOMAIN}"
+          - &host "ldapadmin.${SECRET_DOMAIN}"
         tls:
           - hosts:
               - *host
