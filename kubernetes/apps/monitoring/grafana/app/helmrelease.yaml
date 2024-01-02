@@ -45,7 +45,7 @@ spec:
       auth.anonymous:
         enabled: true
         # Organization name that should be used for unauthenticated users
-        org_name: "Main Org."
+        org_name: "HomeOps"
         # Role for unauthenticated users, other valid values are `Editor` and `Admin`
         org_role: Viewer
       auth:
@@ -71,7 +71,7 @@ spec:
         api_url: https://authentik.${SECRET_DOMAIN}/application/o/userinfo/
         # map user groups to Grafana roles
         role_attribute_path: |
-          contains(groups[*], 'grafana-admin') && 'Admin' || 'Viewer'
+          contains(groups[*], 'admins') && 'Admin' || 'Viewer'
       date_formats:
         use_browser_locale: true
       explore:
