@@ -40,7 +40,7 @@ spec:
   wait: true
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: renait-ldap
+    - name: openldap
     - name: authentik-redis
   postBuild:
     substitute:
