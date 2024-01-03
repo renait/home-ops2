@@ -18,4 +18,4 @@ resources:
   - readarr/ks.yaml
   - overseerr/ks.yaml
   - bazarr/ks.yaml
-  # - ./recyclarr/ks.yaml
+  - recyclarr/ks.yaml
