@@ -17,7 +17,7 @@ sonarr:
           enabled: true
         upgrade:
           allowed: true
-          until_quality: Web-1080p
+          until_quality: WEB 1080p
           until_score: 10000
         min_format_score: 0
         quality_sort: top
