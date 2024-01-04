@@ -36,7 +36,7 @@ spec:
               repository: ghcr.io/onedr0p/readarr-develop
               tag: 0.3.14.2348@sha256:33fc965dff66c1475671e61106e6f8719f2da3501957cba142e1db0ff92dde36
             env:
-              TZ: "Europe/Amsterdam"
+              TZ: "${TIMEZONE}"
               READARR__INSTANCE_NAME: readarr
               READARR__PORT: &port 8787
               READARR__ANALYTICS_ENABLED: "False"

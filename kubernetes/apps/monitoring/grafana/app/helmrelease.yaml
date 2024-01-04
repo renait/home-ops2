@@ -90,6 +90,7 @@ spec:
       server:
         root_url: https://grafana.${SECRET_DOMAIN}
 
+    defaultDashboardsTimezone: ${TIMEZONE}
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1

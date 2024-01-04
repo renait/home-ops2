@@ -28,7 +28,7 @@ spec:
               tag: "latest"
               pullPolicy: Always
             env:
-              TZ: "Europe/Amsterdam"
+              TZ: "${TIMEZONE}"
               SPOTWEB_CRON_RETRIEVE: "*/15 * * * *"
               ## Cron schedule for article cache sanity check. E.g. 10 */1 * * * for 10 minutes after every hour.
               SPOTWEB_CRON_CACHE_CHECK: "10 */1 * * *"
