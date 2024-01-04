@@ -1,18 +1,25 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-thanos
+  name: &app thanos
   namespace: flux-system
 spec:
-  interval: 10m
-  path: "./kubernetes/apps/monitoring/thanos/app"
+  targetNamespace: monitoring
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/monitoring/thanos/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-local-path
+    - name: redis
