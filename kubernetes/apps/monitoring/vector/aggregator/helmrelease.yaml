@@ -80,10 +80,10 @@ spec:
         ports:
           http:
             port: 8686
-          kubernetes-logs:
+          kubernetes:
             enabled: true
             port: 6000
-          journald-logs:
+          journald:
             enabled: true
             port: 6002
 
