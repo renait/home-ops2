@@ -28,7 +28,8 @@ spec:
         enabled: false
         send_pii: false
       redis:
-        host: "authentik-redis.security.svc.cluster.local"
+        host: "redis-headless.database.svc.cluster.local"
+        port: "26379"
         password: ""
 
     envValueFrom:
