@@ -30,7 +30,6 @@ spec:
       redis:
         host: "redis-headless.database.svc.cluster.local"
         port: "26379"
-        password: ""
 
     envValueFrom:
       AUTHENTIK_SECRET_KEY:
