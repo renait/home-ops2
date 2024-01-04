@@ -5,9 +5,13 @@ api:
 
 # Sources
 sources:
-  kubernetes_logs:
+  kubernetes_source:
     type: kubernetes_logs
     use_apiserver_cache: true
+
+  journald_source:
+    type: journald
+    journal_directory: /var/log/journal
 
 # Sinks
 sinks:
@@ -15,6 +19,6 @@ sinks:
     type: vector
     compression: true
     inputs:
-      - kubernetes_logs
+      - kubernetes_source
     address: "vector-aggregator.monitoring.svc.cluster.local:6000"
     version: "2"
