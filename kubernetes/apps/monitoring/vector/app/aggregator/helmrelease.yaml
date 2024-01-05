@@ -1,32 +1,60 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  labels:
-    app.kubernetes.io/instance: vector-aggregator
-    app.kubernetes.io/name: vector-aggregator
-  name: vector-aggregator
-  namespace: monitoring
+  name: &app vector-aggregator
 spec:
+  interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: app-template
       version: 2.4.0
-      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       main:
-        replicas: 1
-        strategy: Recreate
-
+        replicas: 2
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-geoip:
+            image:
+              repository: ghcr.io/maxmind/geoipupdate
+              tag: v6.0.0@sha256:e0d5c1dee7379d360e0f355557542d9672c616215dfdd5aaf917382de84cb84c
+            env:
+              GEOIPUPDATE_EDITION_IDS: GeoLite2-City
+              GEOIPUPDATE_FREQUENCY: "0"
+              GEOIPUPDATE_VERBOSE: "true"
+            envFrom:
+              - secretRef:
+                  name: vector-aggregator-secret
+        containers:
+          main:
+            image:
+              repository: docker.io/timberio/vector
+              tag: 0.34.2-debian@sha256:36b975dd3e4a6793b61077fc4ffeb0b9d361b6a028eec27786588d229bc66dac
+            args: ["--config", "/etc/vector/vector.yaml"]
+            # resources:
+            #   requests:
+            #     cpu: 35m
+            #     memory: 381M
+            #   limits:
+            #     memory: 726M
 
         pod:
           topologySpreadConstraints:
@@ -35,58 +63,20 @@ spec:
               whenUnsatisfiable: DoNotSchedule
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: vector-aggregator
-
-        initContainers:
-          init-geoip:
-            image:
-              repository: ghcr.io/maxmind/geoipupdate
-              tag: v6.0
-              pullPolicy: IfNotPresent
-            env:
-              - name: GEOIPUPDATE_EDITION_IDS
-                value: GeoLite2-City
-              - name: GEOIPUPDATE_FREQUENCY
-                value: "0"
-              - name: GEOIPUPDATE_VERBOSE
-                value: "true"
-            envFrom:
-              - secretRef:
-                  name: vector-aggregator-secret
-
-        containers:
-          main:
-            image:
-              repository: ghcr.io/onedr0p/vector
-              tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
-            args:
-              - "--config"
-              - "/etc/vector/vector.yaml"
-            # resources:
-            #   requests:
-            #     cpu: 35m
-            #     memory: 381M
-            #   limits:
-            #     memory: 726M
-
+                  app.kubernetes.io/name: *app
     service:
       main:
         type: LoadBalancer
         annotations:
-          # external-dns.alpha.kubernetes.io/hostname: "vector.${SECRET_DOMAIN}"
           dns.pfsense.org/hostname: "vector.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: 192.168.14.203
-        externalTrafficPolicy: Cluster
         ports:
           http:
             port: 8686
-          kubernetes:
-            enabled: true
-            port: 6000
           journald:
-            enabled: true
-            port: 6002
-
+            port: 6000
+          kubernetes:
+            port: 6010
     persistence:
       config:
         enabled: true

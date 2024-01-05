@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: alertmanager
-  namespace: monitoring
 spec:
   interval: 30m
   chart:
@@ -40,12 +39,17 @@ spec:
             ports:
               - name: http
                 containerPort: 9093
+              - name: mesh-tcp
+                containerPort: 9094
+              - name: mesh-udp
+                containerPort: 9094
+                protocol: UDP
             resources:
               requests:
                 cpu: 11m
                 memory: 50M
               limits:
-                memory: 99M
+                memory: 100M
 
     service:
       main:

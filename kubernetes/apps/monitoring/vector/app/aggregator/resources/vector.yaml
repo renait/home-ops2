@@ -1,5 +1,5 @@
+---
 data_dir: /vector-data-dir
-
 api:
   enabled: true
   address: 0.0.0.0:8686
@@ -9,19 +9,25 @@ enrichment_tables:
     type: geoip
     path: /usr/share/GeoIP/GeoLite2-City.mmdb
 
+#
 # Sources
-sources:
-  kubernetes_source:
-    type: vector
-    address: 0.0.0.0:6000
-    version: "2"
+#
 
+sources:
   journald_source:
     type: vector
-    address: 0.0.0.0:6002
     version: "2"
+    address: 0.0.0.0:6000
 
-# Transformations
+  kubernetes_source:
+    type: vector
+    version: "2"
+    address: 0.0.0.0:6010
+
+#
+# Transforms
+#
+
 transforms:
   kubernetes_remap:
     type: remap
@@ -32,30 +38,31 @@ transforms:
       # Drop pod_labels
       del(.pod_labels)
 
+#
 # Sinks
-sinks:
-  loki_kubernetes:
-    type: loki
-    inputs: ["kubernetes_remap"]
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local
-    encoding:
-      codec: json
-    out_of_order_action: accept
-    remove_label_fields: true
-    remove_timestamp: true
-    labels:
-      app: "{{ custom_app_name }}"
-      namespace: "{{ kubernetes.pod_namespace }}"
-      node: "{{ kubernetes.pod_node_name }}"
+#
 
-  loki_journal:
-    type: loki
+sinks:
+  journald:
     inputs: ["journald_source"]
+    type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local
-    encoding:
-      codec: json
+    encoding: { codec: json }
     out_of_order_action: accept
     remove_label_fields: true
     remove_timestamp: true
     labels:
-      hostname: "{{ host }}"
+      hostname: '{{ host }}'
+
+  kubernetes:
+    inputs: ["kubernetes_remap"]
+    type: loki
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local
+    encoding: { codec: json }
+    out_of_order_action: accept
+    remove_label_fields: true
+    remove_timestamp: true
+    labels:
+      app: '{{ custom_app_name }}'
+      namespace: '{{ kubernetes.pod_namespace }}'
+      node: '{{ kubernetes.pod_node_name }}'

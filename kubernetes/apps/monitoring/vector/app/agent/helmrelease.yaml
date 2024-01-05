@@ -1,43 +1,43 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: vector-agent
-  namespace: monitoring
 spec:
+  interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: app-template
       version: 2.4.0
-      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: vector-aggregator
   values:
     controllers:
       main:
         type: daemonset
         strategy: RollingUpdate
-
         annotations:
           reloader.stakater.com/auto: "true"
-
-        pod:
-          tolerations:
-            - key: node-role.kubernetes.io/master
-              effect: NoSchedule
-
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/vector
-              tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
-            args:
-              - "--config"
-              - "/etc/vector/vector.yaml"
+              repository: docker.io/timberio/vector
+              tag: 0.34.2-debian@sha256:36b975dd3e4a6793b61077fc4ffeb0b9d361b6a028eec27786588d229bc66dac
             env:
               PROCFS_ROOT: /host/proc
               SYSFS_ROOT: /host/sys
@@ -56,6 +56,7 @@ spec:
                   fieldRef:
                     apiVersion: v1
                     fieldPath: metadata.namespace
+            args: ["--config", "/etc/vector/vector.yaml"]
             resources:
               requests:
                 cpu: 23m
@@ -64,7 +65,12 @@ spec:
               #   memory: 918M
             securityContext:
               privileged: true
-
+    service:
+      main:
+        enabled: false
+    serviceAccount:
+      create: true
+      name: vector-agent
     persistence:
       config:
         enabled: true
@@ -106,11 +112,3 @@ spec:
         globalMounts:
           - path: /host/sys
             readOnly: true
-
-    service:
-      main:
-        enabled: false
-
-    serviceAccount:
-      create: true
-      name: vector-agent

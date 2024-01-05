@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname cluster-apps-goldilocks
+  name: &appname goldilocks
   namespace: flux-system
 spec:
   targetNamespace: monitoring
@@ -20,4 +20,4 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cluster-apps-vpa
+    - name: vpa

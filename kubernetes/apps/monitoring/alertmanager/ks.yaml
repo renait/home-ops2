@@ -3,11 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-alertmanager
+  name: &app alertmanager
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   interval: 10m
-  path: "./kubernetes/apps/monitoring/alertmanager/app"
+  path: ./kubernetes/apps/monitoring/alertmanager/app
   prune: true
   sourceRef:
     kind: GitRepository
