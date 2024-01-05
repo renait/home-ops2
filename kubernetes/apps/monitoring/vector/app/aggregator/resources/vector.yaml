@@ -124,16 +124,4 @@ sinks:
     out_of_order_action: accept
     labels:
       hostname: pfsense
-  internet:
-    inputs: ["internet_source"]
-    type: loki
-    batch:
-      max_bytes: 2049000
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
-    encoding:
-      codec: json
-    out_of_order_action: accept
-    remove_label_fields: true
-    remove_timestamp: true
-    labels:
-      hostname: '{{ host }}'
+
