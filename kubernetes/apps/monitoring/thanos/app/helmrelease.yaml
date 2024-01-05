@@ -26,24 +26,24 @@ spec:
     keepHistory: false
   valuesFrom:
     - kind: Secret
-      name: thanos-objstore-secret
-      valuesKey: S3_BUCKET_NAME
+      name: thanos-secret
+      valuesKey: BUCKET_NAME
       targetPath: objstoreConfig.config.bucket
     - kind: Secret
-      name: thanos-objstore-secret
-      valuesKey: S3_BUCKET_HOST
+      name: thanos-secret
+      valuesKey: BUCKET_HOST
       targetPath: objstoreConfig.config.endpoint
     - kind: Secret
-      name: thanos-objstore-secret
-      valuesKey: S3_BUCKET_REGION
+      name: thanos-secret
+      valuesKey: BUCKET_REGION
       targetPath: objstoreConfig.config.region
     - kind: Secret
-      name: thanos-objstore-secret
-      valuesKey: S3_ACCESS_KEY
+      name: thanos-secret
+      valuesKey: ACCESS_KEY
       targetPath: objstoreConfig.config.access_key
     - kind: Secret
-      name: thanos-objstore-secret
-      valuesKey: S3_SECRET_KEY
+      name: thanos-secret
+      valuesKey: SECRET_KEY
       targetPath: objstoreConfig.config.secret_key
   values:
     image:
@@ -69,7 +69,7 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal
-        hostname: &host thanos-query-frontend.${SECRET_DOMAIN}
+        hostname: &host thanos-query-frontend.renait.nl
         tls: true
         extraTls:
           - hosts:
@@ -108,7 +108,7 @@ spec:
       enabled: true
       replicaCount: 2
       replicaLabel: __replica__
-      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"]
+      alertmanagers: ["http://alertmanager-operated.monitoring.svc.cluster.local:9093"]
       extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:

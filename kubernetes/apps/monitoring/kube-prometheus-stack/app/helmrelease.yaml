@@ -26,9 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: local-path-provisioner
-      namespace: storage
   valuesFrom:
     - kind: ConfigMap
       name: kube-state-metrics-configmap
@@ -43,7 +40,7 @@ spec:
         pathType: Prefix
         ingressClassName: internal
         hosts:
-          - &host alertmanager.${SECRET_DOMAIN}
+          - &host alertmanager.renait.nl
         tls:
           - hosts:
               - *host
@@ -122,7 +119,7 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.${SECRET_DOMAIN}
+          - &host prometheus.renait.nl
         tls:
           - hosts:
               - *host
