@@ -38,7 +38,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - host: &host goldilocks.renait.nl
+          - host: &host goldilocks.${SECRET_DOMAIN}
             paths:
               - path: /
                 type: Prefix

@@ -7,5 +7,5 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - router.renait.nl:9100
+        - router.${SECRET_DOMAIN}:9100
   metricsPath: /metrics

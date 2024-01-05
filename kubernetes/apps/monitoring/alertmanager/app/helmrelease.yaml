@@ -62,7 +62,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host "alertmanager.renait.nl"
+          - host: &host "alertmanager.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

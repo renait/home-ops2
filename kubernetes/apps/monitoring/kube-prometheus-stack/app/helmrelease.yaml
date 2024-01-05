@@ -41,7 +41,7 @@ spec:
 #        pathType: Prefix
 #        ingressClassName: internal
 #        hosts:
-#          - &host alertmanager.renait.nl
+#          - &host alertmanager.${SECRET_DOMAIN}
 #        tls:
 #          - hosts:
 #              - *host
@@ -120,7 +120,7 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.renait.nl
+          - &host prometheus.${SECRET_DOMAIN}
         tls:
           - hosts:
               - *host

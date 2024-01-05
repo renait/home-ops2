@@ -4,7 +4,7 @@
 
 1. Alert manager
 2. Vector
-3. Thanos
-4. Loki
-5. Kube Prometheus Stack
+3. Loki
+4. Kube Prometheus Stack
+5. Thanos
 6. Grafana

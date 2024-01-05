@@ -34,7 +34,7 @@ spec:
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
-      GF_SERVER_ROOT_URL: https://grafana.renait.nl
+      GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
     envFromSecret: grafana-secret
     grafana.ini:
       analytics:
@@ -50,7 +50,7 @@ spec:
       auth:
         oauth_auto_login: true
         oauth_allow_insecure_email_lookup: true
-        signout_redirect_url: https://authentik.renait.nl/application/o/grafana/end-session/
+        signout_redirect_url: https://authentik.${SECRET_DOMAIN}/application/o/grafana/end-session/
       auth.basic:
         enabled: false
       auth.generic_oauth:
@@ -65,9 +65,9 @@ spec:
         use_pkce: true
         client_id: vcW7CheXDuZD9aECO083mbgcR3htrneDGY73StVt
         client_secret: # Set by env vars
-        auth_url: https://authentik.renait.nl/application/o/authorize/
-        token_url: https://authentik.renait.nl/application/o/token/
-        api_url: https://authentik.renait.nl/application/o/userinfo/
+        auth_url: https://authentik.${SECRET_DOMAIN}/application/o/authorize/
+        token_url: https://authentik.${SECRET_DOMAIN}/application/o/token/
+        api_url: https://authentik.${SECRET_DOMAIN}/application/o/userinfo/
         # map user groups to Grafana roles
         role_attribute_path: |
           contains(groups[*], 'admins') && 'Admin' || 'Viewer'
@@ -290,7 +290,7 @@ spec:
       enabled: true
       ingressClassName: internal
       hosts:
-        - &host grafana.renait.nl
+        - &host grafana.${SECRET_DOMAIN}
       tls:
         - hosts:
             - *host

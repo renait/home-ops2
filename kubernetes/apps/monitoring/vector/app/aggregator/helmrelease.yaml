@@ -68,7 +68,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          dns.pfsense.org/hostname: "vector.renait.nl"
+          dns.pfsense.org/hostname: "vector.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: 192.168.14.203
         ports:
           http:
