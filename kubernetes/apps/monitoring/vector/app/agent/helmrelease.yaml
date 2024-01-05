@@ -57,6 +57,12 @@ spec:
                     apiVersion: v1
                     fieldPath: metadata.namespace
             args: ["--config", "/etc/vector/vector.yaml"]
+            resources:
+              requests:
+                cpu: 23m
+                memory: 249M
+              # limits:
+              #   memory: 918M
             securityContext:
               privileged: true
     service:

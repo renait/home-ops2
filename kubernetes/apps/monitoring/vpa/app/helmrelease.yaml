@@ -35,13 +35,19 @@ spec:
           cpu: 10m
           memory: 100M
         limits:
-          memory: 200M
+          memory: 400M
       extraArgs:
         pod-recommendation-min-cpu-millicores: 15
         pod-recommendation-min-memory-mb: 61
         storage: prometheus
         prometheus-address: |-
-          http://thanos-query.monitoring.svc.cluster.local:9090
+          http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+        prometheus-cadvisor-job-name: kubelet
+        container-pod-name-label: pod
+        container-name-label: container
+        metric-for-pod-labels: kube_pod_labels{job="kube-state-metrics"}[8d]
+        pod-namespace-label: namespace
+        pod-name-label: pod
     updater:
       enabled: false
     admissionController:

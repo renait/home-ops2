@@ -53,6 +53,10 @@ spec:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
+
+          grpc_server_max_recv_msg_size: 8388608
+          grpc_server_max_send_msg_size: 8388608
+
         memberlist:
           join_members: ["loki-memberlist"]
         limits_config:
@@ -91,7 +95,7 @@ spec:
         ruler:
           enable_api: true
           enable_alertmanager_v2: true
-          alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+          alertmanager_url: http://alertmanager.monitoring.svc.cluster.local:9093
           storage:
             type: local
             local:
@@ -127,9 +131,14 @@ spec:
       replicas: 2
       image:
         registry: ghcr.io
+        repository: nginxinc/nginx-unprivileged
+        tag: 1.25-alpine
       ingress:
         enabled: true
         ingressClassName: internal
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: |
+            10.0.0.0/8,192.168.0.0/16
         hosts:
           - host: &host loki.renait.nl
             paths:

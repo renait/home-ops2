@@ -145,7 +145,7 @@ spec:
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            url: http://alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
     dashboards:
@@ -270,6 +270,13 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
+      resources:
+        requests:
+          cpu: 10m
+          memory: 130M
+        limits:
+          memory: 220M
+
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel

@@ -22,4 +22,3 @@ spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-local-path
-    - name: kube-prometheus-stack
