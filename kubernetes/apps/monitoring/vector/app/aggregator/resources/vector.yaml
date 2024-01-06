@@ -48,7 +48,7 @@ transforms:
     inputs:
       - pfsense_source
     source: |
-      msg = parse_csv!(string!(.message))
+      msg = parse_syslog!(string!(.message))
       # Only parse IPv4 / IPv6
       if msg[8] == "4" || msg[8] == "6" {
         .filter_interface = msg[4]
@@ -119,8 +119,9 @@ sinks:
     encoding:
       codec: json
     inputs:
-      - pfsense_route._unmatched
-      - pfsense_geoip
+      - pfsense_source
+      # - pfsense_route._unmatched
+      # - pfsense_geoip
     out_of_order_action: accept
     labels:
       hostname: pfsense
