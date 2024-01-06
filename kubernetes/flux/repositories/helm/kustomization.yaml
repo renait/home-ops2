@@ -22,6 +22,7 @@ resources:
   - intel.yaml
   - jetstack.yaml
   - k8s-gateway.yaml
+  - k8s-at-home.yaml
   - kubernetes-dashboard.yaml
   - kubernetes-pfsense-controller.yaml
   - kubernetes-sigs-nfd.yaml
