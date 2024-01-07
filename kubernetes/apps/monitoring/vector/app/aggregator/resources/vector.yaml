@@ -36,7 +36,7 @@ sources:
 transforms:
   kubernetes_remap:
     type: remap
-    inputs: ["kubernetes_source"]
+    inputs: [ "kubernetes_source" ]
     source: |
       # Standardize 'app' index
       .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
@@ -48,12 +48,12 @@ transforms:
     inputs:
       - pfsense_source
     source: |
-      msg = parse_syslog!(string!(.message))
+      msg = parse_csv!(string!(.message))
       # Only parse IPv4 / IPv6
       if msg[8] == "4" || msg[8] == "6" {
         .filter_interface = msg[4]
-        .filter_direction = msg[7]
         .filter_action = msg[6]
+        .filter_direction = msg[7]
         .filter_ip_version = msg[8]
         .filter_protocol = msg[16]
         .filter_source_ip = msg[18]
@@ -71,18 +71,19 @@ transforms:
       }
   pfsense_route:
     type: route
-    inputs:
-      - pfsense_remap
+    inputs: [ "pfsense_remap" ]
     route:
-      pass_action: .filter_action == "pass"
+      from_wan: .filter_interface == "pppoe1"
+
   pfsense_geoip:
     type: remap
-    inputs: ["pfsense_route.pass_action"]
+    inputs: [ "pfsense_route.from_wan" ]
     source: |
-      .geoip = get_enrichment_table_record!("geoip_table",
-        {
+      .geoip = get_enrichment_table_record!(
+      "geoip_table", {
           "ip": .filter_source_ip
-        })
+        }
+      )
 
 #
 # Sinks
@@ -90,7 +91,7 @@ transforms:
 
 sinks:
   journald:
-    inputs: ["journald_source"]
+    inputs: [ "journald_source" ]
     type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local
     encoding: { codec: json }
@@ -101,7 +102,7 @@ sinks:
       hostname: '{{ host }}'
 
   kubernetes:
-    inputs: ["kubernetes_remap"]
+    inputs: [ "kubernetes_remap" ]
     type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local
     encoding: { codec: json }
@@ -114,15 +115,12 @@ sinks:
       node: '{{ kubernetes.pod_node_name }}'
 
   pfsense:
+    inputs: [ "pfsense_source", "pfsense_geoip" ]
     type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local
-    encoding:
-      codec: json
-    inputs:
-      - pfsense_source
-      # - pfsense_route._unmatched
-      # - pfsense_geoip
+    encoding: { codec: json }
     out_of_order_action: accept
+    remove_label_fields: true
+    remove_timestamp: true
     labels:
-      hostname: pfsense
-
+      hostname: '{{ host }}'
