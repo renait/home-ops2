@@ -45,8 +45,7 @@ transforms:
 
   pfsense_remap:
     type: remap
-    inputs:
-      - pfsense_source
+    inputs: [ "pfsense_source" ]
     source: |
       msg = parse_csv!(string!(.message))
       # Only parse IPv4 / IPv6
@@ -116,7 +115,7 @@ sinks:
       node: '{{ kubernetes.pod_node_name }}'
 
   pfsense:
-    inputs: [ "pfsense_source", "pfsense_geoip" ]
+    inputs: [ "pfsense_wan_route._unmatched", "pfsense_geoip" ]
     type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local
     encoding: { codec: json }
@@ -124,4 +123,5 @@ sinks:
     remove_label_fields: true
     remove_timestamp: true
     labels:
+      app: 'pfsense'
       hostname: '{{ host }}'
