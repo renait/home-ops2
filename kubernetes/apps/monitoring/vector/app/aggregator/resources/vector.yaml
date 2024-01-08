@@ -69,7 +69,8 @@ transforms:
           }
         }
       }
-  pfsense_route:
+
+  pfsense_wan_route:
     type: route
     inputs: [ "pfsense_remap" ]
     route:
@@ -77,7 +78,7 @@ transforms:
 
   pfsense_geoip:
     type: remap
-    inputs: [ "pfsense_route.from_wan" ]
+    inputs: [ "pfsense_wan_route.from_wan" ]
     source: |
       .geoip = get_enrichment_table_record!(
       "geoip_table", {
