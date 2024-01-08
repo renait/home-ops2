@@ -1,0 +1,26 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterExternalSecret
+metadata:
+  name: redis-creds
+spec:
+  externalSecretName: redis-creds
+
+  namespaceSelector:
+    matchLabels:
+      redis-enabled: "true"
+
+  refreshTime: "1m"
+
+  externalSecretSpec:
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: doppler-home-ops
+
+    target:
+      name: redis-creds
+      creationPolicy: Owner
+    data:
+      - secretKey: REDIS_PASSWORD
+        remoteRef:
+          key: REDIS
