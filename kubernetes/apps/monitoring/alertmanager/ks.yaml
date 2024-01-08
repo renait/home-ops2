@@ -20,3 +20,7 @@ spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-iscsi-ssd
+  postBuild:
+    substitute:
+      APP_UID: "65534"
+      APP_GID: "65534"

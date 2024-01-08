@@ -31,6 +31,14 @@ spec:
               globalMounts:
                 - path: /alertmanager
 
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            runAsNonRoot: true
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+
         containers:
           main:
             image:
