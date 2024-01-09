@@ -26,12 +26,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    architecture: replication
     auth:
-      enabled: true
+      enabled: false
       sentinel: false
-      existingSecret: "redis-creds"
-      existingSecretPasswordKey: "REDIS_PASSWORD"
     master:
       persistence:
         enabled: false
@@ -39,7 +36,7 @@ spec:
       persistence:
         enabled: false
     sentinel:
-      enabled: false
+      enabled: true
       masterSet: redis-master
       getMasterTimeout: 10
       startupProbe:
