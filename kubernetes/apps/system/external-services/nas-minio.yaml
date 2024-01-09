@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: nas-minio
 spec:
   type: ExternalName
-  externalName: nas.explorer
+  externalName: 192.168.12.41
   ports:
     - name: http
       port: &httpPort 9001
@@ -24,9 +24,8 @@ kind: Ingress
 metadata:
   name: nas-minio
   annotations:
-    hajimari.io/enable: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/whitelist-source-range: "172.16.0.0/12,192.168.0.0/16"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.0.0/16"
   labels:
     app.kubernetes.io/name: nas-minio
     app.kubernetes.io/instance: nas-minio
