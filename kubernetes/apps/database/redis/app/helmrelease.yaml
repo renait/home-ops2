@@ -30,9 +30,13 @@ spec:
       enabled: false
       sentinel: false
     master:
+      serviceAccount:
+        create: false
       persistence:
         enabled: false
     replica:
+      serviceAccount:
+        create: false
       persistence:
         enabled: false
     sentinel:
@@ -50,6 +54,9 @@ spec:
         limits:
           cpu: 100m
           memory: 200Mi
+    serviceAccount:
+      create: true
+      automountServiceAccountToken: true
     metrics:
       enabled: true
       serviceMonitor:
