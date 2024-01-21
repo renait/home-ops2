@@ -1,0 +1,169 @@
+---
+# yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: gitlab-ee
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.5.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    timeout: 15m
+    remediation:
+      retries: 3
+  upgrade:
+    timeout: 15m
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+
+        annotations:
+          secret.reloader.stakater.com/reload: gitlab-ee-secret
+
+        containers:
+          main:
+            image:
+              repository: gitlab/gitlab-ee
+              tag: 16.6.1-ee.0
+              pullPolicy: IfNotPresent
+            env:
+              TZ: "Europe/Amsterdam"
+              REDIS_HOST: gitlab-ee-redis
+              REDIS_HOST_PORT: "6379"
+              REDIS_HOST_PASSWORD:
+                secretKeyRef:
+                  name: gitlab-ee-redis-secret
+                  key: GITLAB_REDIS_PASSWORD
+            envFrom:
+              - secretRef:
+                  name: gitlab-ee-secret
+            resources:
+              requests:
+                cpu: 50m
+                memory: 4Gi
+              limits:
+                memory: 6Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/liveness
+                    port: &httpPort 80
+                  initialDelaySeconds: 0
+                  failureThreshold: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/readiness
+                    port: *httpPort
+                  initialDelaySeconds: 0
+                  failureThreshold: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/readiness
+                    port: *httpPort
+                  initialDelaySeconds: 180
+                  failureThreshold: 30
+                  periodSeconds: 30
+                  successThreshold: 1
+                  timeoutSeconds: 1
+
+    service:
+      main:
+        ports:
+          http:
+            enabled: true
+            port: *httpPort
+            targetPort: *httpPort
+            protocol: HTTP
+      ssh:
+        enabled: true
+        controller: main
+        ports:
+          ssh:
+            enabled: true
+            port: 22
+            targetPort: 22
+            protocol: TCP
+      registry:
+        enabled: false
+        controller: main
+        ports:
+          registry:
+            enabled: true
+            port: 5000
+            targetPort: 5000
+            protocol: TCP
+
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+        hosts:
+          - host: &host1 ${HOSTNAME}
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+          # - host: &host2 registry-git.${SECRET_DOMAIN}
+          #   paths:
+          #     - path: /
+          #       service:
+          #         name: registry
+          #         port: 5000
+        tls:
+          - hosts:
+              - *host1
+              # - *host2
+
+    persistence:
+      data:
+        existingClaim: gitlab-ee-data
+        advancedMounts:
+          main:
+            main:
+              - subPath: config
+                path: /etc/gitlab
+              - subPath: data
+                path: /var/opt/gitlab
+              - subPath: logs
+                path: /var/log/gitlab
+      packages:
+        type: nfs
+        server: 192.168.12.41
+        path: /mnt/fastdata/k8s/gitlab/packages
+        advancedMounts:
+          main:
+            main:
+              - path: /mnt/packages

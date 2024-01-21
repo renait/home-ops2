@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-ee-data
+  labels:
+    app.kubernetes.io/name: gitlab-ee
+spec:
+  capacity:
+    storage: 20Gi
+  persistentVolumeReclaimPolicy: Retain
+  accessModes:
+    - ReadWriteOnce
+  iscsi:
+    targetPortal: 192.168.12.41:3260
+    iqn: iqn.2005-10.org.freenas.ctl:gitlab-data
+    lun: 0
+    fsType: 'ext4'
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitlab-ee-data
+  labels:
+    app.kubernetes.io/name: gitlab-ee
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeName: gitlab-ee-data
+  resources:
+    requests:
+      storage: 20Gi
