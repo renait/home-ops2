@@ -32,6 +32,7 @@ spec:
       type: Recreate
     replicas: 1
     env:
+      TZ: "${TIMEZONE}"
       GF_ANALYTICS_CHECK_FOR_UPDATES: false
       GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: false
       GF_ANALYTICS_REPORTING_ENABLED: false
