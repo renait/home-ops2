@@ -65,22 +65,22 @@ spec:
           - name: loop
           - name: reload
           - name: loadbalance
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-role.kubernetes.io/control-plane
-                  operator: Exists
-    tolerations:
-      - key: CriticalAddonsOnly
-        operator: Exists
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
+#    affinity:
+#      nodeAffinity:
+#        requiredDuringSchedulingIgnoredDuringExecution:
+#          nodeSelectorTerms:
+#            - matchExpressions:
+#                - key: node-role.kubernetes.io/control-plane
+#                  operator: Exists
+#    tolerations:
+#      - key: CriticalAddonsOnly
+#        operator: Exists
+#      - key: node-role.kubernetes.io/control-plane
+#        operator: Exists
+#        effect: NoSchedule
+#      - key: node-role.kubernetes.io/master
+#        operator: Exists
+#        effect: NoSchedule
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
