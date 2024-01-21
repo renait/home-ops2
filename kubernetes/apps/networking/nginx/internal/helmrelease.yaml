@@ -89,3 +89,8 @@ spec:
           memory: 500Mi
     defaultBackend:
       enabled: false
+    # TCP service key:value pairs
+    # Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/tcp
+    ##
+    tcp:
+      2222: "gitlab/gitlab-ee-ssh:ssh"
