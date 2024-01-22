@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: nas-minio
 spec:
   type: ExternalName
-  externalName: 192.168.2.41
+  externalName: nas.explorer
   ports:
     - name: http
       port: &httpPort 9001
