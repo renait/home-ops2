@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: ./kubernetes/apps/gitlab/gitlab-ee/redis
+  path: ./kubernetes/apps/develop/gitlab-ee/redis
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,7 +31,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/apps/gitlab/gitlab-ee/app
+  path: ./kubernetes/apps/develop/gitlab-ee/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -59,7 +59,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/gitlab/gitlab-ee/runner
+  path: ./kubernetes/apps/develop/gitlab-ee/runner
   prune: true
   sourceRef:
     kind: GitRepository

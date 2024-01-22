@@ -12,3 +12,4 @@ kubeconfig
 .venv*
 
 /.idea/
+/kubernetes/apps/gitlab/gitlab-ee/backup/
