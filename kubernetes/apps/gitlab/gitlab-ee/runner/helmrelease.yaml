@@ -55,7 +55,6 @@ spec:
             helper_cpu_limit = "500m"
             helper_memory_request = "50Mi"
             helper_memory_limit = "200Mi"
-      locked: false
     resources:
       limits:
         memory: 256Mi
