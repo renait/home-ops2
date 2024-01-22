@@ -90,3 +90,5 @@ spec:
           memory: 500Mi
     defaultBackend:
       enabled: false
+    tcp:
+     '2222': 'gitlab/gitlab-ee-ssh:ssh'
