@@ -29,7 +29,7 @@ Add these lines to config/config.php:
 
 ## Clean installation with existing data
 
-Delete/move the following directories before installation;
+Delete/move the following directories before installation (in /var/www/html/data);
 - admin
 - appdata_oc*
 - files_external
@@ -49,9 +49,16 @@ su -s /bin/sh -c  "./occ maintenance:mode --off" www-data
 
 ## DB Maintenance
 
+All data:
 ```shell
 su -s /bin/sh -c  "./occ files:scan -v --all" www-data
+```
+Specific path:
+```shell
 su -s /bin/sh -c  "./occ files:scan -v --path={userid}/files/Some/Path" www-data
+```
+
+```shell
 su -s /bin/sh -c  "./occ files:cleanup" www-data
 ```
 
