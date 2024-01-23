@@ -66,8 +66,7 @@ spec:
       main:
         ports:
           http:
-            port: 10097
-            targetPort: *port
+            port: *port
 
     ingress:
       main:
