@@ -48,7 +48,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          dns.pfsense.org/hostname: "redis.renait.nl"
+          dns.pfsense.org/hostname: "redis.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: 192.168.14.205
         ports:
           http:
@@ -68,7 +68,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host "redis-ui.renait.nl"
+          - host: &host "redis-ui.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
