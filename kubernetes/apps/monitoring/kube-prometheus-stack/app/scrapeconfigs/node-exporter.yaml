@@ -7,5 +7,5 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - router.${SECRET_DOMAIN}:9100
+        - 192.168.14.1:9100
   metricsPath: /metrics
