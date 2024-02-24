@@ -16,8 +16,50 @@ spec:
         name: authentik
         namespace: flux-system
   values:
-    annotations:
-      secret.reloader.stakater.com/reload: authentik-secret,${APP}-pguser-${DB_USER},authentik-redis-secret
+    global:
+      deploymentAnnotations:
+        secret.reloader.stakater.com/reload: authentik-secret,${APP}-pguser-${DB_USER},authentik-redis-secret
+      env:
+        AUTHENTIK_SECRET_KEY:
+          secretKeyRef:
+            name: authentik-secret
+            key: authentik_secret_key
+        AUTHENTIK_EMAIL__HOST:
+          secretKeyRef:
+            name: authentik-secret
+            key: authentik_email_host
+        AUTHENTIK_EMAIL__USERNAME:
+          secretKeyRef:
+            name: authentik-secret
+            key: authentik_email_username
+        AUTHENTIK_EMAIL__PASSWORD:
+          secretKeyRef:
+            name: authentik-secret
+            key: authentik_email_password
+        AUTHENTIK_EMAIL__FROM:
+          secretKeyRef:
+            name: authentik-secret
+            key: authentik_email_from
+        AUTHENTIK_POSTGRESQL__HOST:
+          secretKeyRef:
+            name: "${APP}-pguser-${DB_USER}"
+            key: host
+        AUTHENTIK_POSTGRESQL__NAME:
+          secretKeyRef:
+            name: "${APP}-pguser-${DB_USER}"
+            key: dbname
+        AUTHENTIK_POSTGRESQL__USER:
+          secretKeyRef:
+            name: "${APP}-pguser-${DB_USER}"
+            key: user
+        AUTHENTIK_POSTGRESQL__PASSWORD:
+          secretKeyRef:
+            name: "${APP}-pguser-${DB_USER}"
+            key: password
+        AUTHENTIK_REDIS__PASSWORD:
+          secretKeyRef:
+            name: authentik-redis-secret
+            key: AUTHENTIK_REDIS_PASSWORD
 
     authentik:
       log_level: info
@@ -31,71 +73,46 @@ spec:
         host: "authentik-redis.security.svc.cluster.local"
         password: ""
 
-    envValueFrom:
-      AUTHENTIK_SECRET_KEY:
-        secretKeyRef:
-          name: authentik-secret
-          key: authentik_secret_key
-      AUTHENTIK_EMAIL__HOST:
-        secretKeyRef:
-          name: authentik-secret
-          key: authentik_email_host
-      AUTHENTIK_EMAIL__USERNAME:
-        secretKeyRef:
-          name: authentik-secret
-          key: authentik_email_username
-      AUTHENTIK_EMAIL__PASSWORD:
-        secretKeyRef:
-          name: authentik-secret
-          key: authentik_email_password
-      AUTHENTIK_EMAIL__FROM:
-        secretKeyRef:
-          name: authentik-secret
-          key: authentik_email_from
-      AUTHENTIK_POSTGRESQL__HOST:
-        secretKeyRef:
-          name: "${APP}-pguser-${DB_USER}"
-          key: host
-      AUTHENTIK_POSTGRESQL__NAME:
-        secretKeyRef:
-          name: "${APP}-pguser-${DB_USER}"
-          key: dbname
-      AUTHENTIK_POSTGRESQL__USER:
-        secretKeyRef:
-          name: "${APP}-pguser-${DB_USER}"
-          key: user
-      AUTHENTIK_POSTGRESQL__PASSWORD:
-        secretKeyRef:
-          name: "${APP}-pguser-${DB_USER}"
-          key: password
-      AUTHENTIK_REDIS__PASSWORD:
-        secretKeyRef:
-          name: authentik-redis-secret
-          key: AUTHENTIK_REDIS_PASSWORD
+    server:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 420Mi
+        limits:
+          memory: 550Mi
 
-    ingress:
-      enabled: true
-      ingressClassName: external
-      annotations:
-        # external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-        nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-      hosts:
-        - host: "${HOSTNAME}"
-          paths:
-            - path: /
-      tls:
-        - hosts:
-            - "${HOSTNAME}"
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
 
-    postgresql:
-      enabled: false
+      ingress:
+        enabled: true
+        ingressClassName: external
+        annotations:
+          # external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+        hosts:
+          - "${HOSTNAME}"
+        tls:
+          - hosts:
+              - "${HOSTNAME}"
+
+    worker:
+      resources:
+        requests:
+          cpu: 15m
+          memory: 320Mi
+        limits:
+          memory: 450Mi
 
     prometheus:
       rules:
-        create: true
-      serviceMonitor:
-        create: true
+        enabled: true
+
+    postgresql:
+      enabled: false
 
     redis:
       enabled: false
