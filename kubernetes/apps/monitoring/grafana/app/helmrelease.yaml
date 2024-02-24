@@ -277,6 +277,9 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
+    serviceAccount:
+      create: true
+      autoMount: true
     ingress:
       enabled: true
       ingressClassName: internal
