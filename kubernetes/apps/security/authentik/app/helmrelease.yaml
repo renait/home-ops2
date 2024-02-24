@@ -19,32 +19,10 @@ spec:
     global:
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: authentik-secret,${APP}-pguser-${DB_USER},authentik-redis-secret
+      envFrom:
+        - secretRef:
+            name: authentik-secret
       env:
-        - name: AUTHENTIK_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: authentik-secret
-              key: authentik_secret_key
-        - name: AUTHENTIK_EMAIL__HOST
-          valueFrom:
-            secretKeyRef:
-              name: authentik-secret
-              key: authentik_email_host
-        - name: AUTHENTIK_EMAIL__USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: authentik-secret
-              key: authentik_email_username
-        - name: AUTHENTIK_EMAIL__PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: authentik-secret
-              key: authentik_email_password
-        - name: AUTHENTIK_EMAIL__FROM
-          valueFrom:
-            secretKeyRef:
-              name: authentik-secret
-              key: authentik_email_from
         - name: AUTHENTIK_POSTGRESQL__HOST
           valueFrom:
             secretKeyRef:
