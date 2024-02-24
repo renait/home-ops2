@@ -27,9 +27,16 @@ spec:
     keepHistory: false
   values:
     installCRDs: true
-    extraArgs:
-      - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
-      - --dns01-recursive-nameservers-only
+    dns01RecursiveNameservers: "1.1.1.1:53,9.9.9.9:53"
+    dns01RecursiveNameserversOnly: true
+    # Resources to provide to the cert-manager controller pod
+    resources:
+      requests:
+        cpu: 10m
+        memory: 40Mi
+      limits:
+        memory: 100Mi
+
     podDnsPolicy: None
     podDnsConfig:
       nameservers:
@@ -40,3 +47,19 @@ spec:
       servicemonitor:
         enabled: true
         prometheusInstance: monitoring
+    webhook:
+      # Resources to provide to the cert-manager webhook pod
+      resources:
+        requests:
+          cpu: 5m
+          memory: 20Mi
+        limits:
+          memory: 40Mi
+    cainjector:
+      # Resources to provide to the cert-manager cainjector pod
+      resources:
+        requests:
+          cpu: 5m
+          memory: 100Mi
+        limits:
+          memory: 128Mi
