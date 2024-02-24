@@ -36,6 +36,13 @@ spec:
             image:
               repository: haproxy
               tag: "2.9"
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 20Mi
+
         pod:
           enableServiceLinks: false
           securityContext:
