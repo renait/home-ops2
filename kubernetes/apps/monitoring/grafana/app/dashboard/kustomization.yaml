@@ -5,6 +5,8 @@ configMapGenerator:
   - name: loki-app-logs-dashboard
     files:
       - loki-app-logs.json
+  - name: pfsense-dashboard
+    files:
       - pfsense.json
 generatorOptions:
   disableNameSuffixHash: true
