@@ -1,0 +1,70 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: influxdb
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: influxdb
+      version: 5.16.3
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      registry: docker.io
+      repository: bitnami/influxdb
+      tag: 2.7.5-debian-12-r12
+
+    auth:
+      enabled: true
+      admin:
+        retention: "30d"
+      createUserToken: true
+      user:
+        username: "pfsense"
+        org: "pfsense"
+        bucket: "pfsense"
+      existingSecret: "influxdb-secret"
+
+    influxdb:
+      extraEnvVars:
+        - name: TZ
+          value: "${TIMEZONE}"
+      podAnnotations:
+        reloader.stakater.com/search: "true"
+      service:
+        type: LoadBalancer
+        loadBalancerIP: "192.168.14.206"
+        annotations:
+          dns.pfsense.org/hostname: "influxdb.${SECRET_DOMAIN}"
+          io.cilium/lb-ipam-ips: 192.168.14.206
+
+    ingress:
+      enabled: true
+      tls: true
+      hostname: "influxdb-ui.${SECRET_DOMAIN}"
+      ingressClassName: internal
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+    persistence:
+      enabled: true
+      existingClaim: "${VOLSYNC_CLAIM}"
