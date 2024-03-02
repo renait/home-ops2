@@ -48,7 +48,7 @@ spec:
       podAnnotations:
         reloader.stakater.com/search: "true"
       updateStrategy:
-        type: OnDelete
+        type: Recreate
       service:
         type: LoadBalancer
         loadBalancerIP: "192.168.14.206"
