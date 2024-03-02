@@ -28,7 +28,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/influxdb
-      tag: 2.7.5-debian-12-r12
+      tag: 2.7.5
 
     auth:
       enabled: true
