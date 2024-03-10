@@ -27,6 +27,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    podAnnotations:
+      secret.reloader.stakater.com/reload: pfsense-secret
+
     resources:
       limits:
         cpu: 100m
