@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   values:
     podAnnotations:
-      secret.reloader.stakater.com/reload: pfsense-secret
+      secret.reloader.stakater.com/reload: pfsense-secret,kubernetes-pfsense-controller
 
     resources:
       limits:
