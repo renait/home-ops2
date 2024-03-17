@@ -63,10 +63,12 @@ spec:
           memory: 500Mi
       livenessProbe:
         initialDelaySeconds: 5
-        timeoutSeconds: 10
+        periodSeconds: 10
+        timeoutSeconds: 5
       readinessProbe:
         initialDelaySeconds: 5
-        timeoutSeconds: 10
+        periodSeconds: 10
+        timeoutSeconds: 5
 
     ingress:
       enabled: true
