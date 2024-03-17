@@ -61,6 +61,8 @@ spec:
           memory: 500Mi
         limits:
           memory: 500Mi
+      startupProbe:
+        timeoutSeconds: 10
       livenessProbe:
         initialDelaySeconds: 5
       readinessProbe:
