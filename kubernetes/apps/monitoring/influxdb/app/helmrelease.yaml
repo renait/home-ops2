@@ -61,12 +61,12 @@ spec:
           memory: 500Mi
         limits:
           memory: 500Mi
-      startupProbe:
-        timeoutSeconds: 10
       livenessProbe:
         initialDelaySeconds: 5
+        timeoutSeconds: 10
       readinessProbe:
         initialDelaySeconds: 5
+        timeoutSeconds: 10
 
     ingress:
       enabled: true
