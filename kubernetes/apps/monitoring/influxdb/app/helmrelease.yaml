@@ -61,6 +61,11 @@ spec:
           memory: 500Mi
         limits:
           memory: 500Mi
+      livenessProbe:
+        initialDelaySeconds: 5
+      readinessProbe:
+        initialDelaySeconds: 5
+
     ingress:
       enabled: true
       tls: true
