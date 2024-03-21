@@ -94,6 +94,7 @@ spec:
     serviceMonitor:
       main:
         enabled: true
+        serviceName: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}'
         endpoints:
           - port: http
             scheme: http
