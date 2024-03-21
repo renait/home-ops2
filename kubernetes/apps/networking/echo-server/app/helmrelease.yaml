@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -47,7 +47,6 @@ spec:
 
     ingress:
       main:
-        enabled: true
         className: external
         annotations:
           dns.pfsense.org/enabled: "false" # taken care of by authentik outpost ingress
@@ -62,7 +61,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: main
                   port: http
         tls:
           - hosts:
