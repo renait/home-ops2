@@ -55,7 +55,4 @@ spec:
         controller: main
         ports:
           http:
-            enabled: false
-          redis:
-            enabled: true
             port: *port
