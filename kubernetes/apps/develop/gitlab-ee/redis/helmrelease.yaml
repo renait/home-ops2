@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -52,9 +52,7 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
-            enabled: false
-          redis:
-            enabled: true
             port: *port

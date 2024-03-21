@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -97,18 +97,16 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
-            enabled: true
             port: *httpPort
             targetPort: *httpPort
             protocol: HTTP
       ssh:
-        enabled: true
         controller: main
         ports:
           ssh:
-            enabled: true
             port: 22
             targetPort: 22
             protocol: TCP
@@ -117,14 +115,12 @@ spec:
         controller: main
         ports:
           registry:
-            enabled: true
             port: 5000
             targetPort: 5000
             protocol: TCP
 
     ingress:
       main:
-        enabled: true
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
@@ -134,13 +130,13 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: main
                   port: http
           # - host: &host2 registry-git.${SECRET_DOMAIN}
           #   paths:
           #     - path: /
           #       service:
-          #         name: registry
+          #         identifier: registry
           #         port: 5000
         tls:
           - hosts:
