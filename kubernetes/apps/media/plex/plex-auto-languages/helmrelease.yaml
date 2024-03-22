@@ -57,15 +57,6 @@ spec:
               limits:
                 memory: 256Mi
 
-    service:
-      main:
-        controller: main
-        enabled: false
-
-    ingress:
-      main:
-        enabled: false
-
     persistence:
       config:
         type: emptyDir
