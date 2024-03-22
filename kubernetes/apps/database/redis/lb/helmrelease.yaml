@@ -93,8 +93,7 @@ spec:
             readOnly: true
     serviceMonitor:
       main:
-        enabled: true
-        serviceName: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}'
+        serviceName: redis-lb
         endpoints:
           - port: http
             scheme: http
