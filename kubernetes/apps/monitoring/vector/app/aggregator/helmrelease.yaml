@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -64,8 +64,10 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *app
+
     service:
       main:
+        controller: main
         type: LoadBalancer
         annotations:
           dns.pfsense.org/hostname: "vector.${SECRET_DOMAIN}"
@@ -80,9 +82,9 @@ spec:
           pfsense:
             port: 6020
             protocol: UDP
+
     persistence:
       config:
-        enabled: true
         type: configMap
         name: vector-aggregator-configmap
         globalMounts:
