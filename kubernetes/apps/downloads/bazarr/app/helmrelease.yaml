@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -55,20 +55,20 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
             port: *port
 
     ingress:
       main:
-        enabled: true
         className: "internal"
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: main
                   port: http
         tls:
           - hosts:
@@ -76,10 +76,8 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
       content:
-        enabled: true
         existingClaim: nas-media
         advancedMounts:
           main: # the controller with the "main" identifier
