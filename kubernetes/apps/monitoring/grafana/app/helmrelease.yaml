@@ -139,9 +139,9 @@ spec:
             url: http://alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
-          - name: InfluxDB-pfsense
+          - name: InfluxDB
             type: influxdb
-            uid: influxdb-pfsense
+            uid: influxdb
             access: proxy
             url: http://influxdb.monitoring.svc.cluster.local:8086
             user: pfsense
