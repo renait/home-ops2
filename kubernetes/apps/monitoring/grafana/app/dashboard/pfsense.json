@@ -20,7 +20,6 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12023,
   "graphTooltip": 0,
-  "id": 76,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -86,8 +85,7 @@
               }
             ]
           },
-          "unit": "none",
-          "unitScale": true
+          "unit": "none"
         },
         "overrides": []
       },
@@ -99,7 +97,6 @@
       },
       "hideTimeOverride": true,
       "id": 49,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
@@ -117,7 +114,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "",
@@ -182,8 +179,7 @@
               }
             ]
           },
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -210,7 +206,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "CPU Total",
@@ -285,8 +281,7 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -315,13 +310,12 @@
       },
       "lines": true,
       "linewidth": 1,
-      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -458,8 +452,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": [
           {
@@ -556,7 +549,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
@@ -667,8 +660,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "links": [],
-          "unitScale": true
+          "links": []
         },
         "overrides": []
       },
@@ -700,7 +692,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -868,8 +860,7 @@
               }
             ]
           },
-          "unit": "none",
-          "unitScale": true
+          "unit": "none"
         },
         "overrides": []
       },
@@ -881,7 +872,6 @@
       },
       "hideTimeOverride": true,
       "id": 45,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
@@ -899,7 +889,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "Load 15m",
@@ -968,8 +958,7 @@
               }
             ]
           },
-          "unit": "locale",
-          "unitScale": true
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -992,7 +981,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
@@ -1090,8 +1079,7 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -1118,13 +1106,12 @@
       },
       "lines": true,
       "linewidth": 1,
-      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1227,8 +1214,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -1260,7 +1246,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1417,8 +1403,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "links": [],
-          "unitScale": true
+          "links": []
         },
         "overrides": []
       },
@@ -1450,7 +1435,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1604,8 +1589,7 @@
                 "value": 80
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": [
           {
@@ -1641,7 +1625,6 @@
         "y": 14
       },
       "id": 160,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1655,7 +1638,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -1775,8 +1758,7 @@
                 "value": 80
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": [
           {
@@ -1812,7 +1794,6 @@
         "y": 14
       },
       "id": 716,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1826,7 +1807,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -1940,8 +1921,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1969,7 +1949,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "$col",
@@ -2240,8 +2220,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2269,7 +2248,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "$col",
@@ -2358,8 +2337,7 @@
                 "value": 80
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": [
           {
@@ -2407,7 +2385,6 @@
         "y": 14
       },
       "id": 717,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2421,7 +2398,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -2531,8 +2508,7 @@
                 "value": 80
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": [
           {
@@ -2568,7 +2544,6 @@
         "y": 14
       },
       "id": 719,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2582,7 +2557,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -2697,8 +2672,7 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "links": [],
-          "unitScale": true
+          "links": []
         },
         "overrides": []
       },
@@ -2730,7 +2704,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2841,8 +2815,7 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "links": [],
-          "unitScale": true
+          "links": []
         },
         "overrides": []
       },
@@ -2874,7 +2847,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3031,8 +3004,7 @@
                 "value": 2
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": [
           {
@@ -3067,7 +3039,6 @@
         "y": 24
       },
       "id": 194,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3086,7 +3057,7 @@
           }
         ]
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "alias": "",
@@ -3331,7 +3302,6 @@
         "y": 33
       },
       "id": 603,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3701,7 +3671,6 @@
         "y": 36
       },
       "id": 247,
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -3871,7 +3840,6 @@
       },
       "hideTimeOverride": true,
       "id": 296,
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -4028,7 +3996,6 @@
       },
       "lines": true,
       "linewidth": 1,
-      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
@@ -4295,7 +4262,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 44
       },
       "id": 43,
       "panels": [],
@@ -4397,10 +4364,9 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 45
       },
       "id": 604,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -4559,7 +4525,7 @@
         "h": 7,
         "w": 9,
         "x": 0,
-        "y": 60
+        "y": 48
       },
       "hiddenSeries": false,
       "id": 38,
@@ -4768,10 +4734,9 @@
         "h": 7,
         "w": 3,
         "x": 9,
-        "y": 60
+        "y": 48
       },
       "id": 248,
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -4939,11 +4904,10 @@
         "h": 7,
         "w": 3,
         "x": 12,
-        "y": 60
+        "y": 48
       },
       "hideTimeOverride": true,
       "id": 297,
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -5082,7 +5046,7 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 60
+        "y": 48
       },
       "hiddenSeries": false,
       "id": 347,
@@ -5100,7 +5064,6 @@
       },
       "lines": true,
       "linewidth": 1,
-      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
@@ -5268,8 +5231,8 @@
       {
         "current": {
           "selected": false,
-          "text": "influxdb-pfsense",
-          "value": "e9783d06-9274-4021-8131-b01aadfb8871"
+          "text": "InfluxDB",
+          "value": "influxdb"
         },
         "hide": 0,
         "includeAll": false,
@@ -5284,9 +5247,10 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "pfSense.explorer",
-          "value": "pfSense.explorer"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "uid": "$dataSource"
@@ -5310,7 +5274,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -5366,12 +5330,10 @@
         "current": {
           "selected": true,
           "text": [
-            "tun_wg0",
-            "vmx0"
+            "All"
           ],
           "value": [
-            "tun_wg0",
-            "vmx0"
+            "$__all"
           ]
         },
         "datasource": {
@@ -5395,14 +5357,10 @@
         "current": {
           "selected": true,
           "text": [
-            "tun_wg1",
-            "vmx1.20",
-            "vmx1.30"
+            "All"
           ],
           "value": [
-            "tun_wg1",
-            "vmx1.20",
-            "vmx1.30"
+            "$__all"
           ]
         },
         "datasource": {
@@ -5506,6 +5464,6 @@
   "timezone": "",
   "title": "pfSense System Dashboard",
   "uid": "GflT1CsMz",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }
