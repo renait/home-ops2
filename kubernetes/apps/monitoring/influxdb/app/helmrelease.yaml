@@ -60,7 +60,7 @@ spec:
           cpu: 10m
           memory: 500Mi
         limits:
-          memory: 1500Mi
+          memory: 3Gi
       livenessProbe:
         initialDelaySeconds: 5
         periodSeconds: 10
