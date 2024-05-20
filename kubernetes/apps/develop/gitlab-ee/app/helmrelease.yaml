@@ -6,7 +6,7 @@ metadata:
   name: gitlab-ee
 spec:
   interval: 30m
-  timeout: 15m
+  timeout: 30m
   chart:
     spec:
       chart: app-template
@@ -18,11 +18,11 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    timeout: 15m
+    timeout: 30m
     remediation:
       retries: 3
   upgrade:
-    timeout: 15m
+    timeout: 30m
     cleanupOnFail: true
     remediation:
       retries: 3
@@ -40,7 +40,7 @@ spec:
           main:
             image:
               repository: gitlab/gitlab-ee
-              tag: 16.11.2-ee.0
+              tag: 17.0.0-ee.0
               pullPolicy: IfNotPresent
             env:
               TZ: "Europe/Amsterdam"
@@ -89,7 +89,7 @@ spec:
                   httpGet:
                     path: /-/readiness
                     port: *httpPort
-                  initialDelaySeconds: 180
+                  initialDelaySeconds: 240
                   failureThreshold: 30
                   periodSeconds: 30
                   successThreshold: 1
