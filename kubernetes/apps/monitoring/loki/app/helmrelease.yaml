@@ -15,15 +15,7 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+      interval: 30m
   valuesFrom:
     - kind: Secret
       name: loki-secret
