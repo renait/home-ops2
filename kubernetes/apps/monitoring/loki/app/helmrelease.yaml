@@ -43,6 +43,13 @@ spec:
       targetPath: loki.storage.s3.secretAccessKey
   values:
     deploymentMode: SimpleScalable
+
+    chunksCache:
+      enabled: false
+
+    resultsCache:
+      enabled: false
+
     loki:
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-secret
