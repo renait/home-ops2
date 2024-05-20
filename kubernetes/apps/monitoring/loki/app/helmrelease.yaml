@@ -153,6 +153,7 @@ spec:
     backend:
       replicas: 2
       persistence:
+        size: 10Gi
         storageClass: local-hostpath
 
     monitoring:
