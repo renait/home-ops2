@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 5.47.2
+      version: 6.5.2
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -28,111 +28,102 @@ spec:
     - kind: Secret
       name: loki-secret
       valuesKey: BUCKET_NAME
-      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+      targetPath: loki.storage.bucketNames.chunks
     - kind: Secret
       name: loki-secret
       valuesKey: BUCKET_HOST
-      targetPath: loki.structuredConfig.common.storage.s3.endpoint
+      targetPath: loki.storage.s3.endpoint
     - kind: Secret
       name: loki-secret
       valuesKey: BUCKET_REGION
-      targetPath: loki.structuredConfig.common.storage.s3.region
+      targetPath: loki.storage.s3.region
     - kind: Secret
       name: loki-secret
       valuesKey: ACCESS_KEY
-      targetPath: loki.structuredConfig.common.storage.s3.access_key_id
+      targetPath: loki.storage.s3.accessKeyId
     - kind: Secret
       name: loki-secret
       valuesKey: SECRET_KEY
-      targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
+      targetPath: loki.storage.s3.secretAccessKey
   values:
+    deploymentMode: SimpleScalable
     loki:
-      structuredConfig:
-        auth_enabled: false
-        server:
-          log_level: info
-          http_listen_port: 3100
-          grpc_listen_port: 9095
-
-          grpc_server_max_recv_msg_size: 8388608
-          grpc_server_max_send_msg_size: 8388608
-
-        memberlist:
-          join_members: ["loki-memberlist"]
-        limits_config:
-          retention_period: 14d
-          enforce_metric_name: false
-          reject_old_samples: true
-          reject_old_samples_max_age: 168h
-          max_cache_freshness_per_query: 10m
-          split_queries_by_interval: 15m
-          per_stream_rate_limit: 64M
-          per_stream_rate_limit_burst: 128M
-          ingestion_rate_mb: 64
-          ingestion_burst_size_mb: 128
-          shard_streams:
-            enabled: true
-        schema_config:
-          configs:
-            - from: "2022-01-11" # quote
-              store: boltdb-shipper
-              object_store: s3
-              schema: v12
-              index:
-                prefix: loki_index_
-                period: 24h
-        common:
-          path_prefix: /var/loki
-          replication_factor: 2
-          storage:
-            s3:
-              s3: null
-              insecure: false
-              s3forcepathstyle: true
-          ring:
-            kvstore:
-              store: memberlist
-        ruler:
-          enable_api: true
-          enable_alertmanager_v2: true
-          alertmanager_url: http://alertmanager.monitoring.svc.cluster.local:9093
-          storage:
-            type: local
-            local:
-              directory: /rules
-          rule_path: /tmp/scratch
-          ring:
-            kvstore:
-              store: memberlist
-        distributor:
-          ring:
-            kvstore:
-              store: memberlist
-        compactor:
-          working_directory: /var/loki/boltdb-shipper-compactor
-          shared_store: s3
-          compaction_interval: 10m
-          retention_enabled: true
-          retention_delete_delay: 2h
-          retention_delete_worker_count: 150
-        ingester:
-          max_chunk_age: 1h
-          lifecycler:
-            ring:
-              kvstore:
-                store: memberlist
-        analytics:
-          reporting_enabled: false
-
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-secret
+
+      auth_enabled: false
+
+      analytics:
+        reporting_enabled: false
+
+      compactor:
+        working_directory: /var/loki/compactor/retention
+        delete_request_store: s3
+        retention_enabled: true
+
+      frontend:
+        max_outstanding_per_tenant: 4096
+
+      ingester:
+        chunk_encoding: snappy
+
+      limits_config:
+        ingestion_burst_size_mb: 128
+        ingestion_rate_mb: 64
+        max_query_parallelism: 100
+        per_stream_rate_limit: 64M
+        per_stream_rate_limit_burst: 128M
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+        retention_period: 14d
+        shard_streams:
+          enabled: true
+        split_queries_by_interval: 1h
+
+      query_scheduler:
+        max_outstanding_requests_per_tenant: 4096
+
+      rulerConfig:
+        enable_api: true
+        enable_alertmanager_v2: true
+        alertmanager_url: http://alertmanager.monitoring.svc.cluster.local:9093
+        storage:
+          type: local
+          local:
+            directory: /rules
+        rule_path: /rules/fake
+
+      schemaConfig:
+        configs:
+          - from: "2024-04-01" # quote
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+
+      server:
+        log_level: info
+        grpc_server_max_recv_msg_size: 8388608
+        grpc_server_max_send_msg_size: 8388608
+
+      storage:
+        type: s3
+        bucketNames:
+          chunks: loki-chunks
+          ruler: loki-ruler
+          admin: loki-admin
+        s3:
+          s3ForcePathStyle: true
+          insecure: false
 
     gateway:
       replicas: 2
       image:
         registry: ghcr.io
         repository: nginxinc/nginx-unprivileged
-        tag: 1.26-alpine
+        tag: 1.26.0-alpine
       ingress:
         enabled: true
         ingressClassName: internal
@@ -152,36 +143,25 @@ spec:
       persistence:
         size: 5Gi
         storageClass: local-hostpath
-      extraVolumeMounts:
-        - name: rules
-          mountPath: /rules
-      extraVolumes:
-        - name: rules
-          emptyDir: {}
+
     write:
       replicas: 2
       persistence:
         size: 5Gi
         storageClass: local-hostpath
+
     backend:
       replicas: 2
       persistence:
+        size: 10Gi
         storageClass: local-hostpath
-      extraVolumeMounts:
-        - name: rules
-          mountPath: /rules/fake
-        - name: scratch
-          mountPath: /tmp/scratch
-      extraVolumes:
-        - name: rules
-          configMap:
-            name: loki-alerting-rules
-        - name: scratch
-          emptyDir: {}
+
     monitoring:
       dashboards:
         annotations:
           grafana_folder: Loki
+      rules:
+        enabled: false
       serviceMonitor:
         enabled: false
         metricsInstance:
@@ -190,10 +170,16 @@ spec:
         enabled: false
         grafanaAgent:
           installOperator: false
-      lokiCanary:
-        enabled: false
+
     sidecar:
       image:
         repository: ghcr.io/kiwigrid/k8s-sidecar
+      rules:
+        searchNamespace: ALL
+        folder: /rules/fake
+
+    lokiCanary:
+      enabled: false
+
     test:
       enabled: false
