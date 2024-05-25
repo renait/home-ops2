@@ -56,10 +56,16 @@ spec:
         enabled: false
       externalSnapshotter:
         enabled: true
+        name: registry.k8s.io/sig-storage/csi-snapshotter:v6.3.0
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
-
+        resources:
+          requests:
+            cpu: 15m
+            memory: 40M
+          limits:
+            memory: 40M
     node:
       driver:
         extraVolumeMounts:

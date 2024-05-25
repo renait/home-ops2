@@ -53,7 +53,11 @@ spec:
           limits:
             memory: 250M
 
+      externalAttacher:
+        image: registry.k8s.io/sig-storage/csi-attacher:v4.4.0
+
       externalProvisioner:
+        image: registry.k8s.io/sig-storage/csi-provisioner:v4.0.1
         resources:
           requests:
             cpu: 15m
@@ -62,6 +66,7 @@ spec:
             memory: 40M
 
       externalResizer:
+        image: registry.k8s.io/sig-storage/csi-resizer:v1.9.0
         resources:
           requests:
             cpu: 15m
@@ -70,6 +75,7 @@ spec:
             memory: 50M
 
       externalSnapshotter:
+        name: registry.k8s.io/sig-storage/csi-snapshotter:v6.3.0
         resources:
           requests:
             cpu: 15m
@@ -169,11 +175,11 @@ spec:
         zfs:
           cli:
             sudoEnabled: true
+          datasetParentName: data/p/n/vol
+          detachedSnapshotsDatasetParentName: data/p/n/snp
           datasetProperties:
             org.freenas:description: >-
               {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}
-          datasetParentName: data/p/n/vol
-          detachedSnapshotsDatasetParentName: data/p/n/snp
           datasetEnableQuotas: true
           datasetEnableReservation: false
           datasetPermissionsMode: "0777"
