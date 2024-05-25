@@ -44,7 +44,7 @@ spec:
     controller:
       # democratic-csi controller
       driver:
-        image: docker.io/democraticcsi/democratic-csi:v1.9.1
+        image: docker.io/democraticcsi/democratic-csi:v1.9.2
         logLevel: debug
         resources:
           requests:
@@ -86,7 +86,7 @@ spec:
     node:
       # democratic-csi node
       driver:
-        image: docker.io/democraticcsi/democratic-csi:v1.9.1
+        image: docker.io/democraticcsi/democratic-csi:v1.9.2
         logLevel: debug
         resources:
           requests:
