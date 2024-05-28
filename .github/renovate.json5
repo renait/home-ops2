@@ -14,6 +14,7 @@
     "github>renait/home-ops2//.github/renovate/labels.json5",
     "github>renait/home-ops2//.github/renovate/semanticCommits.json5"
   ],
+  ignorePaths: [".archive/**"],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
