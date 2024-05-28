@@ -13,8 +13,8 @@ spec:
   interval: 10m
   prune: true
   wait: true
-  # dependsOn:
-  #   - name: cluster-apps-snapshot-controller
+  dependsOn:
+    - name: snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -32,8 +32,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  # dependsOn:
-  #   - name: cluster-apps-snapshot-controller
+  dependsOn:
+    - name: snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -51,8 +51,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  # dependsOn:
-  #   - name: cluster-apps-snapshot-controller
+  dependsOn:
+    - name: snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -70,8 +70,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  # dependsOn:
-  #   - name: cluster-apps-snapshot-controller
+  dependsOn:
+    - name: snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -89,5 +89,5 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  # dependsOn:
-  #   - name: cluster-apps-snapshot-controller
+  dependsOn:
+    - name: snapshot-controller
