@@ -61,7 +61,7 @@ spec:
                 memory: 4Gi
             probes:
               liveness:
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
@@ -72,7 +72,7 @@ spec:
                   periodSeconds: 30
                   timeoutSeconds: 10
               readiness:
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
@@ -83,7 +83,7 @@ spec:
                   periodSeconds: 30
                   timeoutSeconds: 10
               startup:
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
