@@ -13,7 +13,7 @@ spec:
     - ReadWriteOnce
   iscsi:
     targetPortal: 192.168.12.41:3260
-    iqn: iqn.2005-10.org.freenas.ctl:gitlab-data
+    iqn: iqn.2005-10.org.freenas.ctl:gitlab-data2
     lun: 0
     fsType: 'ext4'
     readOnly: false
