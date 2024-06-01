@@ -14,7 +14,7 @@ kubectl cp ${BACKUP_ID}_gitlab_backup.tar gitlab/${POD_ID}:/var/opt/gitlab/backu
 kubectl -n gitlab exec ${POD_ID} -- chmod og-rwx /var/opt/gitlab/backups/${BACKUP_ID}_gitlab_backup.tar
 kubectl -n gitlab exec ${POD_ID} -- chown git.git /var/opt/gitlab/backups/${BACKUP_ID}_gitlab_backup.tar
 
-kubectl -n gitlab exec ${POD_ID} -- gitlab-ctl stop unicorn
+# kubectl -n gitlab exec ${POD_ID} -- gitlab-ctl stop unicorn
 kubectl -n gitlab exec ${POD_ID} -- gitlab-ctl stop puma
 kubectl -n gitlab exec ${POD_ID} -- gitlab-ctl stop sidekiq
 
