@@ -66,7 +66,7 @@ spec:
             memory: 40M
 
       externalResizer:
-        image: registry.k8s.io/sig-storage/csi-resizer:v1.9.0
+        image: registry.k8s.io/sig-storage/csi-resizer:v1.11.1
         resources:
           requests:
             cpu: 15m
