@@ -39,8 +39,11 @@ spec:
     controller:
       enabled: true
       strategy: node
+
       externalAttacher:
         enabled: false
+        image: registry.k8s.io/sig-storage/csi-attacher:v4.6.1
+
       externalProvisioner:
         enabled: true
         image: registry.k8s.io/sig-storage/csi-provisioner:v5.0.1
@@ -52,11 +55,14 @@ spec:
           - --strict-topology=true
           - --enable-capacity=true
           - --capacity-ownerref-level=1
+
       externalResizer:
         enabled: false
+        image: registry.k8s.io/sig-storage/csi-resizer:v1.11.1
+
       externalSnapshotter:
         enabled: true
-        name: registry.k8s.io/sig-storage/csi-snapshotter:v6.3.0
+        image: registry.k8s.io/sig-storage/csi-snapshotter:v6.3.0
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
@@ -66,6 +72,11 @@ spec:
             memory: 40M
           limits:
             memory: 40M
+
+      externalHealthMonitorController:
+        enabled: false
+        image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.11.0
+
     node:
       driver:
         extraVolumeMounts:

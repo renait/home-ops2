@@ -75,13 +75,17 @@ spec:
             memory: 50M
 
       externalSnapshotter:
-        name: registry.k8s.io/sig-storage/csi-snapshotter:v6.3.0
+        image: registry.k8s.io/sig-storage/csi-snapshotter:v6.3.0
         resources:
           requests:
             cpu: 15m
             memory: 40M
           limits:
             memory: 40M
+
+      externalHealthMonitorController:
+        enabled: false
+        image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.11.0
 
     node:
       # democratic-csi node
