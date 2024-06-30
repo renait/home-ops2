@@ -93,7 +93,7 @@ spec:
           cpu: 15m
           memory: 320Mi
         limits:
-          memory: 450Mi
+          memory: 640Mi
 
     prometheus:
       rules:
