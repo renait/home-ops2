@@ -15,4 +15,4 @@ resources:
   - volsync/ks.yaml
   - system-upgrade-controller/ks.yaml
   # Standard resources
-  - external-services
+  # - external-services
