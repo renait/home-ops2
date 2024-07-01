@@ -66,8 +66,8 @@ spec:
         requests:
           cpu: 20m
           memory: 420Mi
-        limits:
-          memory: 550Mi
+        # limits:
+        #   memory: 550Mi
 
       metrics:
         enabled: true
@@ -92,8 +92,8 @@ spec:
         requests:
           cpu: 15m
           memory: 320Mi
-        limits:
-          memory: 640Mi
+        # limits:
+        #   memory: 640Mi
 
     prometheus:
       rules:
