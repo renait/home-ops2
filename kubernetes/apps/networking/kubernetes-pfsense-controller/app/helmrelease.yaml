@@ -76,7 +76,7 @@ spec:
           allowedHostRegex: "/.${SECRET_DOMAIN}$$/"
           dnsBackends:
             dnsmasq:
-              enabled: true
+              enabled: false
             unbound:
               enabled: true
         pfsense-dns-ingresses:
@@ -90,7 +90,7 @@ spec:
           allowedHostRegex: "/.${SECRET_DOMAIN}$$/"
           dnsBackends:
             dnsmasq:
-              enabled: true
+              enabled: false
             unbound:
               enabled: true
         pfsense-dns-haproxy-ingress-proxy:
