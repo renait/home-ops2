@@ -21,4 +21,4 @@ spec:
   timeout: 15m
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-local-path
+    - name: openebs

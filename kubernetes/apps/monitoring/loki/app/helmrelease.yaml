@@ -137,19 +137,19 @@ spec:
       replicas: 2
       persistence:
         size: 5Gi
-        storageClass: local-hostpath
+        storageClass: openebs-hostpath
 
     write:
       replicas: 2
       persistence:
         size: 5Gi
-        storageClass: local-hostpath
+        storageClass: openebs-hostpath
 
     backend:
       replicas: 2
       persistence:
         size: 10Gi
-        storageClass: local-hostpath
+        storageClass: openebs-hostpath
 
     monitoring:
       dashboards:
