@@ -106,7 +106,7 @@ spec:
         #   memory: 270M
       persistence:
         enabled: true
-        storageClass: local-hostpath
+        storageClass: openebs-hostpath
         size: 5Gi
     storegateway:
       enabled: true
@@ -120,7 +120,7 @@ spec:
         #   memory: 226M
       persistence:
         enabled: true
-        storageClass: local-hostpath
+        storageClass: openebs-hostpath
         size: 5Gi
     ruler:
       enabled: true
@@ -142,7 +142,7 @@ spec:
                   severity: critical
       persistence:
         enabled: true
-        storageClass: local-hostpath
+        storageClass: openebs-hostpath
         size: 5Gi
       resources:
         requests:
