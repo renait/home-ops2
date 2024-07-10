@@ -188,7 +188,7 @@ spec:
           cpu: 10m
           memory: 53M
         limits:
-          memory: 180M
+          memory: 400M
 
     ## Enable persistence using Persistent Volume Claims
     ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
