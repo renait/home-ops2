@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: influxdb
-      version: 6.3.9
+      version: 6.3.11
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -28,7 +28,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/influxdb
-      tag: 2.7.6
+      tag: 2.7.7
 
     auth:
       enabled: true
