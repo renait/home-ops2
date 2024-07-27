@@ -18,5 +18,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: pool
 spec:
-  cidrs:
-    - cidr: "${NODE_CIDR}"
+  blocks:
+    - # Controller VIP: 192.168.14.254
+      start: 192.168.14.200
+      stop: 192.168.14.230
