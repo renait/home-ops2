@@ -47,7 +47,7 @@ spec:
                 cpu: 50m
                 memory: 250Mi
               limits:
-                memory: 800Mi
+                memory: 1Gi
             securityContext:
               runAsUser: ${APP_UID}
               runAsGroup: ${APP_GID}
