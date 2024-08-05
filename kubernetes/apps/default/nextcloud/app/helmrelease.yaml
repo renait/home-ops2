@@ -38,7 +38,7 @@ spec:
     ##
     ingress:
       enabled: true
-      className: internal
+      className: external
       annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 512M
         kubernetes.io/tls-acme: "true"
