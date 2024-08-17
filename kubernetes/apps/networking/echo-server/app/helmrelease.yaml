@@ -32,12 +32,22 @@ spec:
               HTTP_PORT: &port 8080
               LOG_WITHOUT_NEWLINE: "true"
               LOG_IGNORE_PATH: "/healthz"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 cpu: 5m
-                memory: 30M
+                memory: 64M
               limits:
-                memory: 30M
+                memory: 64M
 
     service:
       main:
