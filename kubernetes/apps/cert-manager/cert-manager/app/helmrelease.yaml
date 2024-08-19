@@ -22,44 +22,37 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
   values:
     installCRDs: true
-    dns01RecursiveNameservers: "1.1.1.1:53,9.9.9.9:53"
+    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
     dns01RecursiveNameserversOnly: true
-    # Resources to provide to the cert-manager controller pod
-    resources:
-      requests:
-        cpu: 10m
-        memory: 40Mi
-      limits:
-        memory: 100Mi
-
-    podDnsPolicy: None
-    podDnsConfig:
-      nameservers:
-        - "1.1.1.1"
-        - "9.9.9.9"
     prometheus:
       enabled: true
       servicemonitor:
         enabled: true
-        prometheusInstance: monitoring
+    resources:
+      requests:
+        cpu: 15m
+        memory: 200M
+      limits:
+        memory: 300M
     webhook:
       # Resources to provide to the cert-manager webhook pod
       resources:
         requests:
-          cpu: 5m
-          memory: 20Mi
+          cpu: 15m
+          memory: 32M
         limits:
-          memory: 40Mi
+          memory: 32M
     cainjector:
       # Resources to provide to the cert-manager cainjector pod
       resources:
         requests:
-          cpu: 5m
-          memory: 100Mi
+          cpu: 15m
+          memory: 200M
         limits:
-          memory: 128Mi
+          memory: 400M
