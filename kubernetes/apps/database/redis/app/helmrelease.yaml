@@ -52,7 +52,6 @@ spec:
           cpu: 15m
           memory: 100Mi
         limits:
-          cpu: 100m
           memory: 200Mi
     serviceAccount:
       create: true
