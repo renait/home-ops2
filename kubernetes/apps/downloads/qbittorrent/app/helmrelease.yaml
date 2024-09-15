@@ -77,6 +77,16 @@ spec:
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 cpu: 50m
