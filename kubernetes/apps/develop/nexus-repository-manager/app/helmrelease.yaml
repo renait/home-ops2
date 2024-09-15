@@ -58,9 +58,9 @@ spec:
             resources:
               requests:
                 cpu: 15m
-                memory: 2800M
+                memory: 1500Mi
               limits:
-                memory: 2800M
+                memory: 2Gi
             probes:
               liveness: &probes
                 enabled: true
