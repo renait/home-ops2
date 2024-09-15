@@ -59,6 +59,24 @@ spec:
               #ALLOWED_NETWORKS: "10.42.0.0/16"
               PLEX_GID: ${APP_UID}
               PLEX_UID: ${APP_GID}
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 cpu: 100m
