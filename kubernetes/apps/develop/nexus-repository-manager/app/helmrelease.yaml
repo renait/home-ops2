@@ -146,6 +146,8 @@ spec:
     persistence:
       nexus-data:
         existingClaim: nexus-repository-manager-data
+      nexus-data2:
+        existingClaim: nexus-repository-manager-data2
       nexus-backup:
         existingClaim: nexus-repository-manager-backup
         advancedMounts:

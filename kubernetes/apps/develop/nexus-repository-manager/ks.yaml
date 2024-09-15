@@ -27,3 +27,7 @@ spec:
       HOSTNAME: "nexus.${SECRET_DOMAIN}"
       APP_UID: "200"
       APP_GID: "200"
+      VOLSYNC_CLAIM: nexus-repository-manager-data2
+      VOLSYNC_STORAGECLASS: "freenas-nfs-ssd"
+      VOLSYNC_SNAPSHOTCLASS: "freenas-nfs-ssd-snap"
+      VOLSYNC_CAPACITY: "20Gi"
