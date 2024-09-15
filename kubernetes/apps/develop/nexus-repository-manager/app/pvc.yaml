@@ -21,6 +21,30 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: nexus-repository-manager-backup
+  labels:
+    app.kubernetes.io/name: nexus-repository-manager
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/data/k8s/nexus-repository-manager/backup
+    server: 192.168.12.41
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: nexus-repository-manager-blobs-default
   labels:
     app.kubernetes.io/name: nexus-repository-manager
@@ -78,6 +102,20 @@ spec:
   resources:
     requests:
       storage: "100Gi"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-repository-manager-backup
+  labels:
+    app.kubernetes.io/name: nexus-repository-manager
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeName: nexus-repository-manager-backup
+  resources:
+    requests:
+      storage: 20Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -37,7 +37,7 @@ spec:
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
-            #runAsNonRoot: true
+            runAsNonRoot: true
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups: []
@@ -146,6 +146,12 @@ spec:
     persistence:
       nexus-data:
         existingClaim: nexus-repository-manager-data
+      nexus-backup:
+        existingClaim: nexus-repository-manager-backup
+        advancedMounts:
+          main:
+            main:
+              - path: /nexus-data/backup
       nexus-blobs-default:
         existingClaim: nexus-repository-manager-blobs-default
         advancedMounts:
