@@ -146,3 +146,15 @@ spec:
     persistence:
       nexus-data:
         existingClaim: nexus-repository-manager-data
+      nexus-blobs-default:
+        existingClaim: nexus-repository-manager-blobs-default
+        advancedMounts:
+          main:
+            main:
+              - path: /nexus-data/blobs/default2
+      nexus-blobs-proxied:
+        existingClaim: nexus-repository-manager-blobs-proxied
+        advancedMounts:
+          main:
+            main:
+              - path: /nexus-data/blobs/proxied2
