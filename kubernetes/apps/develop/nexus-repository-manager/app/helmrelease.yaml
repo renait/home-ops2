@@ -70,9 +70,9 @@ spec:
                     path: /service/rest/v1/status
                     port: &httpPort 8081
                   initialDelaySeconds: 0
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness: *probes
               startup:
                 enabled: true
@@ -80,10 +80,10 @@ spec:
                   httpGet:
                     path: /service/rest/v1/status
                     port: *httpPort
-                  initialDelaySeconds: 120
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 5
+                  initialDelaySeconds: 60
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 30
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
