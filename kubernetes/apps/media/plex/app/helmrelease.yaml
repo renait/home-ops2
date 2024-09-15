@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: plex
+  name: &app plex
 spec:
   chart:
     spec:
@@ -24,6 +24,13 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
           enableServiceLinks: false
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
