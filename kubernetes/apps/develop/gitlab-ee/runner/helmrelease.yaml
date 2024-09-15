@@ -27,8 +27,15 @@ spec:
     keepHistory: false
   values:
     gitlabUrl: "https://git.${SECRET_DOMAIN}/"
+    livenessProbe:
+      initialDelaySeconds: 3
+      periodSeconds: 5
+    readinessProbe:
+      initialDelaySeconds: 3
+      periodSeconds: 5
+
     ## Configure the maximum number of concurrent jobs
-    concurrent: 2
+    concurrent: 10
     ## Defines in seconds how often to check GitLab for a new builds
     checkInterval: 10
     rbac:
