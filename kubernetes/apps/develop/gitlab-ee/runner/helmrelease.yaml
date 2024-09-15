@@ -42,6 +42,7 @@ spec:
           [runners.kubernetes]
             namespace = "{{.Release.Namespace}}"
             image = "ubuntu:22.04"
+            pull_policy = "always"
             privileged = true
             # build container
             cpu_request = "500m"
