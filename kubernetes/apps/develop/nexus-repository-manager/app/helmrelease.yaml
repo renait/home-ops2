@@ -6,7 +6,7 @@ metadata:
   name: nexus-repository-manager
 spec:
   interval: 30m
-  timeout: 15m
+  timeout: 5m
   chart:
     spec:
       chart: app-template
@@ -18,11 +18,11 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    timeout: 15m
+    timeout: 5m
     remediation:
       retries: 3
   upgrade:
-    timeout: 15m
+    timeout: 5m
     cleanupOnFail: true
     remediation:
       retries: 3
@@ -46,7 +46,7 @@ spec:
           main:
             image:
               repository: sonatype/nexus3
-              tag: 3.61.0
+              tag: 3.70.2
               pullPolicy: IfNotPresent
             env:
               TZ: "Europe/Amsterdam"
