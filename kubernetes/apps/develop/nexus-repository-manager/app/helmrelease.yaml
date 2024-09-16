@@ -80,10 +80,10 @@ spec:
                   httpGet:
                     path: /service/rest/v1/status
                     port: *httpPort
-                  initialDelaySeconds: 60
+                  initialDelaySeconds: 20
                   periodSeconds: 5
                   timeoutSeconds: 1
-                  failureThreshold: 30
+                  failureThreshold: 60
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
