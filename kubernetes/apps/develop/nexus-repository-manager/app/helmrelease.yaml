@@ -60,7 +60,7 @@ spec:
                 cpu: 15m
                 memory: 1500Mi
               limits:
-                memory: 2Gi
+                memory: 3Gi
             probes:
               liveness: &probes
                 enabled: true
@@ -148,8 +148,6 @@ spec:
         type: emptyDir
       nexus-data:
         existingClaim: nexus-repository-manager-data2
-      nexus-data2:
-        existingClaim: nexus-repository-manager-data
       nexus-backup:
         existingClaim: nexus-repository-manager-backup
         advancedMounts:
