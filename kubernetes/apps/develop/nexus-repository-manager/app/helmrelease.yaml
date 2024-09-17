@@ -46,14 +46,13 @@ spec:
           main:
             image:
               repository: sonatype/nexus3
-              tag: 3.70.2
+              tag: 3.72.0
               pullPolicy: IfNotPresent
             env:
               TZ: "Europe/Amsterdam"
               INSTALL4J_ADD_VM_PARAMS: |-
                 -Xms1024m -Xmx1024m
                 -XX:MaxDirectMemorySize=2048m
-                -Djava.util.prefs.userRoot=/nexus-data/javaprefs
               NEXUS_SECURITY_RANDOMPASSWORD: "true"
             resources:
               requests:
