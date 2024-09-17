@@ -144,6 +144,8 @@ spec:
               # - *host2
 
     persistence:
+      tmp:
+        type: emptyDir
       nexus-data:
         existingClaim: nexus-repository-manager-data2
       nexus-data2:
