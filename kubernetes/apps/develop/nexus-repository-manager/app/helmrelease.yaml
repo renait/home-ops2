@@ -53,6 +53,7 @@ spec:
               INSTALL4J_ADD_VM_PARAMS: |-
                 -Xms1024m -Xmx1024m
                 -XX:MaxDirectMemorySize=2048m
+                -Djava.util.prefs.userRoot=/nexus-data/javaprefs
               NEXUS_SECURITY_RANDOMPASSWORD: "true"
             resources:
               requests:
