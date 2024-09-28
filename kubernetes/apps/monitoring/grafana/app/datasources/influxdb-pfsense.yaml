@@ -4,8 +4,6 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: grafana-ds-influxdb
-  labels:
-    grafana_datasource: "true"
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
@@ -15,6 +13,9 @@ spec:
     creationPolicy: Owner
     template:
       engineVersion: v2
+      metadata:
+        labels:
+          grafana_datasource: "true"
       data:
         influxdb-grafana.yaml: |
           apiVersion: 1
