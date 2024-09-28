@@ -26,7 +26,7 @@ spec:
   values:
     annotations:
       configmap.reloader.stakater.com/reload: grafana,pfsense-dashboard,loki-app-logs-dashboard
-      secret.reloader.stakater.com/reload: grafana-secret
+      secret.reloader.stakater.com/reload: grafana-secret,grafana-ds-influxdb-secret
 
     deploymentStrategy:
       type: Recreate
