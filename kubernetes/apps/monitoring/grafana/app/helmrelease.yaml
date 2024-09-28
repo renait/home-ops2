@@ -116,7 +116,6 @@ spec:
           - { name: Alertmanager, orgId: 1 }
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
-          - { name: InfluxDB, orgId: 1 }
         datasources:
           - name: Prometheus
             type: prometheus
@@ -140,15 +139,6 @@ spec:
             url: http://alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
-          - name: InfluxDB
-            type: influxdb
-            uid: influxdb
-            access: proxy
-            url: http://influxdb.monitoring.svc.cluster.local:8086
-            user: pfsense
-            jsonData:
-              dbName: pfsense
-              httpMode: POST
     dashboards:
       default:
         cloudflared:
@@ -280,6 +270,7 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
+        label: grafana_datasource
       resources:
         requests:
           cpu: 10m
