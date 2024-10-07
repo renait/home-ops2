@@ -18,7 +18,7 @@ spec:
 
   values:
     controllers:
-      main:
+      recyclarr:
         type: cronjob
 
         annotations:
@@ -36,7 +36,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 7.2.4
@@ -64,8 +64,8 @@ spec:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          recyclarr:
+            app:
               - path: /config
       config-file:
         type: configMap
