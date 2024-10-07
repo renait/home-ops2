@@ -15,7 +15,7 @@ spec:
   prune: true
   wait: true
   dependsOn:
-    - name: cluster-apps-cert-manager
+    - name: cert-manager
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
