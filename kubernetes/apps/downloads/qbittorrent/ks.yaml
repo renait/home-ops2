@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: cluster-apps-nfs-ssd
     - name: cluster-apps-volsync
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
   postBuild:
     substitute:
       APP: *appname

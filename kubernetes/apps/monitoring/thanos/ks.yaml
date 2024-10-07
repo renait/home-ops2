@@ -20,6 +20,6 @@ spec:
   retryInterval: 1m
   timeout: 15m
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
     - name: openebs
     - name: redis

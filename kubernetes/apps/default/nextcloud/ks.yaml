@@ -18,7 +18,7 @@ spec:
     name: home-kubernetes
   wait: true
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -40,7 +40,7 @@ spec:
   wait: true
   dependsOn:
     - name: cluster-apps-nfs-ssd
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
     - name: authentik
     - name: nextcloud-redis
   postBuild:

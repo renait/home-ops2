@@ -18,7 +18,7 @@ spec:
     name: home-kubernetes
   wait: true
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
     - name: cluster-apps-iscsi-ssd
     - name: cluster-apps-crunchy-postgres-operator
   postBuild:
