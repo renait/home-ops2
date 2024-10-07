@@ -40,7 +40,7 @@ spec:
   wait: true
   dependsOn:
     - name: external-secrets-stores
-    - name: cluster-apps-crunchy-postgres-operator
+    - name: crunchy-postgres-operator
     - name: authentik-redis
     - name: openldap
   postBuild:

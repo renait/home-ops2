@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: democratic-csi-iscsi-ssd
     - name: external-secrets-stores
-    - name: cluster-apps-crunchy-postgres-operator
+    - name: crunchy-postgres-operator
   postBuild:
     substitute:
       APP: *appname

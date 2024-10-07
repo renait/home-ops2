@@ -41,7 +41,7 @@ spec:
   dependsOn:
     - name: democratic-csi-nfs-ssd
     - name: external-secrets-stores
-    - name: cluster-apps-crunchy-postgres-operator
+    - name: crunchy-postgres-operator
     - name: nextcloud-redis
     - name: authentik
   postBuild:
