@@ -21,5 +21,5 @@ spec:
   timeout: 15m
   dependsOn:
     - name: external-secrets-stores
-    - name: cluster-apps-iscsi-ssd
+    - name: democratic-csi-iscsi-ssd
     - name: openebs

@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-iscsi-hdd
+  name: democratic-csi-iscsi-hdd
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/democratic-csi/iscsi-hdd/app
@@ -22,7 +22,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-iscsi-ssd
+  name: democratic-csi-iscsi-ssd
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/democratic-csi/iscsi-ssd/app
@@ -41,7 +41,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-nfs-hdd
+  name: democratic-csi-nfs-hdd
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/democratic-csi/nfs-hdd/app
@@ -60,7 +60,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-nfs-ssd
+  name: democratic-csi-nfs-ssd
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/democratic-csi/nfs-ssd/app

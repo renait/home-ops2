@@ -19,7 +19,7 @@ spec:
   wait: true
   dependsOn:
     - name: external-secrets-stores
-    - name: cluster-apps-iscsi-ssd
+    - name: democratic-csi-iscsi-ssd
     - name: cluster-apps-crunchy-postgres-operator
   postBuild:
     substitute:

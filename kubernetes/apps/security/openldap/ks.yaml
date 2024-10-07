@@ -20,7 +20,7 @@ spec:
   retryInterval: 1m
   timeout: 3m
   dependsOn:
-    - name: cluster-apps-iscsi-ssd
+    - name: democratic-csi-iscsi-ssd
   postBuild:
     substitute:
       APP: *appname
