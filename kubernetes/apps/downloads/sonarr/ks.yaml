@@ -19,7 +19,7 @@ spec:
   wait: false
   dependsOn:
     - name: cluster-apps-iscsi-ssd
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: external-secrets-stores
   postBuild:
     substitute:

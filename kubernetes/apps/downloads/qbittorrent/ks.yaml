@@ -19,7 +19,7 @@ spec:
   wait: true
   dependsOn:
     - name: cluster-apps-nfs-ssd
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: external-secrets-stores
   postBuild:
     substitute:
