@@ -40,8 +40,9 @@ spec:
   wait: true
   dependsOn:
     - name: external-secrets-stores
-    - name: openldap
+    - name: crunchy-postgres-operator
     - name: authentik-redis
+    - name: openldap
   postBuild:
     substitute:
       APP: *appname
