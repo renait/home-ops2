@@ -73,7 +73,7 @@ spec:
               - name: DOT
                 value: "off"
               - name: TZ
-                value: "Europe/Amsterdam"
+                value: "${TIMEZONE}"
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
