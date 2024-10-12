@@ -40,32 +40,33 @@ radarr:
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
 
-#    quality_profiles:
-#      - name: SQP-1 (1080p)
-#        min_format_score: 1000
-#      - name: SQP-1 (2160p)
-#        min_format_score: 2000
+    quality_profiles:
+      # - name: SQP-1 (1080p)
+        # Uncomment the below line if you don't have access to top-tier indexers
+        # min_format_score: 10
+      - name: SQP-1 (2160p)
+        min_format_score: 2000
 
     include:
       - template: radarr-quality-definition-movie
       # - template: radarr-quality-definition-sqp-streaming
       # 1080p
-      - template: radarr-quality-profile-hd-bluray-web
-      - template: radarr-custom-formats-hd-bluray-web
+      # - template: radarr-quality-profile-hd-bluray-web
+      # - template: radarr-custom-formats-hd-bluray-web
       # SQP-1 (1080p)
-      # - template: radarr-quality-profile-sqp-1-1080p
-      # - template: radarr-custom-formats-sqp-1-1080p
+      - template: radarr-quality-profile-sqp-1-1080p
+      - template: radarr-custom-formats-sqp-1-1080p
       # 2160p
-      - template: radarr-quality-profile-uhd-bluray-web
-      - template: radarr-custom-formats-uhd-bluray-web
+      # - template: radarr-quality-profile-uhd-bluray-web
+      # - template: radarr-custom-formats-uhd-bluray-web
       # - template: radarr-quality-profile-remux-web-2160p
       # - template: radarr-custom-formats-remux-web-2160p
       # SQP-1 (2160p)
       # - template: radarr-quality-profile-sqp-1-2160p-default
-      # - template: radarr-quality-profile-sqp-1-2160p-imax-e
+      - template: radarr-quality-profile-sqp-1-2160p-imax-e
       # - template: radarr-quality-profile-sqp-1-2160p-4k-only-default
       # - template: radarr-quality-profile-sqp-1-2160p-4k-only-imax-e
-      # - template: radarr-custom-formats-sqp-1-2160p
+      - template: radarr-custom-formats-sqp-1-2160p
 
     custom_formats:
       # Optional
