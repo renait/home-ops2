@@ -40,19 +40,39 @@ radarr:
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
 
-    include:
-      - template: radarr-quality-definition-sqp-streaming
-      # 2160p
-      - template: radarr-custom-formats-sqp-1-2160p
-      - template: radarr-quality-profile-sqp-1-2160p-4k-only-imax-e
-
     quality_profiles:
+      - name: SQP-1 (1080p)
+        min_format_score: 1000
       - name: SQP-1 (2160p)
         min_format_score: 2000
 
+    include:
+      - template: radarr-quality-definition-sqp-streaming
+      # 1080p
+      # - template: radarr-custom-formats-hd-bluray-web
+      # - template: radarr-quality-profile-hd-bluray-web
+      # SQP-1 (1080p)
+      - template: radarr-quality-profile-sqp-1-1080p
+      - template: radarr-custom-formats-sqp-1-1080p
+      # - template: radarr-custom-formats-remux-web-1080p
+      # - template: radarr-quality-profile-remux-web-1080p
+      # 2160p
+      # - template: radarr-custom-formats-uhd-bluray-web
+      # - template: radarr-quality-profile-uhd-bluray-web
+      # - template: radarr-custom-formats-remux-web-2160p
+      # - template: radarr-quality-profile-remux-web-2160p
+      # SQP-1 (2160p)
+      - template: radarr-quality-profile-sqp-1-2160p-default
+      # - template: radarr-quality-profile-sqp-1-2160p-imax-e
+      # - template: radarr-quality-profile-sqp-1-2160p-4k-only-default
+      # - template: radarr-quality-profile-sqp-1-2160p-4k-only-imax-e
+      - template: radarr-custom-formats-sqp-1-2160p
+
     custom_formats:
+      # Optional
+      # Uncomment any of the following optional custom formats if you want them to be added to
+      # the quality profile
       - trash_ids:
-          - 7a0d1ad358fee9f5b074af3ef3f9d9ef # hallowed
           - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL)
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
@@ -60,4 +80,5 @@ radarr:
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
           - f537cf427b64c38c8e36298f657e4828 # Scene
         assign_scores_to:
+          - name: SQP-1 (1080p)
           - name: SQP-1 (2160p)
