@@ -40,33 +40,32 @@ radarr:
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
 
-    quality_profiles:
-      - name: SQP-1 (1080p)
-        min_format_score: 1000
-      - name: SQP-1 (2160p)
-        min_format_score: 2000
+#    quality_profiles:
+#      - name: SQP-1 (1080p)
+#        min_format_score: 1000
+#      - name: SQP-1 (2160p)
+#        min_format_score: 2000
 
     include:
-      - template: radarr-quality-definition-sqp-streaming
+      - template: radarr-quality-definition-movie
+      # - template: radarr-quality-definition-sqp-streaming
       # 1080p
-      # - template: radarr-custom-formats-hd-bluray-web
-      # - template: radarr-quality-profile-hd-bluray-web
+      - template: radarr-quality-profile-hd-bluray-web
+      - template: radarr-custom-formats-hd-bluray-web
       # SQP-1 (1080p)
-      - template: radarr-quality-profile-sqp-1-1080p
-      - template: radarr-custom-formats-sqp-1-1080p
-      # - template: radarr-custom-formats-remux-web-1080p
-      # - template: radarr-quality-profile-remux-web-1080p
+      # - template: radarr-quality-profile-sqp-1-1080p
+      # - template: radarr-custom-formats-sqp-1-1080p
       # 2160p
-      # - template: radarr-custom-formats-uhd-bluray-web
-      # - template: radarr-quality-profile-uhd-bluray-web
-      # - template: radarr-custom-formats-remux-web-2160p
+      - template: radarr-quality-profile-uhd-bluray-web
+      - template: radarr-custom-formats-uhd-bluray-web
       # - template: radarr-quality-profile-remux-web-2160p
+      # - template: radarr-custom-formats-remux-web-2160p
       # SQP-1 (2160p)
-      - template: radarr-quality-profile-sqp-1-2160p-default
+      # - template: radarr-quality-profile-sqp-1-2160p-default
       # - template: radarr-quality-profile-sqp-1-2160p-imax-e
       # - template: radarr-quality-profile-sqp-1-2160p-4k-only-default
       # - template: radarr-quality-profile-sqp-1-2160p-4k-only-imax-e
-      - template: radarr-custom-formats-sqp-1-2160p
+      # - template: radarr-custom-formats-sqp-1-2160p
 
     custom_formats:
       # Optional
@@ -80,5 +79,7 @@ radarr:
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
           - f537cf427b64c38c8e36298f657e4828 # Scene
         assign_scores_to:
-          - name: SQP-1 (1080p)
-          - name: SQP-1 (2160p)
+          - name: HD Bluray + WEB
+          - name: UHD Bluray + WEB
+          # - name: SQP-1 (1080p)
+          # - name: SQP-1 (2160p)
