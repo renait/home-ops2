@@ -16,7 +16,19 @@ https://github.com/goauthentik/authentik/blob/main/website/integrations/services
 ### Nextcloud
 Add application "OpenID Connect user backend"
 
-![Screenshot from 2023-12-29 16-20-08.png](..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-12-29%2016-20-08.png)
+|Name|Value                                                                                 |
+|-----|--------------------------------------------------------------------------------------|
+|Identifier| Authentik                                                                            |
+|Client ID| zauMj...                                                                             |
+|Client Secret| {secret}                                                                             |
+|Discovery endpoint| https://authentik.{domain}/application/o/nextcloud/.wellknown/openid-configutation   |
+|Scope| email profile                                                                        |
+|Use unique user id| unchecked                                                                            |
+|Use provider identifier as prefix for ids| unchecked                                                                            |
+|Use group provisioning| checked                                                                              |
+|Check Bearer token on API and WebDav requests| unchecked                                                                            |
+|Send ID token hint on logout| checked                                                                              |
+
 
 ## Post installation
 
