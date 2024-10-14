@@ -27,9 +27,11 @@ spec:
     keepHistory: false
   values:
     livenessProbe:
-      initialDelaySeconds: 5
+      initialDelaySeconds: 3
+      periodSeconds: 5
     readinessProbe:
-      initialDelaySeconds: 5
+      initialDelaySeconds: 3
+      periodSeconds: 5
     gitlabUrl: "http://gitlab-webservice-default:8080/"
     ## Configure the maximum number of concurrent jobs
     concurrent: 4
