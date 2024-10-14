@@ -27,7 +27,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    gitlabUrl: "https://git.${SECRET_DOMAIN}/"
+    gitlabUrl: "http://gitlab-ee-main/"
     livenessProbe:
       initialDelaySeconds: 3
       periodSeconds: 5
