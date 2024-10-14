@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gitlab
-      version: 7.8.1
+      version: 8.3.5
       sourceRef:
         kind: HelmRepository
         name: gitlab
@@ -200,8 +200,6 @@ spec:
       enabled: false
     prometheus:
       install: false
-    grafana:
-      enabled: false
     gitlab-runner:
       install: false
   valuesFrom:
