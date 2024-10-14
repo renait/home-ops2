@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname gitlab-db
+  namespace: flux-system
+spec:
+  targetNamespace: gitlab
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/apps/gitlab/gitlab/db
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  dependsOn:
+    - name: external-secrets-stores
+  postBuild:
+    substitute:
+      APP: *appname
+      DB_NAME: gitlab
+      DB_USER: gitlab
+      DB_CAPACITY: "8Gi"
+---
+# yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname gitlab
+  namespace: flux-system
+spec:
+  targetNamespace: gitlab
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/apps/gitlab/gitlab/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  dependsOn:
+    - name: external-secrets-stores
+    - name: redis
+    - name: gitlab-db
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "1200"
+      APP_GID: "1200"
+      DB_NAME: gitlab
+      DB_USER: gitlab
+      DB_CAPACITY: "20Gi"
+---
+# yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app gitlab-runner
+  namespace: flux-system
+spec:
+  targetNamespace: gitlab
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/gitlab/gitlab/runner
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  dependsOn:
+    - name: external-secrets-stores
+    - name: gitlab
