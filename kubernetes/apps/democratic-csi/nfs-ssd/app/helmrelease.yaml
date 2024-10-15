@@ -43,6 +43,8 @@ spec:
           memory: 25M
 
     controller:
+      annotations:
+        reloader.stakater.com/reload: truenas-secret
       # democratic-csi controller
       driver:
         image: docker.io/democraticcsi/democratic-csi:v1.9.3
