@@ -148,7 +148,7 @@ spec:
       tmp:
         type: emptyDir
       nexus-data:
-        existingClaim: nexus-repository-manager-data2
+        existingClaim: "${VOLSYNC_CLAIM}"
       nexus-backup:
         existingClaim: nexus-repository-manager-backup
         advancedMounts:
