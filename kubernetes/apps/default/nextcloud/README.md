@@ -21,7 +21,7 @@ Add application "OpenID Connect user backend"
 |Identifier| Authentik                                                                            |
 |Client ID| zauMj...                                                                             |
 |Client Secret| {secret}                                                                             |
-|Discovery endpoint| https://authentik.{domain}/application/o/nextcloud/.wellknown/openid-configutation   |
+|Discovery endpoint| {auth-hostname}/application/o/nextcloud/.wellknown/openid-configutation   |
 |Scope| email profile                                                                        |
 |Use unique user id| unchecked                                                                            |
 |Use provider identifier as prefix for ids| unchecked                                                                            |
