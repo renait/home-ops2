@@ -77,8 +77,8 @@ spec:
       mail:
         enabled: true
         smtp:
-          secure: ssl
-          port: 465
+          secure: ""
+          port: 587
           authtype: LOGIN
 
       ## Strategy used to replace old pods
