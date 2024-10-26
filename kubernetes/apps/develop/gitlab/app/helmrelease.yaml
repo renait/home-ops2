@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gitlab
-      version: 8.4.2
+      version: 8.5.1
       sourceRef:
         kind: HelmRepository
         name: gitlab
@@ -66,8 +66,6 @@ spec:
         enabled: true
       email:
         display_name: 'GitLab'
-        from: 'gitlab@renait.nl'
-        reply_to: 'no-reply@renait.nl'
       minio:
         enabled: false
       psql:
@@ -86,15 +84,16 @@ spec:
           - host: redis-node-2.redis-headless.database.svc.cluster.local
             port: 26379
       smtp:
-        enabled: false
-        #        address: "${SECRET_SMTP_HOST}"
-        #        port: ""
-        #        user_name: ""
-        # domain: *domain
-        # starttls_auto: true
-        # password:
-        #   secret: *secret
-        #   key: SMTP_PASSWORD
+        enabled: true
+        address: "smtp.gmail.com"
+        port: 587
+        password:
+          secret: *secret
+          key: SMTP_PASSWORD
+        authentication: "login"
+        starttls_auto: true
+        openssl_verify_mode: "peer"
+        pool: false
 
       appConfig:
         ## https://docs.gitlab.com/charts/charts/globals#lfs-artifacts-uploads-packages-external-mr-diffs-and-dependency-proxy
@@ -220,16 +219,21 @@ spec:
       name: "${APP}-pguser-${DB_USER}"
       valuesKey: user
       targetPath: global.psql.username
-    # # STMP
-#    - kind: Secret
-#      name: *secret
-#      valuesKey: SMTP_SERVER
-#      targetPath: global.smtp.address
-#    - kind: Secret
-#      name: *secret
-#      valuesKey: SMTP_USERNAME
-#      targetPath: global.smtp.user_name
-#    - kind: Secret
-#      name: *secret
-#      valuesKey: SMTP_PORT
-#      targetPath: global.smtp.port
+    # EMAIL
+    - kind: Secret
+      name: *secret
+      valuesKey: EMAIL_FROM
+      targetPath: global.email.from
+    - kind: Secret
+      name: *secret
+      valuesKey: EMAIL_REPLY_TO
+      targetPath: global.email.reply_to
+    # SMTP
+    - kind: Secret
+      name: *secret
+      valuesKey: SMTP_USERNAME
+      targetPath: global.smtp.user_name
+    - kind: Secret
+      name: *secret
+      valuesKey: SMTP_DOMAIN
+      targetPath: global.smtp.domain
