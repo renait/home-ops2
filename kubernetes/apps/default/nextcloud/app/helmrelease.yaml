@@ -75,7 +75,7 @@ spec:
       update: 0
       datadir: /var/www/html/data
       mail:
-        enabled: false
+        enabled: true
         domain: gmail.com
         smtp:
           secure: ssl
@@ -234,16 +234,16 @@ spec:
     - kind: Secret
       name: nextcloud-secret
       valuesKey: nextcloud_email_from
-      targetPath: nextcloud.fromAddress
+      targetPath: nextcloud.mail.fromAddress
     - kind: Secret
       name: nextcloud-secret
-      valuesKey: nextcloud_email_host
-      targetPath: nextcloud.smtp.host
+      valuesKey: nextcloud_email_smtp_host
+      targetPath: nextcloud.mail.smtp.host
     - kind: Secret
       name: nextcloud-secret
-      valuesKey: nextcloud_email_username
-      targetPath: nextcloud.smtp.user
+      valuesKey: nextcloud_email_smtp_name
+      targetPath: nextcloud.mail.smtp.name
     - kind: Secret
       name: nextcloud-secret
-      valuesKey: nextcloud_email_password
-      targetPath: nextcloud.smtp.password
+      valuesKey: nextcloud_email_smtp_password
+      targetPath: nextcloud.mail.smtp.password
