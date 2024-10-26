@@ -76,10 +76,9 @@ spec:
       datadir: /var/www/html/data
       mail:
         enabled: true
-        domain: gmail.com
         smtp:
           secure: ssl
-          port: 487
+          port: 465
           authtype: LOGIN
 
       ## Strategy used to replace old pods
@@ -235,6 +234,10 @@ spec:
       name: nextcloud-secret
       valuesKey: nextcloud_email_from
       targetPath: nextcloud.mail.fromAddress
+    - kind: Secret
+      name: nextcloud-secret
+      valuesKey: nextcloud_email_domain
+      targetPath: nextcloud.mail.domain
     - kind: Secret
       name: nextcloud-secret
       valuesKey: nextcloud_email_smtp_host
