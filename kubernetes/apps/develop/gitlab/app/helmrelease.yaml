@@ -37,15 +37,15 @@ spec:
       nodeSelector:
         kubernetes.io/arch: amd64
       hosts:
-        domain: renait.nl
+        domain: ${SECRET_DOMAIN}
         gitlab:
-          name: gitlab.renait.nl
+          name: gitlab.${SECRET_DOMAIN}
           https: true
         registry:
-          name: registry-gitlab.renait.nl
+          name: registry-gitlab.${SECRET_DOMAIN}
           https: true
         minio:
-          name: s3.renait.nl
+          name: s3.${SECRET_DOMAIN}
           https: true
       ingress:
         class: internal

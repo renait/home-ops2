@@ -5,6 +5,4 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - postgresCluster.yaml
-  # - ../../../../templates/volsync
-
+  - ../../../../templates/postgres-database
