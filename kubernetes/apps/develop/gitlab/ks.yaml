@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/apps/gitlab/gitlab/app
+  path: ./kubernetes/apps/develop/gitlab/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -41,7 +41,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/gitlab/gitlab/runner
+  path: ./kubernetes/apps/develop/gitlab/runner
   prune: true
   sourceRef:
     kind: GitRepository
