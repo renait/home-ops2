@@ -93,3 +93,4 @@ spec:
       enabled: false
     tcp:
      '2222': 'gitlab/gitlab-ee-ssh:ssh'
+     '3333': 'gitlab/gitlab-gitlab-shell:ssh'
