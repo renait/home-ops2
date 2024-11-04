@@ -472,7 +472,7 @@ The cluster is your oyster (or something like that). Below are some optional con
 
 #### Ship it
 
-To browse or get ideas on applications people are running, community member [@whazor](https://github.com/whazor) created [this website](https://nanne.dev/k8s-at-home-search/) as a creative way to search Flux HelmReleases across Github.
+To browse or get ideas on applications people are running, community member [@whazor](https://github.com/whazor) created [this website](https://kubesearch.dev/) as a creative way to search Flux HelmReleases across Github.
 
 #### Storage
 
@@ -488,7 +488,7 @@ By default this template only works on a public Github repository, it is advised
 The benefits of a public repository include:
 
 - Debugging or asking for help, you can provide a link to a resource you are having issues with.
-- Adding a topic to your repository of `k8s-at-home` to be included in the [k8s-at-home-search](https://nanne.dev/k8s-at-home-search/). This search helps people discover different configurations of Helm charts across others Flux based repositories.
+- Adding a topic to your repository of `kubesearch` to be included in the [k8s-at-home-search](https://kubesearch.dev/). This search helps people discover different configurations of Helm charts across others Flux based repositories.
 
 <details>
   <summary>Expand to read guide on adding Flux SSH authentication</summary>
