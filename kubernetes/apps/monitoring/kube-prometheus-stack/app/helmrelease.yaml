@@ -160,8 +160,21 @@ spec:
               resources:
                 requests:
                   storage: 20Gi
+        resources:
+          requests:
+            cpu: 50m
+            memory: 1Gi
+          limits:
+            memory: 2Gi
     nodeExporter:
       enabled: true
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 50Mi
+        limits:
+          memory: 256Mi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
