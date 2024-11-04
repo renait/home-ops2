@@ -133,20 +133,45 @@ spec:
         tls:
           - hosts:
               - *host
+      resources:
+        requests:
+          cpu: 10m
+          memory: 20Mi
+        limits:
+          memory: 100Mi
+
     read:
       replicas: 2
+      resources:
+        requests:
+          cpu: 10m
+          memory: 160Mi
+        limits:
+          memory: 200Mi
       persistence:
         size: 5Gi
         storageClass: openebs-hostpath
 
     write:
       replicas: 2
+      resources:
+        requests:
+          cpu: 20m
+          memory: 400Mi
+        limits:
+          memory: 800Mi
       persistence:
         size: 5Gi
         storageClass: openebs-hostpath
 
     backend:
       replicas: 2
+      resources:
+        requests:
+          cpu: 10m
+          memory: 160Mi
+        limits:
+          memory: 240Mi
       persistence:
         size: 10Gi
         storageClass: openebs-hostpath
