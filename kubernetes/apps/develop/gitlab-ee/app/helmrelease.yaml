@@ -55,7 +55,7 @@ spec:
                   name: gitlab-ee-secret
             resources:
               requests:
-                cpu: 50m
+                cpu: 130m
                 memory: 3Gi
               limits:
                 memory: 4Gi

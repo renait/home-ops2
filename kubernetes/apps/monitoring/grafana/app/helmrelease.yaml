@@ -298,6 +298,12 @@ spec:
       tls:
         - hosts:
             - *host
+    resources:
+      requests:
+        cpu: 20m
+        memory: 160Mi
+      limits:
+        memory: 320Mi
     persistence:
       enabled: false
     testFramework:

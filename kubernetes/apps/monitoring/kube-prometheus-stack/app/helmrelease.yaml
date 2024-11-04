@@ -162,7 +162,7 @@ spec:
                   storage: 20Gi
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 1Gi
           limits:
             memory: 2Gi

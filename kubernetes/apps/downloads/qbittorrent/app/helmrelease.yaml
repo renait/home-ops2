@@ -45,8 +45,8 @@ spec:
               QBT_BitTorrent__Session__Interface: tun0
             resources:
               requests:
-                cpu: 50m
-                memory: 250Mi
+                cpu: 10m
+                memory: 500Mi
               limits:
                 memory: 1Gi
             securityContext:
