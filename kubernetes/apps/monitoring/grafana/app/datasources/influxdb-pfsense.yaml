@@ -31,7 +31,7 @@ spec:
               secureJsonData:
                 password: "{{ .influxdb_pfsense_token }}"
               jsonData:
-                dbName: pfsense
+                dbName: pfsense48h
                 httpMode: POST
               editable: false
   dataFrom:
