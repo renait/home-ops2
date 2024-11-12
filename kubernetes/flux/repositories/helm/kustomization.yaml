@@ -29,7 +29,6 @@ resources:
   - kubernetes-sigs-nfd.yaml
   - metrics-server.yaml
   - nextcloud.yaml
-  - oauth2-proxy-charts.yaml
   - openebs.yaml
   - piraeus.yaml
   - prometheus-community.yaml
