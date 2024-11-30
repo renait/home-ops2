@@ -35,7 +35,7 @@ spec:
     image:
       # From repository https://hub.docker.com/r/bitnami/openldap/
       repository: bitnami/openldap
-      tag: 2.6.8
+      tag: 2.6.9
 
     updateStrategy:
       type: RollingUpdate
