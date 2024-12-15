@@ -2,6 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "description": ["Auto-merge container digests updates for trusted containers"],
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["digest"],
+      "matchPackagePatterns": ["ghcr.io/onedr0p"]
+    },
+    {
       "description": "Auto merge Github Actions",
       "matchManagers": ["github-actions"],
       "automerge": true,
@@ -16,6 +24,14 @@
       "automergeType": "branch",
       "ignoreTests": true,
       "matchUpdateTypes": ["digest"]
+    },
+    {
+      "description": "Auto merge KPS minors and patches",
+      "matchDatasources": ["helm"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["kube-prometheus-stack"]
     }
   ]
 }
