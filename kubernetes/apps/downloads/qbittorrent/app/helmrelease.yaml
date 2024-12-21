@@ -93,13 +93,14 @@ spec:
                 cpu: 50m
                 memory: 250Mi
               limits:
+                squat.ai/tun: "1"
                 memory: 500Mi
             securityContext:
               capabilities:
                 add:
                   - NET_ADMIN
               allowPrivilegeEscalation: false
-              #privileged: true
+              readOnlyRootFilesystem: true
 
     service:
       main:
