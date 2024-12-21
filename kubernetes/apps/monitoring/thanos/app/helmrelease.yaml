@@ -46,6 +46,9 @@ spec:
       valuesKey: SECRET_KEY
       targetPath: objstoreConfig.config.secret_key
   values:
+    global:
+      security:
+        allowInsecureImages: true
     image:
       registry: quay.io
       repository: thanos/thanos
