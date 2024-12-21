@@ -94,7 +94,7 @@ spec:
                 memory: 250Mi
               limits:
                 #squat.ai/tun: "1"
-                memory: 500Mi
+                memory: 600Mi
             securityContext:
               capabilities:
                 add:
