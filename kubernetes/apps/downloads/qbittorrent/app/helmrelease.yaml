@@ -98,7 +98,8 @@ spec:
               capabilities:
                 add:
                   - NET_ADMIN
-              privileged: true
+              allowPrivilegeEscalation: false
+              #privileged: true
 
     service:
       main:
