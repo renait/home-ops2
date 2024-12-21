@@ -99,7 +99,7 @@ spec:
               capabilities:
                 add:
                   - NET_ADMIN
-              #privileged: true
+              privileged: true
               #allowPrivilegeEscalation: false
               #readOnlyRootFilesystem: true
 
