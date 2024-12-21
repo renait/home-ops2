@@ -46,13 +46,13 @@ spec:
       valuesKey: SECRET_KEY
       targetPath: objstoreConfig.config.secret_key
   values:
-#    global:
-#      security:
-#        allowInsecureImages: true
-#    image:
-#      registry: quay.io
-#      repository: thanos/thanos
-#      tag: v0.37.2
+    global:
+      security:
+        allowInsecureImages: true
+    image:
+      registry: quay.io
+      repository: thanos/thanos
+      tag: v0.37.2
     objstoreConfig:
       type: s3
       config:
@@ -95,8 +95,8 @@ spec:
         #   memory: 64M
     compactor:
       enabled: true
+      concurrency: 4
       extraFlags:
-        - --compact.concurrency=4
         - --delete-delay=30m
       retentionResolutionRaw: 7d
       retentionResolution5m: 15d
