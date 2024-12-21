@@ -93,15 +93,13 @@ spec:
                 cpu: 50m
                 memory: 250Mi
               limits:
-                #squat.ai/tun: "1"
+                squat.ai/tun: "1"
                 memory: 500Mi
             securityContext:
+              allowPrivilegeEscalation: false
               capabilities:
                 add:
                   - NET_ADMIN
-              privileged: true
-              #allowPrivilegeEscalation: false
-              #readOnlyRootFilesystem: true
 
     service:
       main:
@@ -132,15 +130,6 @@ spec:
           main:
             main:
               - path: /config
-#      scripts:
-#        type: configMap
-#        name: qbittorrent-scripts
-#        defaultMode: 0775
-#        advancedMounts:
-#          main:
-#            main:
-#              - path: /scripts
-#                readOnly: true
       data:
         existingClaim: nas-media
         advancedMounts:
@@ -148,12 +137,3 @@ spec:
             main:
               - path: /data/torrents
                 subPath: torrents
-      gluetun-data:
-        type: emptyDir
-        advancedMounts:
-          main:
-            gluetun:
-              - path: /tmp/gluetun
-            port-forward:
-              - path: /tmp/gluetun
-                readOnly: true
