@@ -34,8 +34,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: &hostname "internal.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: "192.168.14.202"
-      #publishService:
-      #  enabled: false
       ingressClassResource:
         name: internal
         default: true
