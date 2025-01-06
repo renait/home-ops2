@@ -40,9 +40,10 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: &hostname "external.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: "192.168.14.201"
-        externalTrafficPolicy: Cluster
+      publishService:
+        enabled: false
       ingressClassResource:
         name: external
         default: false
@@ -92,6 +93,7 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-production-tls"
+        publish-status-address: *hostname
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
