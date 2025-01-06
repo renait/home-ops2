@@ -34,8 +34,8 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: &hostname "internal.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: "192.168.14.202"
-      publishService:
-        enabled: false
+      #publishService:
+      #  enabled: false
       ingressClassResource:
         name: internal
         default: true
@@ -87,6 +87,7 @@ spec:
       extraArgs:
         default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-production-tls"
         publish-status-address: *hostname
+        #publish-status-address: *hostname
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
