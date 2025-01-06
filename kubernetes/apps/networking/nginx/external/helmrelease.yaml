@@ -56,7 +56,7 @@ spec:
       config:
         annotations-risk-level: Critical
         # taken from https://github.com/ai-robots-txt/ai.robots.txt d.d. 6-1-2025
-        block-user-agents: "AI2Bot,AI2Bot-Dolma,Amazonbot,anthropic-ai,Applebot,Applebot-Extended,Bytespider,CCBot,ChatGPT-User,Claude-Web,ClaudeBot,cohere-ai,cohere-training-data-crawler,Diffbot,DuckAssistBot,FacebookBot,FriendlyCrawler,Google-Extended,GoogleOther,Google-Image,Google-Video,GPTBot,iaskspider/2.0,ICC-Crawler,ImagesiftBot,img2dataset,ISSCyberRiskCrawler,Kangaroo Bot,Meta-ExternalAgent,Meta-ExternalFetcher,OAI-SearchBot,omgili,omgilibot,PanguBot,PerplexityBot,PetalBot,Scrapy,Sidetrade indexer bot,Timpibot,VelenPublicWebCrawler,Webzio-Extended,YouBot,"
+        block-user-agents: "AI2Bot,AI2Bot-Dolma,Amazonbot,anthropic-ai,Applebot,Applebot-Extended,Bytespider,CCBot,ChatGPT-User,Claude-Web,ClaudeBot,cohere-ai,cohere-training-data-crawler,Diffbot,DuckAssistBot,FacebookBot,FriendlyCrawler,Google-Extended,GoogleOther,Google-Image,Google-Video,GPTBot,ICC-Crawler,ImagesiftBot,img2dataset,ISSCyberRiskCrawler,Kangaroo Bot,Meta-ExternalAgent,Meta-ExternalFetcher,OAI-SearchBot,omgili,omgilibot,PanguBot,PerplexityBot,PetalBot,Scrapy,Sidetrade indexer bot,Timpibot,VelenPublicWebCrawler,Webzio-Extended,YouBot,"
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
