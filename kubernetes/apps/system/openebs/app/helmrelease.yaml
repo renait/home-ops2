@@ -30,7 +30,7 @@ spec:
         image:
           registry: quay.io/
           repository: openebs/provisioner-localpv
-          tag: 4.1.2
+          tag: 4.1.4
         basePath: "/var/lib/rancher/k3s/openebs-hostpath"
         resources:
           requests:
