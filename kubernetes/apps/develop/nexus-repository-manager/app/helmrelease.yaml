@@ -101,12 +101,12 @@ spec:
             targetPort: *httpPort
             protocol: HTTP
       registry:
-        enabled: false
+        enabled: true
         controller: main
         ports:
           registry:
             port: 8082
-            targetPort: 8082
+            targetPort: 5003
             protocol: TCP
 
     ingress:
@@ -133,16 +133,16 @@ spec:
                 service:
                   identifier: main
                   port: http
-          # - host: &host2 registry-nexus.${SECRET_DOMAIN}
-          #   paths:
-          #     - path: /
-          #       service:
-          #         identifier: registry
-          #         port: 5000
+          - host: &host2 registry-nexus.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: registry
+                  port: 8082
         tls:
           - hosts:
               - *host1
-              # - *host2
+              - *host2
 
     persistence:
       tmp:
