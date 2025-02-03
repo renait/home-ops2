@@ -105,8 +105,8 @@ spec:
         controller: main
         ports:
           registry:
-            port: 5003
-            targetPort: 5003
+            port: 5000
+            targetPort: 5000
             protocol: TCP
 
     ingress:
