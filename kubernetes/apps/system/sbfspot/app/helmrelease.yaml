@@ -1,0 +1,111 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sbfspot
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    timeout: 15m
+    remediation:
+      retries: 3
+  upgrade:
+    timeout: 15m
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+
+        annotations:
+          secret.reloader.stakater.com/reload: sbfspot-secret
+
+        pod:
+          dnsPolicy: ClusterFirstWithHostNet
+          # unsafe but necessary for bluetooth to work
+          hostNetwork: true
+          nodeSelector:
+            # select node with bluetooth dongle
+            feature.node.kubernetes.io/usb-03_0e0f_0003.present: "true"
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+
+        initContainers:
+          copy-config:
+            image:
+              repository: alpine
+              tag: 3.21.2
+            command:
+              - "/bin/sh"
+              - -c
+            args:
+              - |
+                cp /tmp/sbfspot/* /etc/sbfspot;
+                chmod 0755 /etc/sbfspot/*;
+                ls -las /etc/sbfspot/
+
+        containers:
+          main:
+            image:
+              repository: solarexplorer/sbfspot
+              tag: 3.9.11
+              pullPolicy: Always
+            env:
+              TZ: "Europe/Amsterdam"
+              ENABLE_SBFSPOT: 1
+              SBFSPOT_INTERVAL: 300
+              ENABLE_SBFSPOT_UPLOAD: 1
+              DB_STORAGE: sqlite
+              CSV_STORAGE: 1
+              MQTT_ENABLE: 0
+              QUIET: 0
+              SBFSPOT_ARGS: -d0 -v2
+              INIT_DB: 0
+            resources:
+              requests:
+                cpu: 130m
+                memory: 50Mi
+              limits:
+                memory: 1Gi
+
+    persistence:
+      sbfspot-secret:
+        type: secret
+        name: sbfspot-secret
+        advancedMounts:
+          main:
+            copy-config:
+              - path: /tmp/sbfspot
+
+      data:
+        existingClaim: sbfspot-data
+        advancedMounts:
+          main:
+            main:
+              - path: /var/sbfspot
+                subPath: content
+              - path: /var/log/sbfspot.3
+                subPath: log
+
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /etc/sbfspot
