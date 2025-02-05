@@ -79,6 +79,12 @@ spec:
               QUIET: 0
               SBFSPOT_ARGS: -d0 -v2
               INIT_DB: 0
+            securityContext:
+              privileged: true
+              capabilities:
+                add:
+                  - NET_ADMIN
+                  - SYS_ADMIN
             resources:
               requests:
                 cpu: 130m
