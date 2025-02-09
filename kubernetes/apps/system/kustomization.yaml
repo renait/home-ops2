@@ -15,7 +15,7 @@ resources:
   - reloader/ks.yaml
   - volsync/ks.yaml
   - system-upgrade-controller/ks.yaml
-  - sbfspot/ks.yaml
+  # - sbfspot/ks.yaml
   #- k8s-dashboard/ks.yaml
   # Standard resources
   - external-services
