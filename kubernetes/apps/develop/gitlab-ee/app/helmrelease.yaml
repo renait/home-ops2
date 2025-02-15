@@ -40,7 +40,7 @@ spec:
           main:
             image:
               repository: gitlab/gitlab-ee
-              tag: 17.8.1-ee.0
+              tag: 17.8.2-ee.0
               pullPolicy: IfNotPresent
             env:
               TZ: "Europe/Amsterdam"
