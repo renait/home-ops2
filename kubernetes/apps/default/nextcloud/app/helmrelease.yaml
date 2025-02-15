@@ -30,7 +30,7 @@ spec:
 
     image:
       repository: nextcloud
-      tag: 29.0.11-fpm-alpine
+      tag: 29.0.12-fpm-alpine
       flavor: fpm-alpine
 
     ## Allowing use of ingress controllers
