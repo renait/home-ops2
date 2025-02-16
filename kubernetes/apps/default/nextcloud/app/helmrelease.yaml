@@ -40,8 +40,9 @@ spec:
       enabled: true
       className: external
       annotations:
-        nginx.ingress.kubernetes.io/proxy-body-size: 512M
-        kubernetes.io/tls-acme: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: 4G
+        nginx.ingress.kubernetes.io/enable-cors: "true"
+        nginx.ingress.kubernetes.io/cors-allow-headers: "X-Forwarded-For"
         nginx.ingress.kubernetes.io/server-snippet: |-
           server_tokens off;
           proxy_hide_header X-Powered-By;
@@ -80,12 +81,6 @@ spec:
           secure: ""
           port: 587
           authtype: LOGIN
-
-      ## Strategy used to replace old pods
-      ## IMPORTANT: use with care, it is suggested to leave as that for upgrade purposes
-      ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
-      strategy:
-        type: Recreate
 
       ##
       ## Extra environment variables
@@ -217,6 +212,19 @@ spec:
       enabled: true
       periodSeconds: 20
       failureThreshold: 30
+
+    lifecycle:
+      postStartCommand:
+        - su
+        - www-data
+        - -s
+        - /bin/sh
+        - -c
+        - >-
+          cd /var/www/html;
+          ./occ upgrade;
+          ./occ db:add-missing-indices;
+          /bin/true
 
   valuesFrom:
     - kind: Secret
