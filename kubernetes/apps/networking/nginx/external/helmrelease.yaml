@@ -62,7 +62,7 @@ spec:
         enable-real-ip: "true"
         force-ssl-redirect: "true"
         hide-headers: Server,X-Powered-By
-        hsts-max-age: 31449600
+        hsts-max-age: "31449600"
         keep-alive: 120
         keep-alive-requests: 10000
         log-format-escape-json: "true"
@@ -76,7 +76,7 @@ spec:
           "http_user_agent": "$http_user_agent"}
         proxy-body-size: 0
         proxy-buffer-size: "16k"
-        ssl-protocols: "TLSv1.3 TLSv1.2"
+        ssl-protocols: TLSv1.3 TLSv1.2
         strict-validate-path-type: "true"
         use-forwarded-headers: "true"
       enableAnnotationValidations: true
