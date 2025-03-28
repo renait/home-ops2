@@ -11,7 +11,7 @@ flux build kustomization nextcloud --dry-run --path ./app --kustomization-file=.
 
 ### Authentik
 
-https://github.com/goauthentik/authentik/blob/main/website/integrations/services/nextcloud/index.md#openid-connect-auth
+https://docs.goauthentik.io/integrations/services/nextcloud/#nextcloud
 
 ### Nextcloud
 Add application "OpenID Connect user backend"
