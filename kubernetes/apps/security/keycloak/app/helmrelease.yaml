@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: keycloak
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: keycloak
+      version: 24.4.3
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  values:
+    statefulsetAnnotations:
+      secret.reloader.stakater.com/reload: keycloak-secret,${APP}-pguser-${DB_USER}
+
+    auth:
+      existingSecret: keycloak-secret
+      passwordSecretKey: keycloak-password
+
+    extraEnvVars:
+      - name: KC_HOSTNAME_DEBUG
+        value: "true"
+
+    production: true
+    proxy: "edge"
+    #proxyHeaders: "xforwarded"
+
+    ingress:
+      enabled: true
+      ingressClassName: external
+      hostname: "keycloak.${SECRET_DOMAIN}"
+      tls: true
+
+    adminIngress:
+      enabled: true
+      ingressClassName: internal
+      hostname: "keycloak-admin.${SECRET_DOMAIN}"
+      tls: true
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+    postgresql:
+      enabled: false
+
+    externalDatabase:
+      existingSecret: "${APP}-pguser-${DB_USER}"
+      existingSecretHostKey: "host"
+      existingSecretPortKey: "port"
+      existingSecretUserKey: "user"
+      existingSecretDatabaseKey: "dbname"
+      existingSecretPasswordKey: "password"
