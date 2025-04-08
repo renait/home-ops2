@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: democratic-csi
-      version: 0.14.7
+      version: 0.15.0
       sourceRef:
         kind: HelmRepository
         name: democratic-csi
@@ -34,7 +34,9 @@ spec:
       name: org.democratic-csi.nfs-hdd
 
     csiProxy:
-      image: docker.io/democraticcsi/csi-grpc-proxy:v0.5.6
+      image:
+        registry: docker.io/democraticcsi/csi-grpc-proxy
+        tag: v0.5.6
       resources:
         requests:
           cpu: 15m
@@ -47,7 +49,10 @@ spec:
         reloader.stakater.com/reload: truenas-secret
       # democratic-csi controller
       driver:
-        image: docker.io/democraticcsi/democratic-csi:v1.9.3
+        image:
+          registry: docker.io/democraticcsi/democratic-csi
+          tag: v1.9.3
+          pullPolicy: IfNotPresent
         logLevel: debug
         resources:
           requests:
@@ -57,10 +62,14 @@ spec:
             memory: 250M
 
       externalAttacher:
-        image: registry.k8s.io/sig-storage/csi-attacher:v4.8.1
+        image:
+          registry: registry.k8s.io/sig-storage/csi-attacher
+          tag: v4.8.1
 
       externalProvisioner:
-        image: registry.k8s.io/sig-storage/csi-provisioner:v5.2.0
+        image:
+          registry: registry.k8s.io/sig-storage/csi-provisioner
+          tag: v5.2.0
         resources:
           requests:
             cpu: 15m
@@ -69,7 +78,9 @@ spec:
             memory: 40M
 
       externalResizer:
-        image: registry.k8s.io/sig-storage/csi-resizer:v1.13.2
+        image:
+          registry: registry.k8s.io/sig-storage/csi-resizer
+          tag: v1.13.2
         resources:
           requests:
             cpu: 15m
@@ -78,7 +89,9 @@ spec:
             memory: 50M
 
       externalSnapshotter:
-        image: registry.k8s.io/sig-storage/csi-snapshotter:v8.2.1
+        image:
+          registry: registry.k8s.io/sig-storage/csi-snapshotter
+          tag: v8.2.1
         resources:
           requests:
             cpu: 15m
@@ -88,12 +101,17 @@ spec:
 
       externalHealthMonitorController:
         enabled: false
-        image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.14.0
+        image:
+          registry: registry.k8s.io/sig-storage/csi-external-health-monitor-controller
+          tag: v0.14.0
 
     node:
       # democratic-csi node
       driver:
-        image: docker.io/democraticcsi/democratic-csi:v1.9.3
+        image:
+          registry: docker.io/democraticcsi/democratic-csi
+          tag: v1.9.3
+          pullPolicy: IfNotPresent
         logLevel: debug
         resources:
           requests:
