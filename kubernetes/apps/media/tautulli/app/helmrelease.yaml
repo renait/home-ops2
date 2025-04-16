@@ -34,6 +34,8 @@ spec:
             image:
               repository: ghcr.io/home-operations/tautulli
               tag: 2.15.2
+            env:
+              TZ: "${TIMEZONE}"
             probes:
               liveness: &probes
                 enabled: true
