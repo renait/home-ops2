@@ -36,6 +36,8 @@ spec:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
             # video,render groups
@@ -46,20 +48,12 @@ spec:
         containers:
           main:
             image:
-              repository: plexinc/pms-docker
-              tag: plexpass
+              repository: ghcr.io/home-operations/plex
+              tag: 1.41.6.9685
             env:
               TZ: "${TIMEZONE}"
-              PLEX_CLAIM:
-                valueFrom:
-                  secretKeyRef:
-                    name: plex-secret
-                    key: PLEX_CLAIM
-              CHANGE_CONFIG_DIR_OWNERSHIP: false
-              PLEX_ADVERTISE_URL: https://plex.renait.nl:443,http://192.168.14.204:32400
-              #ALLOWED_NETWORKS: "10.42.0.0/16"
-              PLEX_GID: ${APP_UID}
-              PLEX_UID: ${APP_GID}
+              PLEX_ADVERTISE_URL: http://192.168.14.204:32400,https://plex.${SECRET_DOMAIN}:443
+              PLEX_NO_AUTH_NETWORKS: "10.42.0.0/16"
             probes:
               liveness: &probes
                 enabled: true
