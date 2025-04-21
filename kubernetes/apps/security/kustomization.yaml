@@ -9,3 +9,4 @@ resources:
   # - clustersecret/ks.yaml
   - openldap/ks.yaml
   - authentik/ks.yaml
+  - keycloak/ks.yaml
