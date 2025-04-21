@@ -5,6 +5,4 @@ metadata:
   name: nexus
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
-    pgo-enabled: "true"
-    redis-enabled: "true"
     goldilocks.fairwinds.com/enabled: "true"
