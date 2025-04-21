@@ -7,15 +7,20 @@ metadata:
 spec:
   interval: 30m
   timeout: 15m
-  chart:
-    spec:
-      chart: keycloak
-      version: 24.4.3
-      interval: 30m
-      sourceRef:
-        kind: HelmRepository
-        name: bitnami
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: keycloak
+
+#  chart:
+#    spec:
+#      chart: keycloak
+#      version: 24.4.3
+#      interval: 30m
+#      sourceRef:
+#        kind: HelmRepository
+#        name: bitnami
+#        namespace: flux-system
+
   values:
     statefulsetAnnotations:
       secret.reloader.stakater.com/reload: keycloak-secret,${APP}-pguser-${DB_USER}
