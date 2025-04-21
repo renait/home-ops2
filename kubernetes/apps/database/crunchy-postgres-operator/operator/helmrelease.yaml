@@ -8,15 +8,9 @@ metadata:
   namespace: database
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: pgo
-      version: 5.8.1
-      sourceRef:
-        kind: HelmRepository
-        name: crunchydata
-        namespace: flux-system
-      interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: pgo
   install:
     crds: CreateReplace
   upgrade:
