@@ -17,10 +17,24 @@ spec:
         kind: HelmRepository
         name: external-secrets
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
   values:
     installCRDs: true
-    replicaCount: 2
-    leaderElect: true
     serviceMonitor:
       enabled: true
       interval: 1m
+    certController:
+      serviceMonitor:
+        enabled: true
+        interval: 1m
+    webhook:
+      serviceMonitor:
+        enabled: true
+        interval: 1m
