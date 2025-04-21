@@ -6,14 +6,9 @@ metadata:
 spec:
   interval: 30m
   timeout: 15m
-  chart:
-    spec:
-      chart: influxdb
-      version: 6.6.5
-      sourceRef:
-        kind: HelmRepository
-        name: bitnami
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: influxdb
   maxHistory: 3
   install:
     remediation:
