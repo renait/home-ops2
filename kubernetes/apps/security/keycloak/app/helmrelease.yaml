@@ -26,6 +26,9 @@ spec:
     production: true
     proxyHeaders: "xforwarded"
 
+    cache:
+      enabled: false
+
     ingress:
       enabled: true
       ingressClassName: external
