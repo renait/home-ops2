@@ -40,6 +40,7 @@ spec:
       enabled: true
       className: external
       annotations:
+        nginx.ingress.kubernetes.io/affinity: cookie
         nginx.ingress.kubernetes.io/proxy-body-size: 4G
         nginx.ingress.kubernetes.io/enable-cors: "true"
         nginx.ingress.kubernetes.io/cors-allow-headers: "X-Forwarded-For"
