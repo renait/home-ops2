@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - authentik.yaml
   - backube.yaml
-  - cilium.yaml
   - coredns.yaml
   - csi-driver-nfs.yaml
   - clustersecret.yaml
