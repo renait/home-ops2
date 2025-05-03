@@ -11,7 +11,6 @@ resources:
   - external-dns.yaml
   - fairwinds.yaml
   - gitlab.yaml
-  - grafana.yaml
   - hajimari.yaml
   - helm-openldap.yaml
   - ingress-nginx.yaml
