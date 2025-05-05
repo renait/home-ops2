@@ -2,9 +2,10 @@
 apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PostgresCluster
 metadata:
-  name: &name "${APP}"
+  name: &name "spotweb"
 spec:
-  postgresVersion: 15
+  shutdown: false
+  postgresVersion: 17
   dataSource:
     pgbackrest:
       stanza: db
