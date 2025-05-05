@@ -78,7 +78,7 @@ spec:
           volume: &nfs
             volumeClaimSpec:
               storageClassName: postgres-nfs
-              volumeName: postgres-nfs
+              volumeName: spotweb-postgres-nfs
               accessModes:
                 - ReadWriteMany
               resources:
