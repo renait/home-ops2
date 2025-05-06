@@ -66,7 +66,7 @@ spec:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
         - name: repo1
-          s3:
+          s3: &s3
             bucket: "crunchy-postgres"
             endpoint: "s3.${SECRET_DOMAIN}"
             region: "us-east-1"
@@ -87,11 +87,14 @@ spec:
             full: "0 1 * * 0" # Sunday at 01:00
             differential: "0 1 * * 1-6" # Mon-Sat at 01:00
 
-#  dataSource:
-#    pgbackrest:
-#      stanza: "db"
-#      configuration: *backupConfig
-#      global: *backupFlag
-#      repo:
-#        name: "repo2"
-#        volume: *nfs
+  dataSource:
+    pgbackrest:
+      stanza: "db"
+      configuration: *backupConfig
+      global:
+        repo1-path: "/${APP}/repo1"
+        repo1-s3-uri-style: path
+      #global: *backupFlag
+      repo:
+        name: "repo1"
+        s3: *s3
