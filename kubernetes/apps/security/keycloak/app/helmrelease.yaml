@@ -29,6 +29,8 @@ spec:
     cache:
       enabled: false
 
+    automountServiceAccountToken: false
+
     ingress:
       enabled: true
       ingressClassName: external
