@@ -193,6 +193,8 @@ spec:
       install: false
     # registry:
     #   enabled: false
+    installCertmanager: false
+    # certmanager.install deprecated since 9.0.0
     certmanager:
       install: false
     nginx-ingress:
