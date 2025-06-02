@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-operations/plex
-              tag: 1.41.7.9799
+              tag: 1.41.7.9823
             env:
               TZ: "${TIMEZONE}"
               PLEX_ADVERTISE_URL: http://192.168.14.204:32400,https://plex.${SECRET_DOMAIN}:443
