@@ -29,7 +29,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-operations/radarr
-              tag: 5.25.0.10024
+              tag: 5.26.0.10051
             env:
               # Ref: https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
               # Ref: https://github.com/dotnet/runtime/issues/9336
