@@ -5,4 +5,4 @@ resources:
   - ./namespace.yaml
   - ./namespace-nexus.yaml
   - ./gitlab/ks.yaml
-  - ./nexus-repository-manager/ks.yaml
+  #- ./nexus-repository-manager/ks.yaml
