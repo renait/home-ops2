@@ -25,3 +25,4 @@ resources:
   - openebs.yaml
   - piraeus.yaml
   - stakater.yaml
+  - runix.yaml
