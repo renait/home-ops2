@@ -22,7 +22,6 @@ spec:
     keepHistory: false
   values:
     auth:
-      enabled: true
       admin:
         retention: "30d"
       createUserToken: true
