@@ -9,6 +9,7 @@
     ':automergeDigest',
     ':automergeBranch',
     'github>renait/home-ops2//.github/renovate/autoMerge.json5',
+    "github>renait/home-ops2//.github/renovate/grafanaDashboards.json5",
     'github>renait/home-ops2//.github/renovate/commitMessage.json5',
     'github>renait/home-ops2//.github/renovate/customManagers.json5',
     'github>renait/home-ops2//.github/renovate/groups.json5',
