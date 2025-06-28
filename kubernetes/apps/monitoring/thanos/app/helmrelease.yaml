@@ -76,6 +76,7 @@ spec:
       enabled: true
       replicaCount: 2
       replicaLabel: ["__replica__"]
+      resourcesPreset: "micro"
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
