@@ -54,7 +54,13 @@ spec:
     queryFrontend:
       enabled: true
       replicaCount: 2
-      resourcesPreset: "small"
+      resources:
+        requests:
+          cpu: 350m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+      #resourcesPreset: "small"
       config: &config |-
         type: REDIS
         config:
