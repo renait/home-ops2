@@ -54,6 +54,7 @@ spec:
     queryFrontend:
       enabled: true
       replicaCount: 2
+      resourcePreset: "micro"
       config: &config |-
         type: REDIS
         config:
