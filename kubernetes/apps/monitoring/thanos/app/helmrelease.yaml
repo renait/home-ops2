@@ -82,7 +82,13 @@ spec:
       enabled: true
       replicaCount: 2
       replicaLabel: ["__replica__"]
-      resourcesPreset: "micro"
+      resources:
+        requests:
+          cpu: 350m
+          memory: 128Mi
+        limits:
+          memory: 128Mi
+      #resourcesPreset: "micro"
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
