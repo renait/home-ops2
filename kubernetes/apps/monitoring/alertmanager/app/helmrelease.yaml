@@ -57,10 +57,25 @@ spec:
                 memory: 100M
 
     service:
-      app:
+      main:
+        controller: alertmanager
         ports:
           http:
             port: 9093
+
+    ingress:
+      main:
+        className: internal
+        hosts:
+          - host: &host "alertmanager.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
 
     persistence:
       config:
@@ -73,12 +88,3 @@ spec:
         name: alertmanager-secret
         globalMounts:
           - path: /etc/secrets
-
-    route:
-      app:
-        hostnames:
-          - alertmanager.${SECRET_DOMAIN}
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
