@@ -57,14 +57,14 @@ spec:
                 memory: 100M
 
     service:
-      main:
+      app:
         controller: alertmanager
         ports:
           http:
             port: 9093
 
     ingress:
-      main:
+      app:
         className: internal
         hosts:
           - host: &host "alertmanager.${SECRET_DOMAIN}"
