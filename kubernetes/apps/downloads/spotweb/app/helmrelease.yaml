@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: spotweb
+  name: &app spotweb
 spec:
   interval: 30m
   chartRef:
@@ -13,12 +13,12 @@ spec:
 
   values:
     controllers:
-      main:
+      spotweb:
         annotations:
           secret.reloader.stakater.com/reload: spotweb-secret,${APP}-pguser-${DB_USER}
           configmap.reloader.stakater.com/reload: spotweb-configmap
         containers:
-          main:
+          app:
             image:
               repository: jgeusebroek/spotweb
               tag: "latest"
@@ -67,15 +67,15 @@ spec:
                 memory: 400Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: 80
 
     ingress:
-      main:
-        className: "internal"
+      app:
+        className: internal
         annotations:
           nginx.ingress.kubernetes.io/server-snippet: |-
             more_set_headers "X-SSL: on";
@@ -84,7 +84,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
