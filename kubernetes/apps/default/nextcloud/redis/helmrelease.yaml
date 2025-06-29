@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: nextcloud-redis
+  name: &app nextcloud-redis
 spec:
   interval: 30m
   chartRef:
@@ -13,7 +13,7 @@ spec:
 
   values:
     controllers:
-      main:
+      nextcloud-redis:
         annotations:
           secret.reloader.stakater.com/reload: nextcloud-redis-secret
 
@@ -21,7 +21,7 @@ spec:
           automountServiceAccountToken: false
 
         containers:
-          main:
+          app:
             image:
               repository: public.ecr.aws/docker/library/redis
               tag: 8.0.2
@@ -46,8 +46,8 @@ spec:
                 memory: 256M
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: *port
