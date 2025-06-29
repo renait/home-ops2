@@ -21,11 +21,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      registry: docker.io
-      repository: bitnami/influxdb
-      tag: 2.7.11-debian-12-r20
-
     auth:
       admin:
         retention: "30d"
