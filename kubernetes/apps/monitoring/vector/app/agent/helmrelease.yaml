@@ -27,7 +27,7 @@ spec:
       vector-agent:
         type: daemonset
         serviceAccount:
-          identifier: system-upgrade
+          identifier: vector-agent
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
