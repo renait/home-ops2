@@ -26,6 +26,8 @@ spec:
     controllers:
       vector-agent:
         type: daemonset
+        serviceAccount:
+          identifier: system-upgrade
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -63,8 +65,7 @@ spec:
               privileged: true
 
     serviceAccount:
-      create: true
-      name: vector-agent
+      vector-agent: {}
 
     persistence:
       config:
