@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: lidarr
+  name: &app lidarr
 spec:
   interval: 30m
   chartRef:
@@ -13,7 +13,7 @@ spec:
 
   values:
     controllers:
-      main:
+      lidarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -26,7 +26,7 @@ spec:
             supplementalGroups: []
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-operations/lidarr
               tag: 2.13.0.4664
@@ -62,21 +62,21 @@ spec:
                 memory: 350Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        className: "internal"
+      app:
+        className: internal
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
