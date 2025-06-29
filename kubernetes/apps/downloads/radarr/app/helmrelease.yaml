@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radarr
+  name: &app radarr
 spec:
   interval: 30m
   chartRef:
@@ -13,7 +13,7 @@ spec:
 
   values:
     controllers:
-      main:
+      radarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -26,7 +26,7 @@ spec:
             supplementalGroups: []
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-operations/radarr
               tag: 5.27.0.10101
@@ -64,21 +64,21 @@ spec:
                 memory: 800M
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        className: "internal"
+      app:
+        className: internal
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:

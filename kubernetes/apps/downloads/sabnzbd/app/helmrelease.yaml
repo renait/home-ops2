@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: &app sonarr
 spec:
   interval: 30m
   chartRef:
@@ -13,7 +13,7 @@ spec:
 
   values:
     controllers:
-      main:
+      sabnzbd:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -26,7 +26,7 @@ spec:
             supplementalGroups: []
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-operations/sabnzbd
               tag: 4.5.1
@@ -68,21 +68,21 @@ spec:
                 memory: 600Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        className: "internal"
+      app:
+        className: internal
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -92,13 +92,13 @@ spec:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          sabnzbd:
+            app:
               - path: /config
       data:
         existingClaim: nas-media
         advancedMounts:
-          main: # the controller with the "main" identifier
-            main: # the container with the "main" identifier
+          sabnzbd: # the controller with the "main" identifier
+            app: # the container with the "main" identifier
               - path: /data/usenet
                 subPath: usenet

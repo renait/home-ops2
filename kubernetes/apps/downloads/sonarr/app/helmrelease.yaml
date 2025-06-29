@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sonarr
+  name: &app sonarr
 spec:
   interval: 30m
   chartRef:
@@ -13,7 +13,7 @@ spec:
 
   values:
     controllers:
-      main:
+      sonarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -26,7 +26,7 @@ spec:
             supplementalGroups: []
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.15.2940
@@ -61,21 +61,21 @@ spec:
                 memory: 450Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        className: "internal"
+      app:
+        className: internal
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
