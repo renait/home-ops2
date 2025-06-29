@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: &app overseerr
 spec:
   interval: 30m
   chartRef:
@@ -13,7 +13,7 @@ spec:
 
   values:
     controllers:
-      main:
+      overseerr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -24,7 +24,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/sct/overseerr
               tag: 1.34.0@sha256:4f38f58d68555004d3f487a4c5cbe2823e6a0942d946a25a2d9391d8492240a4
@@ -62,27 +62,27 @@ spec:
               runAsGroup: ${APP_GID}
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        className: "internal"
+      app:
+        className: internal
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
           - host: "ombi.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -93,6 +93,6 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          main:
-            main:
+          overseerr:
+            app:
               - path: /app/config
