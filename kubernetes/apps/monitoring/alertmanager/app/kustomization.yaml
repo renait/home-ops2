@@ -5,7 +5,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: alertmanager-configmap
+  - name: alertmanager
     files:
       - alertmanager.yml=config/alertmanager.yaml
 generatorOptions:

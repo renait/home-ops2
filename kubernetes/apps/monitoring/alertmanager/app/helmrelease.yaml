@@ -12,7 +12,7 @@ spec:
     namespace: flux-system
   values:
     controllers:
-      main:
+      alertmanager:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
@@ -35,18 +35,20 @@ spec:
             fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
-          main:
+          alertmanager:
             image:
               repository: quay.io/prometheus/alertmanager
               tag: v0.28.1
-            ports:
-              - name: http
-                containerPort: 9093
-              - name: mesh-tcp
-                containerPort: 9094
-              - name: mesh-udp
-                containerPort: 9094
-                protocol: UDP
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 cpu: 11m
@@ -55,30 +57,15 @@ spec:
                 memory: 100M
 
     service:
-      main:
-        controller: main
+      app:
         ports:
           http:
             port: 9093
 
-    ingress:
-      main:
-        className: internal
-        hosts:
-          - host: &host "alertmanager.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-
     persistence:
       config:
         type: configMap
-        name: alertmanager-configmap
+        name: alertmanager
         globalMounts:
           - path: /etc/alertmanager
       secrets:
@@ -86,3 +73,12 @@ spec:
         name: alertmanager-secret
         globalMounts:
           - path: /etc/secrets
+
+    route:
+      app:
+        hostnames:
+          - alertmanager.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
