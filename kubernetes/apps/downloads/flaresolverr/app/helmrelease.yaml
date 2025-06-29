@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: flaresolverr
+  name: &app flaresolverr
 spec:
   interval: 30m
   chartRef:
@@ -22,11 +22,11 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      flaresolverr:
         replicas: 1
         strategy: RollingUpdate
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
               tag: v3.3.25
@@ -44,9 +44,10 @@ spec:
               requests:
                 cpu: 15m
                 memory: 150Mi
+
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         type: ClusterIP
         ports:
           http:
