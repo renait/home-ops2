@@ -6,7 +6,7 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
 configMapGenerator:
-  - name: vector-agent-configmap
+  - name: vector-agent
     files:
       - vector.yaml=./resources/vector.yaml
 generatorOptions:

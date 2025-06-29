@@ -22,7 +22,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      vector-aggregator:
         replicas: 2
         strategy: RollingUpdate
         annotations:
@@ -40,7 +40,7 @@ spec:
               - secretRef:
                   name: vector-aggregator-secret
         containers:
-          main:
+          app:
             image:
               repository: docker.io/timberio/vector
               tag: 0.47.0-debian@sha256:a7c96178b5dd0800bb6a4a58559b61bca919a43979cd4c3ef12399175eea5ac7
@@ -62,8 +62,8 @@ spec:
                   app.kubernetes.io/name: *app
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         type: LoadBalancer
         annotations:
           dns.pfsense.org/hostname: "vector.${SECRET_DOMAIN}"
@@ -82,7 +82,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: vector-aggregator-configmap
+        name: vector-aggregator
         globalMounts:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml
