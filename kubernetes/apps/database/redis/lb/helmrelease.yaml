@@ -22,13 +22,13 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      redis-lb:
         replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: haproxy
               tag: "3.2"
@@ -47,8 +47,8 @@ spec:
             fsGroup: 99
             fsGroupChangePolicy: "OnRootMismatch"
     service:
-      main:
-        controller: main
+      app:
+        controller: redis-lb
         type: LoadBalancer
         annotations:
           dns.pfsense.org/hostname: "redis.${SECRET_DOMAIN}"
@@ -67,14 +67,14 @@ spec:
             port: 26379
             targetPort: 26379
     ingress:
-      main:
+      app:
         className: internal
         hosts:
           - host: &host "redis-ui.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -88,7 +88,7 @@ spec:
             subPath: haproxy.cfg
             readOnly: true
     serviceMonitor:
-      main:
+      app:
         serviceName: redis-lb
         endpoints:
           - port: http
