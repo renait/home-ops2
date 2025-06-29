@@ -87,7 +87,7 @@ spec:
         tls:
           - hosts:
               - "${HOSTNAME}"
-              - ombi-stg.${SECRET_DOMAIN}
+              - ombi.${SECRET_DOMAIN}
 
     persistence:
       config:
