@@ -7,7 +7,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: cloudflared-configmap
+  - name: cloudflared
     files:
       - ./configs/config.yaml
 generatorOptions:
