@@ -5,14 +5,14 @@ kind: HelmRelease
 metadata:
   name: &app plex
 spec:
+  interval: 30m
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
-  interval: 30m
   values:
     controllers:
-      main:
+      plex:
         strategy: Recreate
 
         annotations:
@@ -40,7 +40,7 @@ spec:
               - 105
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.8.9834
@@ -76,8 +76,8 @@ spec:
                 memory: 2Gi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
@@ -87,16 +87,16 @@ spec:
             port: 32400
 
     ingress:
-      main:
+      app:
+        className: external
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-        className: "external"
         hosts:
           - host: "${HOSTNAME}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -106,8 +106,8 @@ spec:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          plex:
+            app:
               - path: /config
       # Separate PVC for cache to avoid backing up cache files
       cache:
@@ -117,16 +117,16 @@ spec:
       logs:
         type: emptyDir
         advancedMounts:
-          main:
-            main:
+          plex:
+            app:
               - path: /config/Library/Application Support/Plex Media Server/Logs
       content:
         type: nfs
         server: 192.168.12.41
         path: /mnt/data/media
         advancedMounts:
-          main:
-            main:
+          plex:
+            app:
               - path: /data/content
                 subPath: content
                 readOnly: true
@@ -135,13 +135,13 @@ spec:
         server: 192.168.12.41
         path: /mnt/data/media/pictures
         advancedMounts:
-          main:
-            main:
+          plex:
+            app:
               - path: /data/pictures
                 readOnly: true
       transcode:
         type: emptyDir
         advancedMounts:
-          main:
-            main:
+          plex:
+            app:
               - path: /transcode
