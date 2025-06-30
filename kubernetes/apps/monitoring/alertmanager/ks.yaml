@@ -20,7 +20,3 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: democratic-csi-iscsi-ssd
-  postBuild:
-    substitute:
-      APP_UID: "65534"
-      APP_GID: "65534"
