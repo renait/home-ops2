@@ -10,190 +10,64 @@ spec:
   chartRef:
     kind: OCIRepository
     name: loki
-  valuesFrom:
-    - kind: Secret
-      name: loki-secret
-      valuesKey: BUCKET_HOST
-      targetPath: loki.storage.s3.endpoint
-    - kind: Secret
-      name: loki-secret
-      valuesKey: BUCKET_REGION
-      targetPath: loki.storage.s3.region
-    - kind: Secret
-      name: loki-secret
-      valuesKey: ACCESS_KEY
-      targetPath: loki.storage.s3.accessKeyId
-    - kind: Secret
-      name: loki-secret
-      valuesKey: SECRET_KEY
-      targetPath: loki.storage.s3.secretAccessKey
+
   values:
-    deploymentMode: SimpleScalable
-
-    chunksCache:
-      enabled: false
-
-    resultsCache:
-      enabled: false
+    deploymentMode: SingleBinary
 
     loki:
-      podAnnotations:
-        secret.reloader.stakater.com/reload: loki-secret
-
       auth_enabled: false
-
       analytics:
         reporting_enabled: false
-
+      commonConfig:
+        replication_factor: 1
       compactor:
         working_directory: /var/loki/compactor/retention
-        delete_request_store: s3
+        delete_request_store: filesystem
         retention_enabled: true
-
-      frontend:
-        max_outstanding_per_tenant: 4096
-
       ingester:
         chunk_encoding: snappy
-
       limits_config:
-        ingestion_burst_size_mb: 128
-        ingestion_rate_mb: 64
-        max_query_parallelism: 100
-        per_stream_rate_limit: 64M
-        per_stream_rate_limit_burst: 128M
-        reject_old_samples: true
-        reject_old_samples_max_age: 168h
         retention_period: 14d
-        shard_streams:
-          enabled: true
-        split_queries_by_interval: 1h
-
-      query_scheduler:
-        max_outstanding_requests_per_tenant: 4096
-
-      rulerConfig:
-        enable_api: true
-        enable_alertmanager_v2: true
-        alertmanager_url: http://alertmanager.monitoring.svc.cluster.local:9093
-        storage:
-          type: local
-          local:
-            directory: /rules
-        rule_path: /rules/fake
-
       schemaConfig:
         configs:
-          - from: "2024-04-01" # quote
+          - from: "2024-04-01"
             store: tsdb
-            object_store: s3
+            object_store: filesystem
             schema: v13
             index:
               prefix: loki_index_
               period: 24h
-
       server:
         log_level: info
-        grpc_server_max_recv_msg_size: 8388608
-        grpc_server_max_send_msg_size: 8388608
-
       storage:
-        type: s3
-        bucketNames:
-          chunks: loki-chunks
-          ruler: loki-ruler
-          admin: loki-admin
-        s3:
-          s3ForcePathStyle: true
-          insecure: false
-
-    gateway:
-      replicas: 2
-      image:
-        registry: ghcr.io
-        repository: nginxinc/nginx-unprivileged
-        tag: 1.27.4-alpine
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: |
-            10.0.0.0/8,192.168.0.0/16
-        hosts:
-          - host: &host loki.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-      resources:
-        requests:
-          cpu: 10m
-          memory: 20Mi
-        limits:
-          memory: 100Mi
-
-    read:
-      replicas: 2
-      resources:
-        requests:
-          cpu: 10m
-          memory: 160Mi
-        limits:
-          memory: 200Mi
-      persistence:
-        size: 5Gi
-        storageClass: openebs-hostpath
-
-    write:
-      replicas: 2
-      resources:
-        requests:
-          cpu: 20m
-          memory: 400Mi
-        limits:
-          memory: 1Gi
-      persistence:
-        size: 5Gi
-        storageClass: openebs-hostpath
+        type: filesystem
 
     backend:
-      replicas: 2
-      resources:
-        requests:
-          cpu: 10m
-          memory: 160Mi
-        limits:
-          memory: 240Mi
-      persistence:
-        size: 10Gi
-        storageClass: openebs-hostpath
-
-    monitoring:
-      dashboards:
-        annotations:
-          grafana_folder: Loki
-      rules:
-        enabled: false
-      serviceMonitor:
-        enabled: false
-        metricsInstance:
-          enabled: false
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
-
-    sidecar:
-      image:
-        repository: ghcr.io/kiwigrid/k8s-sidecar
-      rules:
-        searchNamespace: ALL
-        folder: /rules/fake
-
+      replicas: 0
+    chunksCache:
+      enabled: false
+    gateway:
+      replicas: 0
     lokiCanary:
       enabled: false
-
+    read:
+      replicas: 0
+    resultsCache:
+      enabled: false
+    sidecar:
+      image:
+        registry: ghcr.io
+        repository: home-operations/k8s-sidecar
+        tag: 1.30.5@sha256:0c429f991b01b39e73bf926bfaee8e4ce90eae422789c8c24b8bab4f2739df2b
+      rules:
+        searchNamespace: ALL
+    singleBinary:
+      replicas: 1
+      persistence:
+        enabled: true
+        storageClass: freenas-iscsi-ssd
+        size: 50Gi
     test:
       enabled: false
+    write:
+      replicas: 0

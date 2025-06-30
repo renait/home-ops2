@@ -100,14 +100,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/postgres
-          - name: thanos
-            orgId: 1
-            folder: Thanos
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/thanos
 
     dashboards:
       default:
@@ -241,7 +233,7 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+            url: http://prometheus-operated.monitoring.svc.cluster.local:9090
             jsonData:
               prometheusType: Thanos # Prometheus for victoria-metrics
             isDefault: true
@@ -249,7 +241,7 @@ spec:
             type: loki
             uid: loki
             access: proxy
-            url: http://loki-gateway.monitoring.svc.cluster.local
+            url: http://loki-headless.monitoring.svc.cluster.local:3100
             jsonData:
               maxLines: 250
           - name: Alertmanager
@@ -295,6 +287,10 @@ spec:
       enabled: true
 
     sidecar:
+      image:
+        registry: ghcr.io
+        repository: home-operations/k8s-sidecar
+        tag: 1.30.5@sha256:0c429f991b01b39e73bf926bfaee8e4ce90eae422789c8c24b8bab4f2739df2b
       dashboards:
         enabled: true
         searchNamespace: ALL

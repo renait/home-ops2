@@ -24,29 +24,14 @@ spec:
   values:
     crds:
       enabled: true
+      upgradeJob:
+        enabled: true
+        forceConflicts: true
     cleanPrometheusOperatorObjectNames: true
+
     alertmanager:
       enabled: false
-#      ingress:
-#        enabled: true
-#        pathType: Prefix
-#        ingressClassName: internal
-#        hosts:
-#          - &host alertmanager.${SECRET_DOMAIN}
-#        tls:
-#          - hosts:
-#              - *host
-#      alertmanagerSpec:
-#        replicas: 2
-#        useExistingSecret: true
-#        configSecret: alertmanager-secret
-#        storage:
-#          volumeClaimTemplate:
-#            spec:
-#              storageClassName: openebs-hostpath
-#              resources:
-#                requests:
-#                  storage: 1Gi
+
     kubelet:
       enabled: true
       serviceMonitor:
@@ -91,6 +76,9 @@ spec:
           - action: keep
             sourceLabels: ["__name__"]
             regex: "(apiserver_audit|apiserver_client|apiserver_delegated|apiserver_envelope|apiserver_storage|apiserver_webhooks|attachdetach_controller|authenticated_user|authentication|cronjob_controller|disabled_metric|endpoint_slice|ephemeral_volume|garbagecollector_controller|get_token|go|hidden_metric|job_controller|kubernetes_build|kubernetes_feature|leader_election|node_collector|node_ipam|process_cpu|process_max|process_open|process_resident|process_start|process_virtual|pv_collector|registered_metric|replicaset_controller|rest_client|retroactive_storageclass|root_ca|running_managed|scrape_duration|scrape_samples|scrape_series|service_controller|storage_count|storage_operation|ttl_after|volume_operation|workqueue)_(.+)"
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeEtcd:
       enabled: true
       endpoints: *cp
@@ -103,6 +91,9 @@ spec:
           - action: keep
             sourceLabels: ["__name__"]
             regex: "(apiserver_audit|apiserver_client|apiserver_delegated|apiserver_envelope|apiserver_storage|apiserver_webhooks|authenticated_user|authentication|disabled_metric|go|hidden_metric|kubernetes_build|kubernetes_feature|leader_election|process_cpu|process_max|process_open|process_resident|process_start|process_virtual|registered_metric|rest_client|scheduler|scrape_duration|scrape_samples|scrape_series|workqueue)_(.+)"
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeProxy:
       enabled: false
     prometheus:
@@ -115,52 +106,45 @@ spec:
         tls:
           - hosts:
               - *host
-      thanosService:
-        enabled: true
-      thanosServiceMonitor:
-        enabled: true
       prometheusSpec:
+        image:
+          registry: docker.io
+          repository: prompp/prompp
+          tag: 2.53.2-0.2.5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 64535
+          runAsGroup: 64535
+          fsGroup: 64535
         alertingEndpoints:
           - namespace: monitoring
             name: alertmanager
             port: 9093
             apiVersion: v2
-        replicas: 1
-        replicaExternalLabelName: __replica__
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
-        scrapeConfigSelectorNilUsesHelmValues: false
-        enableAdminAPI: true
-        walCompression: true
-        enableFeatures:
-          - auto-gomaxprocs
-          - memory-snapshot-on-shutdown
-          - new-service-discovery-manager
-        thanos:
-          image: quay.io/thanos/thanos:v0.39.0
-          objectStorageConfig:
-            existingSecret:
-              name: thanos-objstore-secret
-              key: objstore.yml
-        retention: 2d
-        retentionSize: 15GB
         externalLabels:
           cluster: main
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1Gi
+          limits:
+            memory: 1500Mi
+        retention: 14d
+        retentionSize: 50GB
+        replicaExternalLabelName: __replica__
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: freenas-iscsi-ssd
               resources:
                 requests:
-                  storage: 20Gi
-        resources:
-          requests:
-            cpu: 100m
-            memory: 1Gi
-          limits:
-            memory: 2Gi
+                  storage: 50Gi
     nodeExporter:
       enabled: true
     prometheusOperator:
@@ -172,6 +156,10 @@ spec:
           memory: 256Mi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
+      extraArgs:
+        - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+        - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+        - --collector.textfile.directory=/host/root/var/lib/node_exporter/textfile_collector
       prometheus:
         monitor:
           enabled: true
@@ -179,9 +167,13 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
+            - action: drop
+              regex: /var/lib/kubelet/pods.+
+              sourceLabels: ["mountpoint"]
+            - action: labeldrop
+              regex: (pod)
     kubeStateMetrics:
       enabled: true
     kube-state-metrics:
@@ -207,18 +199,4 @@ spec:
           multicluster:
             etcd:
               enabled: true
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              version: v1
-              kind: ConfigMap
-              labelSelector: grafana_dashboard in (1)
-            patch: |-
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: not-used
-                namespace: not-used
-                annotations:
-                  grafana_folder: Kubernetes
+
