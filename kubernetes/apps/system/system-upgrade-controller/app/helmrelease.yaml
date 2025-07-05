@@ -21,8 +21,6 @@ spec:
   values:
     controllers:
       system-upgrade-controller:
-        serviceAccount:
-          identifier: system-upgrade
         strategy: RollingUpdate
         containers:
           app:
@@ -50,6 +48,8 @@ spec:
               capabilities: { drop: ["ALL"] }
               seccompProfile:
                 type: RuntimeDefault
+        serviceAccount:
+          identifier: system-upgrade-controller
         pod:
           securityContext:
             runAsUser: 65534
@@ -68,11 +68,17 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
-            - key: node-role.kubernetes.io/master
-              operator: Exists
-              effect: NoSchedule
+    rbac:
+      bindings:
+        system-upgrade-controller:
+          type: ClusterRoleBinding
+          roleRef:
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+            - identifier: system-upgrade-controller
     serviceAccount:
-      system-upgrade: {}
+      system-upgrade-controller: {}
     persistence:
       tmp:
         type: emptyDir
