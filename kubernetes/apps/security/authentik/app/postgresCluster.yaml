@@ -4,7 +4,8 @@ kind: PostgresCluster
 metadata:
   name: &name "${APP}"
 spec:
-  postgresVersion: 15
+  shutdown: false
+  postgresVersion: 17
   dataSource:
     pgbackrest:
       stanza: db
