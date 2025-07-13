@@ -77,3 +77,8 @@ spec:
             bucket: "crunchy-postgres"
             endpoint: "s3.${SECRET_DOMAIN}"
             region: "us-east-1"
+#      restore:
+#        enabled: true
+#        repoName: repo1
+#        options:
+#        - --set=20250413-010004F_20250418-020004I
