@@ -4,7 +4,8 @@ kind: PostgresCluster
 metadata:
   name: &name "${APP}"
 spec:
-  postgresVersion: 15
+  shutdown: false
+  postgresVersion: 17
   dataSource:
     pgbackrest:
       stanza: db
@@ -37,7 +38,7 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "${DB_CAPACITY:-5Gi}"
+            storage: "${DB_CAPACITY:-50Gi}"
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: "kubernetes.io/hostname"
