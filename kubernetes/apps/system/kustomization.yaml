@@ -18,4 +18,4 @@ resources:
   - k8s-dashboard/ks.yaml
   # - sbfspot/ks.yaml
   # Standard resources
-  - external-services
+  #- external-services
