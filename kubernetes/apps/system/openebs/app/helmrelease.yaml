@@ -31,7 +31,7 @@ spec:
           registry: quay.io/
           repository: openebs/provisioner-localpv
           tag: 4.3.0
-        basePath: "/var/lib/rancher/k3s/openebs-hostpath"
+        basePath: &hostPath /var/lib/rancher/k3s/openebs-hostpath
         resources:
           requests:
             cpu: 100m
@@ -42,6 +42,13 @@ spec:
         enabled: true
         name: openebs-hostpath
         isDefaultClass: false
+        basePath: *hostPath
+    loki:
+      enabled: false
+    alloy:
+      enabled: false
+    minio:
+      enabled: false
     openebs-crds:
       csi:
         volumeSnapshots:
