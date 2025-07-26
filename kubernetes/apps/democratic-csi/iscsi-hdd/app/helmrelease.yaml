@@ -50,10 +50,10 @@ spec:
       # democratic-csi controller
       driver:
         image:
-          registry: docker.io/democraticcsi/democratic-csi
-          tag: v1.9.3
-          pullPolicy: IfNotPresent
-        logLevel: debug
+          registry: &demoCsiRegistry registry-nexus.${SECRET_DOMAIN}/democraticcsi/democratic-csi
+          tag: &demoCsiTag next
+          pullPolicy: Always
+        logLevel: info
         resources:
           requests:
             cpu: 20m
@@ -109,10 +109,10 @@ spec:
       # democratic-csi node
       driver:
         image:
-          registry: docker.io/democraticcsi/democratic-csi
-          tag: v1.9.3
-          pullPolicy: IfNotPresent
-        logLevel: debug
+          registry: *demoCsiRegistry
+          tag: *demoCsiTag
+          pullPolicy: Always
+        logLevel: info
         resources:
           requests:
             cpu: 20m
@@ -176,7 +176,7 @@ spec:
           host: truenas.${SECRET_DOMAIN}
           port: 443
           # use either password or api key
-          # apiKey
+          # apiKey:
           # password:
           allowInsecure: false
           apiVersion: 2
