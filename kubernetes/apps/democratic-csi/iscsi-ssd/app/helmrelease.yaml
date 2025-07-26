@@ -215,7 +215,7 @@ spec:
           # full iqn limit is 223 bytes, plan accordingly
           # default is "{{ name }}"
           nameTemplate: >-
-            {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}
+            {{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pv/name] }}
           namePrefix: csi-
           nameSuffix:
           # add as many as needed
