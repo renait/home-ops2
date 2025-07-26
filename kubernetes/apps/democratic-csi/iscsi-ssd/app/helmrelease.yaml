@@ -50,7 +50,7 @@ spec:
       # democratic-csi controller
       driver:
         image:
-          registry: &demoCsiRegistry registry-nexus.${SECRET_DOMAIN}/democraticcsi/democratic-csi
+          registry: &demoCsiRegistry renait/democratic-csi
           tag: &demoCsiTag next
           pullPolicy: Always
         logLevel: info
