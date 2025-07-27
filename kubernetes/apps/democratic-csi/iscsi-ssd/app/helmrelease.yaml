@@ -165,7 +165,7 @@ spec:
         deletionPolicy: Delete
         parameters:
           # if true, snapshots will be created with zfs send/receive
-          detachedSnapshots: true
+          detachedSnapshots: false
 
     driver:
       config:
