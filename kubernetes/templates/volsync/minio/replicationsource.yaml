@@ -7,9 +7,11 @@ metadata:
 spec:
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    schedule: "0 * * * *"
+    # every 12 hours
+    schedule: "${VOLSYNC_CRON:-0 */12 * * *}"
   restic:
-    copyMethod: Snapshot
+    #copyMethod: Snapshot
+    copyMethod: Clone
     repository: ${APP}-volsync-minio
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
