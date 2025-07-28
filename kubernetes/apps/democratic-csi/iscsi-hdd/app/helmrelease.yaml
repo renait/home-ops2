@@ -177,8 +177,11 @@ spec:
           protocol: https
           host: truenas.${SECRET_DOMAIN}
           port: 443
-          # use either password or api key
+          # use only 1 of apiKey or username/password
+          # if both are present, apiKey is preferred
+          # apiKey is only available starting in TrueNAS-12
           # apiKey:
+          # username: root
           # password:
           allowInsecure: false
           apiVersion: 2
@@ -247,10 +250,18 @@ spec:
         limits:
           memory: 250M
   valuesFrom:
+#    - kind: Secret
+#      name: truenas-secret
+#      valuesKey: apiKey
+#      targetPath: driver.config.httpConnection.apiKey
     - kind: Secret
       name: truenas-secret
-      valuesKey: apiKey
-      targetPath: driver.config.httpConnection.apiKey
+      valuesKey: username
+      targetPath: driver.config.httpConnection.username
+    - kind: Secret
+      name: truenas-secret
+      valuesKey: password
+      targetPath: driver.config.httpConnection.password
     - kind: Secret
       name: truenas-secret
       valuesKey: privateKey
