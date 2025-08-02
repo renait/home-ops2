@@ -30,25 +30,30 @@ spec:
               SPOTWEB_CRON_CACHE_CHECK: "10 */1 * * *"
               SPOTWEB_DB_TYPE: pdo_pgsql
               SPOTWEB_DB_HOST:
-                secretKeyRef:
-                  name: "${APP}-pguser-${DB_USER}"
-                  key: host
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: host
               SPOTWEB_DB_NAME:
-                secretKeyRef:
-                  name: "${APP}-pguser-${DB_USER}"
-                  key: dbname
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: dbname
               SPOTWEB_DB_USER:
-                secretKeyRef:
-                  name: "${APP}-pguser-${DB_USER}"
-                  key: user
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: user
               SPOTWEB_DB_PASS:
-                secretKeyRef:
-                  name: "${APP}-pguser-${DB_USER}"
-                  key: password
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: password
               SPOTWEB_DB_PORT:
-                secretKeyRef:
-                  name: "${APP}-pguser-${DB_USER}"
-                  key: port
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: port
             probes:
               liveness:
                 enabled: true
