@@ -17,7 +17,7 @@ subsets:
   - addresses:
       - ip: 192.168.12.41
     ports:
-      - port: 9001
+      - port: 9002
 ---
 apiVersion: v1
 kind: Service
@@ -35,6 +35,6 @@ metadata:
   name: minio-web
 spec:
   ports:
-    - port: &consoleport 9001
+    - port: &consoleport 9002
       targetPort: *consoleport
       protocol: TCP

@@ -42,7 +42,7 @@ spec:
               service:
                 name: minio-web
                 port:
-                  number: 9001
+                  number: 9002
   tls:
     - hosts:
         - *host
