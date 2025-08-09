@@ -19,7 +19,6 @@ spec:
                 name: minio
                 port:
                   name: minio-api
-                  number: 9000
   tls:
     - hosts:
         - *host
@@ -44,7 +43,6 @@ spec:
                 name: minio
                 port:
                   name: minio-web
-                  number: 9002
   tls:
     - hosts:
         - *host
