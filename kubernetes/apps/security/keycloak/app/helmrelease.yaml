@@ -20,14 +20,22 @@ spec:
       passwordSecretKey: keycloak-password
 
     extraEnvVars:
+      - name: KC_HOSTNAME_ADMIN
+        value: "https://keycloak-admin.${SECRET_DOMAIN}"
+      - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
+        value: "true"
       - name: KC_HOSTNAME_DEBUG
+        value: "true"
+      - name: KC_HTTP_ENABLED
         value: "true"
 
     production: true
     proxyHeaders: "xforwarded"
 
     cache:
-      enabled: false
+      # disabling cache causes keycloak to not start!
+      enabled: true
+      useHeadlessServiceWithAppVersion: true
 
     automountServiceAccountToken: false
 
@@ -37,11 +45,8 @@ spec:
       hostname: "keycloak.${SECRET_DOMAIN}"
       tls: true
 
-    adminIngress:
-      enabled: true
-      ingressClassName: internal
-      hostname: "keycloak-admin.${SECRET_DOMAIN}"
-      tls: true
+    logging:
+      level: INFO
 
     metrics:
       enabled: true
