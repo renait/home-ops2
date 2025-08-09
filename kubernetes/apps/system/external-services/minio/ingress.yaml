@@ -16,8 +16,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: minio-api
+                name: minio
                 port:
+                  name: minio-api
                   number: 9000
   tls:
     - hosts:
@@ -40,8 +41,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: minio-web
+                name: minio
                 port:
+                  name: minio-web
                   number: 9002
   tls:
     - hosts:
