@@ -11,14 +11,12 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   dependsOn:
-    - name: minio
+    - name: snapshot-controller
   interval: 10m
   path: "./kubernetes/apps/system/volsync/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  # dependsOn:
-  #  - name: snapshot-controller
   wait: false # no flux ks dependents
   timeout: 2m
