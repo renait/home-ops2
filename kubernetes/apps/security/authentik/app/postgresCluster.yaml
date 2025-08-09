@@ -78,8 +78,10 @@ spec:
             bucket: "crunchy-postgres"
             endpoint: "s3.${SECRET_DOMAIN}"
             region: "us-east-1"
-#      restore:
-#        enabled: true
-#        repoName: repo1
-#        options:
-#        - --set=20250413-010004F_20250418-020004I
+      restore:
+        enabled: false
+        repoName: repo1
+        options:
+        #after applying run the following to execute restore
+        #kubectl annotate -n security postgrescluster authentik --overwrite postgres-operator.crunchydata.com/pgbackrest-restore="$(date)"
+        - --set=20250802-230003F_20250807-230004D
