@@ -53,8 +53,19 @@ spec:
 
     externalDatabase:
       existingSecret: "${APP}-pguser-${DB_USER}"
-      existingSecretHostKey: "host"
-      existingSecretPortKey: "port"
       existingSecretUserKey: "user"
-      existingSecretDatabaseKey: "dbname"
       existingSecretPasswordKey: "password"
+
+  valuesFrom:
+    - kind: Secret
+      name: ${APP}-pguser-${DB_USER}
+      valuesKey: host
+      targetPath: externalDatabase.host
+    - kind: Secret
+      name: ${APP}-pguser-${DB_USER}
+      valuesKey: port
+      targetPath: externalDatabase.port
+    - kind: Secret
+      name: ${APP}-pguser-${DB_USER}
+      valuesKey: dbname
+      targetPath: externalDatabase.database
