@@ -1,23 +1,33 @@
 ---
-apiVersion: v1
-kind: Endpoints
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
 metadata:
   name: minio-api
-subsets:
+  labels:
+    kubernetes.io/service-name: minio-api
+addressType: IPv4
+endpoints:
   - addresses:
-      - ip: 192.168.12.41
-    ports:
-      - port: 9000
+      - 192.168.12.41
+ports:
+  - name: minio-api
+    port: 9000
+    protocol: TCP
 ---
-apiVersion: v1
-kind: Endpoints
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
 metadata:
   name: minio-web
-subsets:
+  labels:
+    kubernetes.io/service-name: minio-web
+addressType: IPv4
+endpoints:
   - addresses:
-      - ip: 192.168.12.41
-    ports:
-      - port: 9002
+      - 192.168.12.41
+ports:
+  - name: minio-web
+    port: 9002
+    protocol: TCP
 ---
 apiVersion: v1
 kind: Service
