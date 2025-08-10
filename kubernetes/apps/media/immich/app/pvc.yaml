@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-immich
+spec:
+  capacity:
+    storage: 1Mi # size does not matter
+  persistentVolumeReclaimPolicy: Retain
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/fastdata/k8s/immich
+    server: 192.168.12.41
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-immich
+  namespace: media
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  volumeName: nas-immich
+  resources:
+    requests:
+      storage: 1Mi # size does not matter

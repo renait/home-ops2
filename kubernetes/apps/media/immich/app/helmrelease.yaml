@@ -1,0 +1,221 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      annotations:
+        reloader.stakater.com/auto: "true"
+        secret.reloader.stakater.com/reload: immich-secret
+    controllers:
+      immich:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          server:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.137.3
+            env: &env
+              TZ: "${TIMEZONE}"
+              DB_HOSTNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: host
+              DB_DATABASE_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: dbname
+              DB_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: user
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: password
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-pguser-${DB_USER}"
+                    key: port
+            envFrom:
+              - configMapRef:
+                  name: immich
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: &serverport 2283
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: *serverport
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 30
+            resources:
+              requests:
+                cpu: 100m
+                memory: 250Mi
+              limits:
+                memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
+              fsGroup: ${APP_GID}
+              capabilities: { drop: ["ALL"] }
+          machine-learning:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.137.3
+            env: *env
+            envFrom:
+              - configMapRef:
+                  name: immich
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &mlport 3003
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 15m
+                memory: 250Mi
+              limits:
+                memory: 1500Mi
+            securityContext:
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
+              fsGroup: ${APP_GID}
+
+          redis:
+            image:
+              repository: docker.io/valkey/valkey
+              tag: 8.1.3
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+    service:
+      server:
+        controller: immich
+        ports:
+          http:
+            port: *serverport
+      machine-learning:
+        controller: immich
+        ports:
+          http:
+            port: *mlport
+    ingress:
+      server:
+        className: internal
+        hosts:
+          - host: &hostname "fotos.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: server
+                  port: *serverport
+        tls:
+          - hosts:
+              - *hostname
+    configMaps:
+      immich:
+        enabled: true
+        data:
+          IMMICH_CONFIG_FILE: &configLocation /usr/src/app/immich.json
+          IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
+          MPLCONFIGDIR: /cache/matplotlib
+          IMMICH_ENV: production
+          REDIS_HOSTNAME: "localhost"
+          #REDIS_HOSTNAME: "redis-headless.database.svc.cluster.local"
+          REDIS_PORT: "6379"
+          REDIS_DBINDEX: "1"
+    persistence:
+      data:
+        existingClaim: nas-immich
+        globalMounts:
+          - path: *mediaLocation
+      pictures:
+        type: nfs
+        server: 192.168.12.41
+        path: /mnt/data/media/pictures
+        advancedMounts:
+          immich:
+            server:
+              - path: /data/pictures
+                readOnly: false
+      immich-json:
+        type: secret
+        name: immich-secret
+        advancedMounts:
+          immich:
+            server:
+              - path: *configLocation
+                subPath: immich.json
+                readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          immich:
+            machine-learning:
+            - path: /.cache
+              subPath: dotCache
+            - path: /cache
+              subPath: cache
+            server:
+              - path: /usr/src/app/.reverse-geocoding-dump
+                subPath: geocoding
+              - path: /usr/src/app/.transformers_cache
+                subPath: transformers
+            redis:
+              - path: /data
