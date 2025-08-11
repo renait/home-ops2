@@ -32,11 +32,6 @@ spec:
 
     replicaCount: 1
 
-    image:
-      # From repository https://hub.docker.com/r/bitnami/openldap/
-      repository: bitnami/openldap
-      tag: 2.6.10
-
     updateStrategy:
       type: RollingUpdate
       rollingUpdate:
