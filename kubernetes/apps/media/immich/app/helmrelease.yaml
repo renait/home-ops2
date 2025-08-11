@@ -218,6 +218,8 @@ spec:
               subPath: dotCache
             - path: /cache
               subPath: cache
+            - path: /tmp
+              subPath: tmp
             server:
               - path: /usr/src/app/.reverse-geocoding-dump
                 subPath: geocoding
