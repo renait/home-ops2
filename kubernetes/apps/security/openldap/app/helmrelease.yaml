@@ -34,8 +34,6 @@ spec:
 
     updateStrategy:
       type: RollingUpdate
-      rollingUpdate:
-        partition: 1
 
     # Set the container log level
     # Valid log levels: none, error, warning, info (default), debug, trace
