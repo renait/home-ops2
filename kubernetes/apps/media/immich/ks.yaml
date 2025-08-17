@@ -19,8 +19,9 @@ spec:
   wait: true
   dependsOn:
     - name: democratic-csi-iscsi-ssd
-    - name: volsync
+    - name: dragonfly-cluster
     - name: external-secrets-stores
+    - name: volsync
   postBuild:
     substitute:
       APP: *appname
