@@ -21,7 +21,7 @@ spec:
   timeout: 15m
   dependsOn:
     - name: external-secrets-stores
-    - name: redis
+    - name: dragonfly-cluster
     - name: crunchy-postgres-operator
   postBuild:
     substitute:
