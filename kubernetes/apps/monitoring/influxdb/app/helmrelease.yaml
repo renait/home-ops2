@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: influxdb
+  name: &appname influxdb
 spec:
   interval: 30m
   timeout: 15m
@@ -37,6 +37,7 @@ spec:
       retention_policy: "0s"
       existingSecret: "influxdb-secret"
 
+    nameOverride: *appname
     podAnnotations:
       reloader.stakater.com/search: "true"
 
