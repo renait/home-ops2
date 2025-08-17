@@ -26,12 +26,12 @@ spec:
               type: influxdb
               uid: influxdb
               access: proxy
-              url: http://influxdb.monitoring.svc.cluster.local:8086
+              url: http://influxdb.monitoring.svc.cluster.local
               user: pfsense
               secureJsonData:
                 password: "{{ .influxdb_pfsense_token }}"
               jsonData:
-                dbName: pfsense24h
+                dbName: pfsense48h
                 httpMode: POST
               editable: false
   dataFrom:
