@@ -36,7 +36,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_DOMAIN}"
-          io.cilium/lb-ipam-ips: "192.168.14.202"
+          lbipam.cilium.io/ips: 192.168.14.202
       ingressClassResource:
         name: internal
         default: true
