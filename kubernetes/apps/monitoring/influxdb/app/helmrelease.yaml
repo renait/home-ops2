@@ -7,9 +7,14 @@ metadata:
 spec:
   interval: 30m
   timeout: 15m
-  chartRef:
-    kind: OCIRepository
-    name: influxdb
+  chart:
+    spec:
+      chart: influxdb2
+      version: 2.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: influxdata
+        namespace: monitoring
   maxHistory: 3
   install:
     remediation:
@@ -21,45 +26,34 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    auth:
-      admin:
-        retention: "30d"
-      createUserToken: true
-      user:
-        username: "pfsense"
-        org: "pfsense"
-        bucket: "pfsense"
+    image:
+      repository: influxdb
+      tag: 2.7.12-alpine
+
+    adminUser:
+      organization: "primary"
+      bucket: "primary"
+      user: "admin"
+      retention_policy: "0s"
       existingSecret: "influxdb-secret"
 
-    influxdb:
-      extraEnvVars:
-        - name: TZ
-          value: "${TIMEZONE}"
-      podAnnotations:
-        reloader.stakater.com/search: "true"
-      updateStrategy:
-        type: Recreate
-      service:
-        type: LoadBalancer
-        loadBalancerIP: "192.168.14.206"
-        annotations:
-          dns.pfsense.org/hostname: "influxdb.${SECRET_DOMAIN}"
-          io.cilium/lb-ipam-ips: 192.168.14.206
-      resources:
-        requests:
-          cpu: 10m
-          memory: 500Mi
-        limits:
-          cpu: 1
-          memory: 2Gi
-      livenessProbe:
-        initialDelaySeconds: 5
-        periodSeconds: 10
-        timeoutSeconds: 5
-      readinessProbe:
-        initialDelaySeconds: 5
-        periodSeconds: 10
-        timeoutSeconds: 5
+    podAnnotations:
+      reloader.stakater.com/search: "true"
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 500Mi
+      limits:
+        cpu: 1
+        memory: 2Gi
+
+    service:
+      type: LoadBalancer
+      loadBalancerIP: "192.168.14.206"
+      annotations:
+        dns.pfsense.org/hostname: "influxdb.${SECRET_DOMAIN}"
+        io.cilium/lb-ipam-ips: 192.168.14.206
 
     ingress:
       enabled: true
@@ -67,11 +61,7 @@ spec:
       hostname: "influxdb-ui.${SECRET_DOMAIN}"
       ingressClassName: internal
 
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
     persistence:
       enabled: true
-      existingClaim: "${VOLSYNC_CLAIM}"
+      useExisting: true
+      name: "${VOLSYNC_CLAIM}"

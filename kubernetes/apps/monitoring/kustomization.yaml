@@ -7,7 +7,7 @@ resources:
   - loki/ks.yaml
   - kube-prometheus-stack/ks.yaml
   - grafana/ks.yaml
-  #- influxdb/ks.yaml
+  - influxdb/ks.yaml
   - promtail/ks.yaml
   # - vpa/ks.yaml
   # - goldilocks/ks.yaml
