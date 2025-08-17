@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: influxdb
+spec:
+  interval: 30m
+  timeout: 15m
+  chartRef:
+    kind: OCIRepository
+    name: influxdb
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    auth:
+      admin:
+        retention: "30d"
+      createUserToken: true
+      user:
+        username: "pfsense"
+        org: "pfsense"
+        bucket: "pfsense"
+      existingSecret: "influxdb-secret"
+
+    influxdb:
+      extraEnvVars:
+        - name: TZ
+          value: "${TIMEZONE}"
+      podAnnotations:
+        reloader.stakater.com/search: "true"
+      updateStrategy:
+        type: Recreate
+      service:
+        type: LoadBalancer
+        loadBalancerIP: "192.168.14.206"
+        annotations:
+          dns.pfsense.org/hostname: "influxdb.${SECRET_DOMAIN}"
+          io.cilium/lb-ipam-ips: 192.168.14.206
+      resources:
+        requests:
+          cpu: 10m
+          memory: 500Mi
+        limits:
+          cpu: 1
+          memory: 2Gi
+      livenessProbe:
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        timeoutSeconds: 5
+      readinessProbe:
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        timeoutSeconds: 5
+
+    ingress:
+      enabled: true
+      tls: true
+      hostname: "influxdb-ui.${SECRET_DOMAIN}"
+      ingressClassName: internal
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+    persistence:
+      enabled: true
+      existingClaim: "${VOLSYNC_CLAIM}"
