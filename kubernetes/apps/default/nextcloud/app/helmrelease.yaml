@@ -93,14 +93,11 @@ spec:
         - name: TRUSTED_PROXIES
           value: "10.42.0.0/16"
         - name: REDIS_HOST
-          value: &redisHost nextcloud-redis
+          value: &redisHost dragonfly.database.svc.cluster.local
+        - name: REDIS_HOST_DBINDEX
+          value: "3"
         - name: REDIS_HOST_PORT
           value: &redisPort "6379"
-        - name: REDIS_HOST_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: nextcloud-secret
-              key: nextcloud_redis_password
 
       extraInitContainers:
         - name: wait-database
