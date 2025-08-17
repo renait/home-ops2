@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: crunchy-postgres-operator
-    - name: authentik-redis
+    - name: dragonfly-cluster
     - name: openldap
   postBuild:
     substitute:
