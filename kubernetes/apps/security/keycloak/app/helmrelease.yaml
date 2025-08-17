@@ -26,8 +26,6 @@ spec:
         value: "true"
       - name: KC_HOSTNAME_DEBUG
         value: "true"
-      - name: KC_HTTP_ENABLED
-        value: "true"
 
     production: true
     proxyHeaders: "xforwarded"
