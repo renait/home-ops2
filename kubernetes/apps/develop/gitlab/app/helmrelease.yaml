@@ -73,16 +73,10 @@ spec:
           secret: "${APP}-pguser-${DB_USER}"
           key: password
       redis:
-        host: redis-master
         auth:
           enabled: false
-        sentinels:
-          - host: redis-node-0.redis-headless.database.svc.cluster.local
-            port: 26379
-          - host: redis-node-1.redis-headless.database.svc.cluster.local
-            port: 26379
-          - host: redis-node-2.redis-headless.database.svc.cluster.local
-            port: 26379
+        host: dragonfly.database.svc.cluster.local
+        database: 4
       registry:
         bucket: gitlab-registry
       smtp:
