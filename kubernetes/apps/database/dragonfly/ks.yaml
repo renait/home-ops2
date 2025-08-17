@@ -29,7 +29,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly-operator
-      namespace: database
   interval: 1h
   path: ./kubernetes/apps/database/dragonfly/cluster
   prune: true
