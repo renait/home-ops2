@@ -25,7 +25,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      HOSTNAME: authentik.renait.nl
+      HOSTNAME: authentik.${SECRET_DOMAIN}
       DB_NAME: authentik
       DB_USER: authentik
       DB_CAPACITY: "5Gi"
