@@ -94,8 +94,6 @@ spec:
           value: "10.42.0.0/16"
         - name: REDIS_HOST
           value: &redisHost dragonfly.database.svc.cluster.local
-        - name: REDIS_HOST_DBINDEX
-          value: "3"
         - name: REDIS_HOST_PORT
           value: &redisPort "6379"
 
