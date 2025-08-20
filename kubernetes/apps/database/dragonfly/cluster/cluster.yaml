@@ -31,10 +31,10 @@ spec:
     annotations:
       dns.pfsense.org/hostname: "dragonfly.${SECRET_DOMAIN}"
       lbipam.cilium.io/ips: 192.168.14.208
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: "kubernetes.io/hostname"
-      whenUnsatisfiable: "DoNotSchedule"
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/part-of: dragonfly
+#  topologySpreadConstraints:
+#    - maxSkew: 1
+#      topologyKey: "kubernetes.io/hostname"
+#      whenUnsatisfiable: "DoNotSchedule"
+#      labelSelector:
+#        matchLabels:
+#          app.kubernetes.io/part-of: dragonfly
