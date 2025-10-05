@@ -19,7 +19,6 @@ resources:
   - kubernetes-dashboard.yaml
   - kubernetes-pfsense-controller.yaml
   - kubernetes-sigs-descheduler.yaml
-  - kubernetes-sigs-nfd.yaml
   - metrics-server.yaml
   - nextcloud.yaml
   - openebs.yaml
