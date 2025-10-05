@@ -8,3 +8,4 @@ resources:
   - ./crunchy-postgres-operator/ks.yaml
   - ./dragonfly/ks.yaml
   - ./redisinsight/ks.yaml
+  - ./pgadmin4/ks.yaml
