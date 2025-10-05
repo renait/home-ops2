@@ -75,7 +75,22 @@ spec:
     nextcloud:
       host: ${HOSTNAME}
       update: 0
+      configs:
+        redis.config.php: |-
+          <?php
+          $CONFIG = array(
+            'memcache.distributed' => '\OC\Memcache\Redis',
+            'memcache.locking' => '\OC\Memcache\Redis',
+            'redis' => array(
+              'host' => getenv('REDIS_HOST'),
+              'port' => getenv('REDIS_HOST_PORT') ?: 6379,
+              'dbindex' => getenv('REDIS_DATABASE') ?: 0,
+              'password' => getenv('REDIS_PASSWORD'),
+            ),
+          );
       datadir: /var/www/html/data
+      defaultConfigs:
+        redis.config.php: false
       mail:
         enabled: true
         smtp:
@@ -96,6 +111,8 @@ spec:
           value: &redisHost dragonfly.database.svc.cluster.local
         - name: REDIS_HOST_PORT
           value: &redisPort "6379"
+        - name: REDIS_DATABASE
+          value: "3"
 
       extraInitContainers:
         - name: wait-database
