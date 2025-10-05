@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app pgadmin4
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  path: ./kubernetes/apps/database/pgadmin4/app
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CLAIM: pgadmin4-config
+      VOLSYNC_GID: "5050"
+      VOLSYNC_UID: "5050"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  timeout: 5m
+  wait: false
