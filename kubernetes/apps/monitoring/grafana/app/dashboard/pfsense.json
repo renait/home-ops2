@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 58,
+  "id": 46,
   "links": [],
   "panels": [
     {
@@ -103,7 +103,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -195,7 +195,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "CPU Total",
@@ -346,7 +346,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_cpu",
@@ -541,7 +541,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -728,7 +728,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$col",
@@ -890,7 +890,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Load 15m",
@@ -982,7 +982,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -1155,7 +1155,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_path",
@@ -1298,7 +1298,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$col",
@@ -1495,7 +1495,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_sensor",
@@ -1651,7 +1651,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -1820,7 +1820,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -1912,8 +1912,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "e9783d06-9274-4021-8131-b01aadfb8871"
+        "type": "prometheus",
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1963,7 +1963,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$col",
@@ -2217,7 +2217,7 @@
           "zoom": 1
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_geoip_code",
@@ -2295,8 +2295,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "e9783d06-9274-4021-8131-b01aadfb8871"
+        "type": "prometheus",
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -2347,7 +2347,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$col",
@@ -2497,7 +2497,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -2656,7 +2656,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_src_ip",
@@ -2837,7 +2837,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_gateway_name",
@@ -2990,7 +2990,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_gateway_name",
@@ -3161,7 +3161,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -3408,7 +3408,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -3619,7 +3619,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col",
@@ -3787,7 +3787,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col",
@@ -3956,7 +3956,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col - This Month",
@@ -4184,7 +4184,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col",
@@ -4451,7 +4451,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgb(255, 255, 255)"
+                "color": "rgb(255, 255, 255)",
+                "value": 0
               },
               {
                 "color": "light-red",
@@ -4514,7 +4515,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -4687,7 +4688,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4720,11 +4722,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col",
@@ -4859,7 +4862,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               }
             ]
           },
@@ -4892,7 +4896,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col",
@@ -5028,7 +5032,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               }
             ]
           },
@@ -5062,7 +5067,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col - This Month",
@@ -5210,7 +5215,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5264,11 +5270,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "$tag_interface - $col",
