@@ -307,9 +307,9 @@ spec:
       resources:
         requests:
           cpu: 10m
-          memory: 130M
+          memory: 130Mi
         limits:
-          memory: 220M
+          memory: 300Mi
 
     testFramework:
       enabled: false
