@@ -41,6 +41,8 @@ spec:
         log_level: info
       storage:
         type: filesystem
+        bucketNames:
+          chunks: fnord
 
     backend:
       replicas: 0
