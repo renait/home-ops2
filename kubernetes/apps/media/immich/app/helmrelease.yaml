@@ -32,7 +32,7 @@ spec:
           server:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.2.3
+              tag: v2.3.1
             env: &env
               TZ: "${TIMEZONE}"
               DB_HOSTNAME:
@@ -104,7 +104,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.2.3
+              tag: v2.3.1
             env: *env
             envFrom:
               - configMapRef:
