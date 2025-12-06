@@ -14,6 +14,8 @@ spec:
   values:
     controllers:
       qbittorrent:
+        strategy: Recreate
+
         annotations:
           secret.reloader.stakater.com/reload: qbittorrent-secret
 
@@ -72,6 +74,10 @@ spec:
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
+            lifecycle:
+              postStart:
+                exec:
+                  command: [ "/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true" ]
             probes:
               liveness:
                 enabled: true
