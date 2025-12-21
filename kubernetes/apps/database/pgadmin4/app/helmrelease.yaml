@@ -34,7 +34,7 @@ spec:
       email: roelof@rena-it.nl
       variables:
         - name: TZ
-          values: "${TIMEZONE}"
+          values: ${TIMEZONE}
     existingSecret: pgadmin4-secret
     secretKeys:
       pgadminPasswordKey: password
