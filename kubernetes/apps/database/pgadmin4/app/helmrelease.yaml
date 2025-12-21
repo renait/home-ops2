@@ -32,6 +32,9 @@ spec:
       type: Recreate
     env:
       email: roelof@rena-it.nl
+      variables:
+        - name: TZ
+          values: "${TIMEZONE}"
     existingSecret: pgadmin4-secret
     secretKeys:
       pgadminPasswordKey: password
