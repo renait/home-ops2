@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: democratic-csi
-      version: 0.15.0
+      version: 0.15.1
       sourceRef:
         kind: HelmRepository
         name: democratic-csi
@@ -50,8 +50,10 @@ spec:
       # democratic-csi controller
       driver:
         image:
-          registry: &demoCsiRegistry renait/democratic-csi
-          tag: &demoCsiTag next
+#          registry: &demoCsiRegistry registry-nexus.${SECRET_DOMAIN}/democraticcsi/democratic-csi
+#          tag: &demoCsiTag next
+          registry: &demoCsiRegistry ghcr.io/democratic-csi/democratic-csi
+          tag: &demoCsiTag v1.9.5
           pullPolicy: Always
         logLevel: info
         resources:
