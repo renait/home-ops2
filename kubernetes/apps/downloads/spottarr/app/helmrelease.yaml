@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/spottarr/spottarr
-              tag: 1.15.0
+              tag: 1.16.0
             env:
               TZ: "${TIMEZONE}"
               USENET__PORT: 563
