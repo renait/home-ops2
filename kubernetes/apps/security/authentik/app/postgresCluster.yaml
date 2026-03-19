@@ -79,7 +79,7 @@ spec:
             endpoint: "s3.${SECRET_DOMAIN}"
             region: "us-east-1"
       restore:
-        enabled: false
+        enabled: enabled
         repoName: repo1
         options:
         - --set=20260308-000004F_20260309-000357D
