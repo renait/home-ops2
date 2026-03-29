@@ -59,10 +59,10 @@ spec:
     server:
       resources:
         requests:
-          cpu: 20m
-          memory: 600Mi
+          cpu: 30m
+          memory: 800Mi
         limits:
-          memory: 1200Mi
+          memory: 1Gi
 
       metrics:
         enabled: true
@@ -84,10 +84,10 @@ spec:
     worker:
       resources:
         requests:
-          cpu: 80m
+          cpu: 50m
           memory: 700Mi
         limits:
-          memory: 1200Mi
+          memory: 1Gi
 
     prometheus:
       rules:
