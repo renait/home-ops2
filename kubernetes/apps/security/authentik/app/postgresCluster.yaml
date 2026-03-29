@@ -7,6 +7,13 @@ spec:
   shutdown: false
   postgresVersion: 17
   dataSource:
+#    postgresCluster:
+#      clusterName: *name
+#      repoName: repo1
+#      options:
+#        - --type=time
+#        - --target="2025-07-27 22:00:00+02"
+#        - --set=20250726-230003F_20250727-230003D
     pgbackrest:
       stanza: db
       configuration:
@@ -78,8 +85,10 @@ spec:
             bucket: "crunchy-postgres"
             endpoint: "s3.${SECRET_DOMAIN}"
             region: "us-east-1"
-      restore:
-        enabled: true
-        repoName: repo1
-        options:
-        - --set=20260308-000004F_20260309-000357D
+#      restore:
+#        enabled: false
+#        repoName: repo1
+#        options:
+#          - --type=time
+#          - --target="2026-03-10 18:00:00+01"
+#          - --set=20260308-000004F_20260309-000357D
