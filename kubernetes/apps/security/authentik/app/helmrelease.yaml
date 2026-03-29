@@ -84,8 +84,8 @@ spec:
     worker:
       resources:
         requests:
-          cpu: 15m
-          memory: 300Mi
+          cpu: 80m
+          memory: 700Mi
         limits:
           memory: 1200Mi
 
