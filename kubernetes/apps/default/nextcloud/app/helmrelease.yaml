@@ -30,8 +30,8 @@ spec:
 
     image:
       repository: nextcloud
-      tag: 32.0.8-fpm-alpine
-      flavor: fpm-alpine
+      tag: 32.0.8-apache
+      #flavor: fpm-alpine
 
     ## Allowing use of ingress controllers
     ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -108,7 +108,11 @@ spec:
           secure: ""
           port: 587
           authtype: LOGIN
-
+      securityContext:
+        runAsUser: 82
+        runAsGroup: 82
+        runAsNonRoot: true
+        readOnlyRootFilesystem: false
       ##
       ## Extra environment variables
       extraEnv:
@@ -134,7 +138,7 @@ spec:
           args:
             - -c
             - >-
-              until nc -w 1 -v $MYSQL_HOST:3306 || nc -w 1 -v $POSTGRES_HOST:5432;
+              until nc -w 1 -v $POSTGRES_HOST:5432;
               do echo "Waiting for database";
               done
           env:
@@ -160,8 +164,8 @@ spec:
             - name: REDIS_HOST_PORT
               value: *redisPort
 
-    nginx:
-      enabled: true
+#    nginx:
+#      enabled: true
 
     internalDatabase:
       enabled: false
