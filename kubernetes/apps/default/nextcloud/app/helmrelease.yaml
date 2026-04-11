@@ -30,8 +30,8 @@ spec:
 
     image:
       repository: nextcloud
-      tag: 32.0.8-fpm-alpine
-      flavor: fpm-alpine
+      tag: 32.0.8-apache
+      #flavor: fpm-alpine
 
     ## Allowing use of ingress controllers
     ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -47,20 +47,31 @@ spec:
         nginx.ingress.kubernetes.io/server-snippet: |-
           server_tokens off;
           proxy_hide_header X-Powered-By;
-          rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
-          rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
-          rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
-          rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
-          location = /.well-known/carddav {
-            return 301 $scheme://$host/remote.php/dav;
-          }
-          location = /.well-known/caldav {
-            return 301 $scheme://$host/remote.php/dav;
+          # Rule borrowed from .htaccess to handle Microsoft DAV clients
+          location = / {
+            if ( $http_user_agent ~ ^DavClnt ) {
+              return 302 /remote.php/webdav/$is_args$args;
+            }
           }
           location = /robots.txt {
             allow all;
             log_not_found off;
             access_log off;
+          }
+          location ^~ /.well-known {
+
+            # The rules in this block are an adaptation of the rules
+            # in .htaccess that concern /.well-known.
+
+            location = /.well-known/carddav { return 301 /remote.php/dav/; }
+            location = /.well-known/caldav  { return 301 /remote.php/dav/; }
+
+            location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }
+            location /.well-known/pki-validation    { try_files $uri $uri/ =404; }
+
+            # Let Nextcloud's API for /.well-known URIs handle all other
+            # requests by passing them to the front-end controller.
+            return 301 /index.php$request_uri;
           }
           location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
             deny all;
@@ -149,8 +160,8 @@ spec:
             - name: REDIS_HOST_PORT
               value: *redisPort
 
-    nginx:
-      enabled: true
+#    nginx:
+#      enabled: true
 
     internalDatabase:
       enabled: false
@@ -230,18 +241,18 @@ spec:
       failureThreshold: 30
       successThreshold: 1
 
-#    lifecycle:
-#      postStartCommand:
-#        - su
-#        - www-data
-#        - -s
-#        - /bin/sh
-#        - -c
-#        - >-
-#          cd /var/www/html;
-#          ./occ upgrade;
-#          ./occ db:add-missing-indices;
-#          /bin/true
+    lifecycle:
+      postStartCommand:
+        - su
+        - www-data
+        - -s
+        - /bin/sh
+        - -c
+        - >-
+          cd /var/www/html;
+          ./occ upgrade;
+          ./occ db:add-missing-indices;
+          /bin/true
 
   valuesFrom:
     - kind: Secret
