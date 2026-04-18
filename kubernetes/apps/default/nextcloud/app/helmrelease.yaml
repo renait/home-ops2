@@ -131,7 +131,7 @@ spec:
 
       extraInitContainers:
         - name: wait-database
-          image: alpine:3.23.3
+          image: alpine:3.23.4
           imagePullPolicy: IfNotPresent
           command:
             - sh
@@ -148,7 +148,7 @@ spec:
                   name: ${APP}-pguser-${APP}
                   key: host
         - name: wait-redis
-          image: alpine:3.23.3
+          image: alpine:3.23.4
           imagePullPolicy: IfNotPresent
           command:
             - sh
