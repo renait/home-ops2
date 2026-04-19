@@ -95,7 +95,7 @@ spec:
         ## https://docs.gitlab.com/charts/charts/globals#lfs-artifacts-uploads-packages-external-mr-diffs-and-dependency-proxy
         object_store:
           enabled: true
-          proxy_download: true
+          # proxy_download: true
           storage_options: { }
           # server_side_encryption:
           # server_side_encryption_kms_key_id
