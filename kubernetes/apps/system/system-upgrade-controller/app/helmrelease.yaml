@@ -19,6 +19,8 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    global:
+      createDefaultServiceAccount: false  
     controllers:
       system-upgrade-controller:
         strategy: RollingUpdate
@@ -68,6 +70,8 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+    defaultPodOptions:
+      automountServiceAccountToken: true          
     rbac:
       bindings:
         system-upgrade-controller:
