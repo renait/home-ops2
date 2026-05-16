@@ -275,9 +275,9 @@ spec:
     resources:
       requests:
         cpu: 20m
-        memory: 160Mi
+        memory: 280Mi
       limits:
-        memory: 320Mi
+        memory: 500Mi
 
     serviceAccount:
       create: true
