@@ -49,6 +49,8 @@ spec:
           https: true
       gatewayApi:
         enabled: false
+        installEnvoy: false
+        configureCertmanager: false
       ingress:
         class: internal
         # Wildcard is configured by default
