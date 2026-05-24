@@ -52,6 +52,7 @@ spec:
         installEnvoy: false
         configureCertmanager: false
       ingress:
+        enabled: true
         class: internal
         # Wildcard is configured by default
         configureCertmanager: false
