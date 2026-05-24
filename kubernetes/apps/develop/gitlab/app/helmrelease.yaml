@@ -131,6 +131,11 @@ spec:
       enabled: false
 
     gitlab:
+      gitlab-exporter:
+        image:
+          # FIXME: Image 16.8.0 not found in registry!?
+          tag: 16.7.0
+
       ## https://docs.gitlab.com/charts/charts/gitlab/toolbox
       toolbox:
         replicas: 1
