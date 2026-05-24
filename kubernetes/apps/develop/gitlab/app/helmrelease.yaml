@@ -83,6 +83,9 @@ spec:
         database: 4
       registry:
         bucket: gitlab-registry
+        storage:
+          secret: *secret
+          key: registry.s3.yaml
       smtp:
         enabled: true
         address: "smtp.gmail.com"
@@ -168,9 +171,6 @@ spec:
         hpa:
           minReplicas: 1
           maxReplicas: 2
-        storage:
-          secret: *secret
-          key: registry.s3.yaml
       sidekiq:
         minReplicas: 1
         maxReplicas: 2
