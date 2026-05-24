@@ -68,6 +68,12 @@ spec:
         enabled: false
       pages:
         enabled: true
+        objectStore:
+          enabled: true
+          bucket: gitlab-pages
+          connection:
+            secret: *secret
+            key: rails-minio.yaml
       email:
         display_name: 'GitLab'
       minio:
