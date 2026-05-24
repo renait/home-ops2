@@ -47,6 +47,8 @@ spec:
         minio:
           name: s3.${SECRET_DOMAIN}
           https: true
+      gatewayApi:
+        enabled: false
       ingress:
         class: internal
         # Wildcard is configured by default
