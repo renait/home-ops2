@@ -103,7 +103,7 @@ spec:
           # server_side_encryption:
           # server_side_encryption_kms_key_id
           connection:
-            secret: gitlab-secret
+            secret: *secret
             key: rails-minio.yaml
 
         backups:
@@ -133,7 +133,7 @@ spec:
         backups:
           objectStorage:
             config:
-              secret: gitlab-secret
+              secret: *secret
               key: s3cfg
         antiAffinityLabels:
           matchLabels:
@@ -168,6 +168,9 @@ spec:
         hpa:
           minReplicas: 1
           maxReplicas: 2
+        storage:
+          secret: *secret
+          key: registry.s3.yaml
       sidekiq:
         minReplicas: 1
         maxReplicas: 2
