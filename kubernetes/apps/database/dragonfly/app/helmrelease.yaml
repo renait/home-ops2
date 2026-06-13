@@ -17,8 +17,10 @@ spec:
     remediation:
       retries: 3
   values:
+    crds:
+      install: true
     serviceMonitor:
-      enabled: false
+      enabled: true
     grafanaDashboard:
       enabled: true
       folder: Data
