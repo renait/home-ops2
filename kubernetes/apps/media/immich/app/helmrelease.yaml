@@ -23,15 +23,12 @@ spec:
         reloader.stakater.com/auto: "true"
         secret.reloader.stakater.com/reload: immich-secret
       securityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
         runAsNonRoot: true
         runAsUser: ${APP_UID}
         runAsGroup: &group ${APP_GID}
         fsGroup: *group
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
-        capabilities: { drop: [ "ALL" ] }
     controllers:
       immich:
         replicas: 1
@@ -103,6 +100,10 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 4Gi
+            securityContext:
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
 
           machine-learning:
             image:
@@ -133,6 +134,10 @@ spec:
                 memory: 400Mi
               limits:
                 memory: 4Gi
+            securityContext:
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
 
     service:
       server:
