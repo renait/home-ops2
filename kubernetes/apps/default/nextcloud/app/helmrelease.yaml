@@ -91,6 +91,7 @@ spec:
       host: ${HOSTNAME}
       update: 0
       configs:
+        # !! override default externalRedis config because there's no support for REDIS_DATABASE.
         redis.config.php: |-
           <?php
           $CONFIG = array(
@@ -190,14 +191,18 @@ spec:
         databaseKey: dbname
 
     ##
-    ## MariaDB chart configuration
+    ## External Redis configuration. Do not enable since there's no support for REDIS_DATABASE.
     ##
-    mariadb:
-      ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
+    externalRedis:
       enabled: false
 
-    redis:
-      enabled: false
+#      host: *redisHost
+#      port: *redisPort
+#
+#      existingSecret:
+#        enabled: true
+#        secretName: ${APP}-redis
+#        passwordKey: NEXTCLOUD_REDIS_PASSWORD
 
     ## Cronjob to execute Nextcloud background tasks
     ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#cron
