@@ -28,6 +28,8 @@ spec:
     cluster:
       name: kubernetes
       id: 1
+    devices:
+      - eth0.14
     endpointRoutes:
       enabled: true
     hubble:
