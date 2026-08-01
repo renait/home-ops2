@@ -20,6 +20,7 @@ spec:
       name: kubernetes
       id: 1
     devices:
+      - eth0.12
       - eth0.14
     endpointRoutes:
       enabled: true
