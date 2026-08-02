@@ -171,8 +171,8 @@ spec:
           IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
           MPLCONFIGDIR: /cache/matplotlib
           IMMICH_ENV: production
-          REDIS_HOSTNAME: "dragonfly.database.svc.cluster.local"
-          REDIS_DBINDEX: "2"
+          REDIS_HOSTNAME: "immich-dragonfly"
+          #REDIS_DBINDEX: "2"
     persistence:
       data:
         existingClaim: nas-immich
