@@ -30,13 +30,14 @@ spec:
               tag: 3.8.0
             env:
               TZ: "${TIMEZONE}"
+              RI_DATABASE_MANAGEMENT: "${REDISINSIGHT_MANAGEMENT:-false}"
               RI_FILES_LOGGER: false
               RI_STDOUT_LOGGER: true
               RI_REDIS_ALIAS: "${APP}"
-              RI_REDIS_DB: "${REDIS_DB:-0}"
               RI_REDIS_HOST: "${APP}-dragonfly"
-              RI_REDIS_USERNAME: "${REDIS_USERNAME:-default}"
-              RI_REDIS_PASSWORD: "${REDIS_PASSWORD:-}"
+              RI_REDIS_USERNAME: "${REDISINSIGHT_USERNAME:-default}"
+              RI_REDIS_PASSWORD: "${REDISINSIGHT_PASSWORD:-}"
+              RI_REDIS_DB: "${REDISINSIGHT_DB:-0}"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
