@@ -58,7 +58,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: *app
+        controller: redisinsight
         ports:
           http:
             port: 5540
