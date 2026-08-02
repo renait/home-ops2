@@ -19,6 +19,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 15m
+  components:
+    - ../../../../components/dragonfly
   dependsOn:
     - name: external-secrets-stores
     - name: dragonfly-cluster

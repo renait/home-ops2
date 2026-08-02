@@ -86,8 +86,8 @@ spec:
       redis:
         auth:
           enabled: false
-        host: dragonfly.database.svc.cluster.local
-        database: 4
+        host: gitlab-dragonfly.gitlab.svc.cluster.local
+        #database: 4
       smtp:
         enabled: true
         address: "smtp.gmail.com"
