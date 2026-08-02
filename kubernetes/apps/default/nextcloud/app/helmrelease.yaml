@@ -191,11 +191,11 @@ spec:
     ##
     ## External Redis configuration. Do not enable since there's no support for REDIS_DATABASE.
     ##
-    externalRedis:
-      enabled: true
-
-      host: *redisHost
-      port: *redisPort
+#    externalRedis:
+#      enabled: true
+#
+#      host: *redisHost
+#      port: *redisPort
 
 #      existingSecret:
 #        enabled: true
