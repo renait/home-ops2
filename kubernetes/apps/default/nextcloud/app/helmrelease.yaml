@@ -86,18 +86,18 @@ spec:
       update: 0
       configs:
         # !! override default externalRedis config because there's no support for REDIS_DATABASE.
-        redis.config.php: |-
-          <?php
-          $CONFIG = array(
-            'memcache.distributed' => '\OC\Memcache\Redis',
-            'memcache.locking' => '\OC\Memcache\Redis',
-            'redis' => array(
-              'host' => getenv('REDIS_HOST'),
-              'port' => getenv('REDIS_HOST_PORT') ?: 6379,
-              'dbindex' => getenv('REDIS_DATABASE') ?: 0,
-              'password' => getenv('REDIS_PASSWORD'),
-            ),
-          );
+#        redis.config.php: |-
+#          <?php
+#          $CONFIG = array(
+#            'memcache.distributed' => '\OC\Memcache\Redis',
+#            'memcache.locking' => '\OC\Memcache\Redis',
+#            'redis' => array(
+#              'host' => getenv('REDIS_HOST'),
+#              'port' => getenv('REDIS_HOST_PORT') ?: 6379,
+#              'dbindex' => getenv('REDIS_DATABASE') ?: 0,
+#              'password' => getenv('REDIS_PASSWORD'),
+#            ),
+#          );
       datadir: /var/www/html/data
       defaultConfigs:
         redis.config.php: false
@@ -119,12 +119,16 @@ spec:
           value: "Europe/Amsterdam"
         - name: TRUSTED_PROXIES
           value: "10.42.0.0/16"
-        - name: REDIS_HOST
-          value: &redisHost dragonfly.database.svc.cluster.local
-        - name: REDIS_HOST_PORT
-          value: &redisPort "6379"
-        - name: REDIS_DATABASE
-          value: "3"
+        - name: &redisHost REDIS_HOST
+          value: nextcloud-dragonfly.default.svc.cluster.local.
+        - name: &redisPort REDIS_HOST_PORT
+          value: "6379"
+#        - name: REDIS_HOST
+#          value: &redisHost dragonfly.database.svc.cluster.local
+#        - name: REDIS_HOST_PORT
+#          value: &redisPort "6379"
+#        - name: REDIS_DATABASE
+#          value: "3"
 
       extraInitContainers:
         - name: wait-database
@@ -188,11 +192,11 @@ spec:
     ## External Redis configuration. Do not enable since there's no support for REDIS_DATABASE.
     ##
     externalRedis:
-      enabled: false
+      enabled: true
 
-#      host: *redisHost
-#      port: *redisPort
-#
+      host: *redisHost
+      port: *redisPort
+
 #      existingSecret:
 #        enabled: true
 #        secretName: ${APP}-redis

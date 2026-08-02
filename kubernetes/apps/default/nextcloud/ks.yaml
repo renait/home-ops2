@@ -17,6 +17,8 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: true
+  components:
+    - ../../../../components/dragonfly
   dependsOn:
     - name: democratic-csi-nfs-ssd
     - name: external-secrets-stores
