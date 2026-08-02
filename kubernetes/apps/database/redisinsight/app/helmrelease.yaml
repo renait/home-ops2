@@ -21,6 +21,8 @@ spec:
   values:
     controllers:
       redisinsight:
+        strategy: Recreate
+
         containers:
           app:
             image:
