@@ -22,7 +22,7 @@ spec:
     - ../../../../components/redisinsight
   dependsOn:
     - name: democratic-csi-iscsi-ssd
-    - name: dragonfly-cluster
+    - name: dragonfly-operator
     - name: external-secrets-stores
     - name: volsync
   postBuild:

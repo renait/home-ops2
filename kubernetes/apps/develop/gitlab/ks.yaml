@@ -23,7 +23,7 @@ spec:
     - ../../../../components/dragonfly
   dependsOn:
     - name: external-secrets-stores
-    - name: dragonfly-cluster
+    - name: dragonfly-operator
     - name: crunchy-postgres-operator
   postBuild:
     substitute:
