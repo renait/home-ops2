@@ -23,6 +23,9 @@ spec:
       redisinsight:
         annotations:
           reloader.stakater.com/auto: "true"
+        labels:
+          # required redisinsight to connect to the various clusters.
+          control-plane: controller-manager
         containers:
           app:
             image:
