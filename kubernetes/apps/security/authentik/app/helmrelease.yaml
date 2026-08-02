@@ -42,8 +42,6 @@ spec:
             secretKeyRef:
               name: "${APP}-pguser-${DB_USER}"
               key: password
-        - name: AUTHENTIK_REDIS__DB
-          value: "1"
 
     authentik:
       log_level: info
@@ -53,8 +51,6 @@ spec:
       error_reporting:
         enabled: false
         send_pii: false
-      redis:
-        host: "dragonfly.database.svc.cluster.local"
 
     server:
       resources:
@@ -94,7 +90,4 @@ spec:
         enabled: true
 
     postgresql:
-      enabled: false
-
-    redis:
       enabled: false
