@@ -33,3 +33,19 @@ spec:
         name: grafana_folder
       labels:
         name: grafana_dashboard
+    podSecurityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+      runAsNonRoot: true
+    manager:
+      resources:
+        requests:
+          cpu: 10m
+        limits:
+          memory: 128Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
