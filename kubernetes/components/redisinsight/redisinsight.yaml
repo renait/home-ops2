@@ -47,6 +47,7 @@ spec:
               tag: 3.8.0
             env:
               TZ: "${TIMEZONE}"
+              RI_ACCEPT_TERMS_AND_CONDITIONS: true
               RI_DATABASE_MANAGEMENT: "${REDISINSIGHT_MANAGEMENT:-false}"
               RI_FILES_LOGGER: false
               RI_STDOUT_LOGGER: true
