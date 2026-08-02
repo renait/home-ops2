@@ -19,6 +19,7 @@ spec:
   wait: true
   components:
     - ../../../../components/dragonfly
+    - ../../../../components/redisinsight
   dependsOn:
     - name: democratic-csi-iscsi-ssd
     - name: dragonfly-cluster
