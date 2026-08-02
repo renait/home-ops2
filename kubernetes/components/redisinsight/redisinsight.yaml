@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app ${APP}-dragonfly-ui
+  name: ${APP}-dragonfly-ui
 spec:
   interval: 30m
   chartRef:
@@ -21,7 +21,24 @@ spec:
   values:
     controllers:
       redisinsight:
-        strategy: Recreate
+        initContainers:
+          wait-redis:
+            image:
+              repository: alpine
+              tag: 3.24.1
+            command:
+              - sh
+            args:
+              - -c
+              - >-
+                until nc -w 1 -v $REDIS_HOST:$REDIS_HOST_PORT;
+                do echo "Waiting for Redis";
+                done
+            env:
+              - name: REDIS_HOST
+                value: &redisHost "${APP}-dragonfly"
+              - name: REDIS_HOST_PORT
+                value: &redisPort "6379"
 
         containers:
           app:
@@ -34,7 +51,8 @@ spec:
               RI_FILES_LOGGER: false
               RI_STDOUT_LOGGER: true
               RI_REDIS_ALIAS: "${APP}"
-              RI_REDIS_HOST: "${APP}-dragonfly"
+              RI_REDIS_HOST: *redisHost
+              RI_REDIS_PORT: *redisPort
               RI_REDIS_USERNAME: "${REDISINSIGHT_USERNAME:-default}"
               RI_REDIS_PASSWORD: "${REDISINSIGHT_PASSWORD:-}"
               RI_REDIS_DB: "${REDISINSIGHT_DB:-0}"
@@ -74,4 +92,4 @@ spec:
                   port: http
     persistence:
       data:
-        existingClaim: *app
+        type: emptyDir
