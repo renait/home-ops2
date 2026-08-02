@@ -10,20 +10,25 @@ spec:
     kind: OCIRepository
     name: dragonfly-operator
   install:
+    crds: Skip
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: Skip
     remediation:
       retries: 3
   values:
     crds:
       install: true
+      keep: true
+    rbacProxy:
+      enabled: false
     serviceMonitor:
       enabled: true
     grafanaDashboard:
       enabled: true
-      folder: Data
+      folder: Dragonfly
       annotations:
         name: grafana_folder
       labels:
