@@ -88,8 +88,8 @@ spec:
         misc.config.php: |-
           <?php
           $CONFIG = array (
+            'allow_local_remote_servers' => true,
             'default_phone_region' => 'NL',
-            'maintenance_window_start' => 2,
           ); ?>
         # !! override default externalRedis config because there's no support for REDIS_DATABASE.
 #        redis.config.php: |-
