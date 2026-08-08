@@ -16,7 +16,7 @@ spec:
       spottarr:
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: spottarr-secret,${APP}-pguser-${DB_USER}
+          secret.reloader.stakater.com/reload: spottarr-secret,spottarr-db-secret,${APP}-pguser-${DB_USER}
 
         pod:
           securityContext:
@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/spottarr/spottarr
-              tag: 1.19.0
+              tag: 1.18.1
             env:
               TZ: "${TIMEZONE}"
               USENET__PORT: 563
@@ -40,10 +40,11 @@ spec:
               SPOTNET__IMPORTBATCHSIZE: 10000 # Adjust based on available memory
               SPOTNET__RETENTIONDAYS: 6332 # Use 0 for unlimited
               SPOTNET__IMPORTADULTCONTENT: "false"
-              DATABASE__PROVIDER: Postgres
             envFrom:
               - secretRef:
                   name: spottarr-secret
+              - secretRef:
+                  name: spottarr-db-secret
             probes:
               liveness:
                 enabled: true
@@ -60,13 +61,6 @@ spec:
                 memory: 200Mi
               limits:
                 memory: 400Mi
-
-    service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: 8383
 
     ingress:
       app:
@@ -85,3 +79,29 @@ spec:
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
+
+    rbac:
+      roles:
+        spottarr:
+          type: Role
+          rules:
+            - apiGroups: [ "" ]
+              resources: [ "secrets" ]
+              verbs: [ "get", "list", "watch" ] # Verplicht voor ESO
+      bindings:
+        spottarr:
+          type: RoleBinding
+          roleRef:
+            identifier: spottarr
+          subjects:
+            - identifier: spottarr
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 8383
+
+    serviceAccount:
+      spottarr: {}
