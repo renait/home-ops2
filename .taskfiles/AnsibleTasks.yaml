@@ -52,3 +52,13 @@ tasks:
     desc: Uptime of all the hosts
     dir: "{{.ANSIBLE_DIR}}"
     cmd: ansible all -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yaml --one-line -a 'uptime'
+
+  apt-update:
+    desc: Upgrade apt packages on all the k8s nodes
+    dir: "{{.ANSIBLE_DIR}}"
+    cmd: ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yaml {{.ANSIBLE_PLAYBOOK_DIR}}/nodes-update.yaml
+
+  kubeconfig:
+    desc: Copy Kubernetes config to project dir
+    dir: "{{.ANSIBLE_DIR}}"
+    cmd: ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yaml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-kubeconfig.yaml
