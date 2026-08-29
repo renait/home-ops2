@@ -101,6 +101,9 @@ spec:
             options:
               path: /var/lib/grafana/dashboards/postgres
 
+    # default "eufo pipefail" does not work!
+    defaultShellOptions: "euf"
+
     dashboards:
       default:
         cert-manager:
