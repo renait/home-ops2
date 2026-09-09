@@ -8,3 +8,5 @@ resources:
   - plex/ks.yaml
   - tautulli/ks.yaml
   - immich/ks.yaml
+  # Standard resources
+  - external-services
