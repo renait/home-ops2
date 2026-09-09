@@ -31,7 +31,7 @@ spec:
               tag: 1.6.0
             env:
               TZ: ${TIMEZONE}
-              PLEX_URL: http://plex2.media.svc.cluster.local:32400
+              PLEX_URL: http://plex.media.svc.cluster.local:32400
               REFRESH_LIBRARY_ON_SCAN: false
               PLEX_TOKEN:
                 valueFrom:
