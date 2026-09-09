@@ -55,7 +55,5 @@ spec:
     persistence:
       config:
         type: emptyDir
-      local:
+      logs:
         type: emptyDir
-        globalMounts:
-          - path: /.local
