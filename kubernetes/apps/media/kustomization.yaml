@@ -5,7 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - namespace.yaml
   # Flux-Kustomizations
-  - plex/ks.yaml
+  - plex-auto-languages/ks.yaml
   - tautulli/ks.yaml
   - immich/ks.yaml
   # Standard resources
