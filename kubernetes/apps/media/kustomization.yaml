@@ -9,4 +9,4 @@ resources:
   - tautulli/ks.yaml
   - immich/ks.yaml
   # Standard resources
-  #- external-services
+  - external-services
