@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: democratic-csi-iscsi-ssd
     - name: volsync
-    - name: plex
+    #- name: plex
   postBuild:
     substitute:
       APP: *appname
