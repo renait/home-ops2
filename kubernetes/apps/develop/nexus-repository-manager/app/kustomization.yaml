@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
+#  - ./volsync
   - ../../../../templates/volsync
 labels:
   - includeSelectors: true
