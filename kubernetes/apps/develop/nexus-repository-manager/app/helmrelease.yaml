@@ -29,6 +29,7 @@ spec:
         strategy: Recreate
 
         pod:
+          terminationGracePeriodSeconds: 120
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
