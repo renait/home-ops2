@@ -29,6 +29,8 @@ spec:
         pg_hba:
           - hostnossl all all 10.42.0.0/16 md5
           - hostssl all all all md5
+        parameters:
+          max_connections: 200
   # Koppeling voor automatische installatie van de extensie:
   databaseInitSQL:
     name: nexus-db-init-sql
