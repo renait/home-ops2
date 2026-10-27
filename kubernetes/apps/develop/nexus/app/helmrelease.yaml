@@ -1,0 +1,192 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nexus
+spec:
+  interval: 30m
+  timeout: 3m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  maxHistory: 2
+  install:
+    timeout: 2m
+    remediation:
+      retries: 3
+  upgrade:
+    timeout: 3m
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      nexus:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: nexus-secret,${APP}-pguser-${DB_USER}
+
+        strategy: Recreate
+
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            runAsNonRoot: true
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: []
+
+        containers:
+          app:
+            image:
+              repository: sonatype/nexus3
+              tag: 3.97.2
+              pullPolicy: IfNotPresent
+            env:
+              TZ: "Europe/Amsterdam"
+              INSTALL4J_ADD_VM_PARAMS: "-Xms1024m -Xmx1024m -XX:MaxDirectMemorySize=1024m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+              NEXUS_SECURITY_RANDOMPASSWORD: "true"
+              JAVA_MIN_MEM: 1024m
+              JAVA_MAX_MEM: 1024m
+              DIRECT_MAX_MEM: 1024m
+              NEXUS_DATASTORE_NEXUS_JDBCURL:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-pguser-${APP}
+                    key: jdbc-uri
+              NEXUS_DATASTORE_NEXUS_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-pguser-${APP}
+                    key: user
+              NEXUS_DATASTORE_NEXUS_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-pguser-${APP}
+                    key: password
+            resources:
+              requests:
+                cpu: 50m
+                memory: 1500Mi
+              limits:
+                memory: 2Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /service/rest/v1/status
+                    port: &httpPort 8081
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /service/rest/v1/status
+                    port: *httpPort
+                  initialDelaySeconds: 20
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 60
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ "ALL" ] }
+              seccompProfile:
+                type: RuntimeDefault
+
+    service:
+      app:
+        controller: nexus
+        ports:
+          http:
+            port: *httpPort
+            targetPort: *httpPort
+            protocol: HTTP
+      registry:
+        enabled: true
+        controller: nexus
+        ports:
+          registry:
+            port: 5000
+            targetPort: 5000
+            protocol: TCP
+
+    ingress:
+      app:
+        className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+          # This should be the in-cluster DNS name for the authentik outpost service
+          # as when the external URL is specified here, nginx will overwrite some crucial headers
+          #          nginx.ingress.kubernetes.io/auth-url: |-
+          #            http://ak-outpost-internal-proxy-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+          # If you're using domain-level auth, use the authentication URL instead of the application URL
+          #nginx.ingress.kubernetes.io/auth-signin: |-
+          #  /outpost.goauthentik.io/start?rd=$escaped_request_uri
+          #nginx.ingress.kubernetes.io/auth-response-headers: |-
+          #  Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+          #nginx.ingress.kubernetes.io/auth-snippet: |
+          #  proxy_set_header X-Forwarded-Host $http_host;
+        hosts:
+          - host: &host1 nexus.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+          - host: &host2 registry-nexus.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: registry
+                  port: registry
+        tls:
+          - hosts:
+              - *host1
+              - *host2
+
+    persistence:
+      tmp:
+        type: emptyDir
+      shared-data:
+        type: emptyDir
+        # Koppel het volume automatisch aan ALLES binnen deze controller (zowel init- als hoofdcontainers)
+        advancedMounts:
+          nexus:
+            download-migrator:
+              - path: /shared-data
+            run-migrator:
+              - path: /shared-data
+      nexus-data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+      nexus-backup:
+        existingClaim: nexus-backup
+        advancedMounts:
+          nexus:
+            app:
+              - path: /nexus-data/backup
+      nexus-blobs-default:
+        existingClaim: nexus-blobs-default
+        advancedMounts:
+          nexus:
+            app:
+              - path: /nexus-data/blobs/default2
+      nexus-blobs-proxied:
+        existingClaim: nexus-blobs-proxied
+        advancedMounts:
+          nexus:
+            app:
+              - path: /nexus-data/blobs/proxied2

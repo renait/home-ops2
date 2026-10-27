@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nexus-db-init-sql
+data:
+  init.sql: |
+    \connect ${APP}
+
+    CREATE EXTENSION IF NOT EXISTS pg_trgm SCHEMA public;
