@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: sonatype/nexus3
-              tag: 3.97.2
+              tag: 3.97.3
               pullPolicy: IfNotPresent
             env:
               TZ: "Europe/Amsterdam"
