@@ -19,6 +19,9 @@ spec:
   upgrade:
     timeout: 3m
     cleanupOnFail: true
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 10m # Tries upgrading again every 10 minutes    
     remediation:
       retries: 3
   uninstall:
