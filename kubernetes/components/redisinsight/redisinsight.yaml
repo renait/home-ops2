@@ -50,7 +50,7 @@ spec:
           app:
             image:
               repository: redis/redisinsight
-              tag: 3.8.0
+              tag: 3.10.1
             env:
               TZ: "${TIMEZONE}"
               RI_ACCEPT_TERMS_AND_CONDITIONS: "${REDISINSIGHT_ACCEPT_TAC:-true}"
