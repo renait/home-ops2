@@ -20,8 +20,10 @@
   ignorePaths: [
     '.archive/**',
   ],
-  dependencyDashboard: true,
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
+  dependencyDashboard: {
+    enabled: true,
+    title: 'Renovate Dashboard 🤖',
+  },
   suppressNotifications: [
     'prIgnoreNotification',
   ],
